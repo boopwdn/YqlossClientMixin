@@ -6,3 +6,5 @@
 * add module: SSMotionBlur
 * add module: Tweaks
 * feat Tweaks: Instant Aim
+
+## 0.2.0 (Under Development)
