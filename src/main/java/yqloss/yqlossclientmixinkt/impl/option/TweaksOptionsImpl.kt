@@ -1,23 +1,13 @@
 package yqloss.yqlossclientmixinkt.impl.option
 
-import cc.polyfrost.oneconfig.config.Config
 import cc.polyfrost.oneconfig.config.annotations.Header
 import cc.polyfrost.oneconfig.config.annotations.Switch
-import cc.polyfrost.oneconfig.config.data.ModType
-import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.impl.getConfigFileName
-import yqloss.yqlossclientmixinkt.impl.getConfigMod
+import yqloss.yqlossclientmixinkt.module.tweaks.INFO_TWEAKS
 import yqloss.yqlossclientmixinkt.module.tweaks.TweaksOptions
 
 class TweaksOptionsImpl :
-    Config(getConfigMod(YC.tweaks, ModType.THIRD_PARTY), getConfigFileName(YC.tweaks)),
+    OptionsImpl(INFO_TWEAKS),
     TweaksOptions {
-    override val enabled by Config::enabled
-
-    init {
-        super.enabled = false
-    }
-
     @JvmField
     @Header(
         text = "Tweaks",
@@ -30,5 +20,7 @@ class TweaksOptionsImpl :
         description = "Set prevRotationYawHead and rotationYawHead of EntityPlayerSP to prevRotationYaw and rotationYaw",
         size = 2,
     )
-    override val enableInstantAim = false
+    var enableInstantAimOption = false
+
+    override val enableInstantAim by ::enableInstantAimOption
 }

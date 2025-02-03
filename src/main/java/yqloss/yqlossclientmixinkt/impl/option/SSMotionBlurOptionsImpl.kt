@@ -1,24 +1,14 @@
 package yqloss.yqlossclientmixinkt.impl.option
 
-import cc.polyfrost.oneconfig.config.Config
 import cc.polyfrost.oneconfig.config.annotations.Header
 import cc.polyfrost.oneconfig.config.annotations.Slider
 import cc.polyfrost.oneconfig.config.annotations.Switch
-import cc.polyfrost.oneconfig.config.data.ModType
-import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.impl.getConfigFileName
-import yqloss.yqlossclientmixinkt.impl.getConfigMod
+import yqloss.yqlossclientmixinkt.module.ssmotionblur.INFO_SS_MOTION_BLUR
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlurOptions
 
 class SSMotionBlurOptionsImpl :
-    Config(getConfigMod(YC.ssMotionBlur, ModType.THIRD_PARTY), getConfigFileName(YC.ssMotionBlur)),
+    OptionsImpl(INFO_SS_MOTION_BLUR),
     SSMotionBlurOptions {
-    override val enabled by Config::enabled
-
-    init {
-        super.enabled = false
-    }
-
     @JvmField
     @Header(
         text = "SS Motion Blur",

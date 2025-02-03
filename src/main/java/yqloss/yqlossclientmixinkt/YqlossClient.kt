@@ -28,6 +28,8 @@ interface YqlossClient {
     val api: YCAPI
     val eventDispatcher: YCEventDispatcher
 
+    val configVersion: Int
+
     val ssMotionBlur: SSMotionBlur
     val rawInput: RawInput
     val tweaks: Tweaks

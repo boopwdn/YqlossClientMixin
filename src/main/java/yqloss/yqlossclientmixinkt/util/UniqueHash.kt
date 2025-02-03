@@ -1,6 +1,6 @@
 package yqloss.yqlossclientmixinkt.util
 
-import java.util.*
+import java.util.WeakHashMap
 
 class UniqueHash : (Any?) -> Long {
     private var counter = 0L

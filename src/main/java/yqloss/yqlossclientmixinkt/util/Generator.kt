@@ -1,6 +1,10 @@
 package yqloss.yqlossclientmixinkt.util
 
-import kotlin.coroutines.*
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.coroutines.createCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 sealed interface GeneratorState {
     data class Waiting(

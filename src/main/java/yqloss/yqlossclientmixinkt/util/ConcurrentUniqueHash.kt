@@ -1,7 +1,7 @@
 package yqloss.yqlossclientmixinkt.util
 
 import kotlinx.atomicfu.atomic
-import java.util.*
+import java.util.WeakHashMap
 
 class ConcurrentUniqueHash : (Any?) -> Long {
     private val counter = atomic(0L)

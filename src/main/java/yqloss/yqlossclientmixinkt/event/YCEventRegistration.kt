@@ -73,12 +73,29 @@ fun buildEventEntries(function: RegistrationEventDispatcher.() -> Unit): List<En
     return mutableListOf<Entry>().also { function(RegistrationEventDispatcher(it)) }
 }
 
+fun YCEventRegistration.buildRegisterEventEntries(
+    dispatcher: YCEventDispatcher,
+    function: RegistrationEventDispatcher.() -> Unit,
+): List<Entry> {
+    return mutableListOf<Entry>()
+        .also { function(RegistrationEventDispatcher(it)) }
+        .also { registerEventEntries(dispatcher) }
+}
+
 fun YCEventRegistration.registerEventEntries(dispatcher: YCEventDispatcher) {
-    eventEntries.forEach { it(dispatcher) }
+    eventEntries.registerEventEntries(dispatcher)
 }
 
 fun YCEventRegistration.unregisterEventEntries(dispatcher: YCEventDispatcher) {
+    eventEntries.unregisterEventEntries(dispatcher)
+}
+
+fun List<Entry>.registerEventEntries(dispatcher: YCEventDispatcher) {
+    forEach { it(dispatcher) }
+}
+
+fun List<Entry>.unregisterEventEntries(dispatcher: YCEventDispatcher) {
     val set = mutableSetOf<YCEventHandler<*>>()
-    eventEntries.forEach { set.add(it.handler) }
+    forEach { set.add(it.handler) }
     set.forEach(dispatcher::unregisterAll)
 }

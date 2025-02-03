@@ -7,7 +7,7 @@ import yqloss.yqlossclientmixinkt.util.AnyComparator
 import yqloss.yqlossclientmixinkt.util.UniqueHash
 import yqloss.yqlossclientmixinkt.util.inBox
 import yqloss.yqlossclientmixinkt.util.prepend
-import java.util.*
+import java.util.TreeSet
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSuperclasses
 import kotlin.reflect.full.isSubclassOf

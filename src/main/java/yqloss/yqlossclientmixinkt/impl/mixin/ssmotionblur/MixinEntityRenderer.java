@@ -10,7 +10,7 @@ import yqloss.yqlossclientmixinkt.impl.mixincallback.ssmotionblur.CallbackEntity
 @Mixin(EntityRenderer.class)
 public abstract class MixinEntityRenderer {
     @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;endStartSection(Ljava/lang/String;)V"))
-    private void yqloss_clientmixin_updateCameraAndRenderRenderMotionBlur(float partialTicks, long nanoTime, CallbackInfo ci) {
+    private void yqloss_clientmixin_ssmotionblur_updateCameraAndRenderRenderMotionBlur(float partialTicks, long nanoTime, CallbackInfo ci) {
         CallbackEntityRendererKt.updateCameraAndRenderRenderMotionBlur();
     }
 }
