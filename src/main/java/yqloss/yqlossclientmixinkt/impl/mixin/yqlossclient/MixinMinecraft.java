@@ -10,12 +10,12 @@ import yqloss.yqlossclientmixinkt.impl.mixincallback.yqlossclient.CallbackMinecr
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
     @Inject(method = "startGame", at = @At("RETURN"))
-    private void yqloss_clientmixin_startGamePost(CallbackInfo ci) {
+    private void yc$startGamePost(CallbackInfo ci) {
         CallbackMinecraftKt.startGamePost();
     }
 
     @Inject(method = "runGameLoop", at = @At("HEAD"))
-    private void yqloss_clientmixin_runGameLoopPre(CallbackInfo ci) {
+    private void yc$runGameLoopPre(CallbackInfo ci) {
         CallbackMinecraftKt.runGameLoopPre();
     }
 }

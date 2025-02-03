@@ -10,7 +10,7 @@ import yqloss.yqlossclientmixinkt.impl.mixincallback.tweaks.CallbackEntityKt;
 @Mixin(Entity.class)
 public class MixinEntity {
     @Inject(method = "setAngles", at = @At("RETURN"))
-    private void yqloss_clientmixin_tweaks_setAnglesPost(float yaw, float pitch, CallbackInfo ci) {
+    private void yc$tweaks$setAnglesPost(float yaw, float pitch, CallbackInfo ci) {
         CallbackEntityKt.setAnglesPost((Entity) (Object) this);
     }
 }

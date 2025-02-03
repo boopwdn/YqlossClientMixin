@@ -10,7 +10,7 @@ import yqloss.yqlossclientmixinkt.impl.mixincallback.yqlossclient.CallbackEntity
 @Mixin(EntityRenderer.class)
 public abstract class MixinEntityRenderer {
     @Inject(method = "updateCameraAndRender", at = @At("HEAD"))
-    private void yqloss_clientmixin_updateCameraAndRenderPre(float partialTicks, long nanoTime, CallbackInfo ci) {
+    private void yc$updateCameraAndRenderPre(float partialTicks, long nanoTime, CallbackInfo ci) {
         CallbackEntityRendererKt.updateCameraAndRenderPre(partialTicks);
     }
 }

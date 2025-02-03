@@ -10,7 +10,7 @@ import yqloss.yqlossclientmixinkt.impl.mixincallback.yqlossclient.CallbackMainKt
 @Mixin(Main.class)
 public abstract class MixinMain {
     @Inject(method = "main", at = @At("HEAD"), remap = false)
-    private static void yqloss_clientmixin_mainPre(String[] strings, CallbackInfo ci) {
+    private static void yc$mainPre(String[] strings, CallbackInfo ci) {
         CallbackMainKt.mainPre();
     }
 }
