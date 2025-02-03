@@ -1,14 +1,34 @@
 package yqloss.yqlossclientmixinkt.impl.option
 
 import cc.polyfrost.oneconfig.config.annotations.Header
+import cc.polyfrost.oneconfig.config.annotations.Info
 import cc.polyfrost.oneconfig.config.annotations.Slider
 import cc.polyfrost.oneconfig.config.annotations.Switch
+import cc.polyfrost.oneconfig.config.data.InfoType
+import yqloss.yqlossclientmixinkt.impl.INFO_DISCLAIMER
+import yqloss.yqlossclientmixinkt.impl.LEGITIMACY_LEGIT
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.INFO_SS_MOTION_BLUR
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlurOptions
 
 class SSMotionBlurOptionsImpl :
     OptionsImpl(INFO_SS_MOTION_BLUR),
     SSMotionBlurOptions {
+    @JvmField
+    @Info(
+        text = INFO_DISCLAIMER,
+        type = InfoType.WARNING,
+        size = 2,
+    )
+    var infoDisclaimer = false
+
+    @JvmField
+    @Info(
+        text = LEGITIMACY_LEGIT,
+        type = InfoType.INFO,
+        size = 2,
+    )
+    var infoLegitimacy = false
+
     @JvmField
     @Header(
         text = "SS Motion Blur",

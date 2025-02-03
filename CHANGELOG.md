@@ -10,3 +10,4 @@
 ## 0.2.0 (Under Development)
 
 * feat Tweaks: Cancel Pearl Click-On-Block Packet
+* feat: feature legitimacy disclaimers

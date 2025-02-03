@@ -1,7 +1,12 @@
 package yqloss.yqlossclientmixinkt.impl.option
 
 import cc.polyfrost.oneconfig.config.annotations.Header
+import cc.polyfrost.oneconfig.config.annotations.Info
 import cc.polyfrost.oneconfig.config.annotations.Switch
+import cc.polyfrost.oneconfig.config.data.InfoType
+import yqloss.yqlossclientmixinkt.impl.INFO_DISCLAIMER
+import yqloss.yqlossclientmixinkt.impl.LEGITIMACY_SAFE_BLATANT_SKYBLOCK
+import yqloss.yqlossclientmixinkt.impl.LEGITIMACY_SAFE_QOL
 import yqloss.yqlossclientmixinkt.module.tweaks.INFO_TWEAKS
 import yqloss.yqlossclientmixinkt.module.tweaks.TweaksOptions
 
@@ -9,11 +14,27 @@ class TweaksOptionsImpl :
     OptionsImpl(INFO_TWEAKS),
     TweaksOptions {
     @JvmField
+    @Info(
+        text = INFO_DISCLAIMER,
+        type = InfoType.WARNING,
+        size = 2,
+    )
+    var infoDisclaimer = false
+
+    @JvmField
     @Header(
         text = "Tweaks",
         size = 2,
     )
     var headerModule = false
+
+    @JvmField
+    @Info(
+        text = LEGITIMACY_SAFE_QOL,
+        type = InfoType.INFO,
+        size = 2,
+    )
+    var infoLegitimacy1 = false
 
     @Switch(
         name = "Enable Instant Aim",
@@ -21,6 +42,14 @@ class TweaksOptionsImpl :
         size = 2,
     )
     var enableInstantAimOption = false
+
+    @JvmField
+    @Info(
+        text = LEGITIMACY_SAFE_BLATANT_SKYBLOCK,
+        type = InfoType.INFO,
+        size = 2,
+    )
+    var infoLegitimacy2 = false
 
     @Switch(
         name = "Disable Pearl Click-On-Block Packet",
