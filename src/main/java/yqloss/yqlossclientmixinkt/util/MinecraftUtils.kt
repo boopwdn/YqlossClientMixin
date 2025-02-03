@@ -1,8 +1,11 @@
 package yqloss.yqlossclientmixinkt.util
 
+import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.WorldRenderer
 import net.minecraft.client.renderer.vertex.VertexFormat
+
+val MC: Minecraft by lazy { Minecraft.getMinecraft() }
 
 inline fun mcRenderScope(
     mode: Int,

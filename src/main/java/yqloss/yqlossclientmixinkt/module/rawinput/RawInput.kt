@@ -3,7 +3,6 @@ package yqloss.yqlossclientmixinkt.module.rawinput
 import net.java.games.input.Controller
 import net.java.games.input.ControllerEnvironment
 import net.java.games.input.Mouse
-import yqloss.yqlossclientmixinkt.MC
 import yqloss.yqlossclientmixinkt.YqlossClient
 import yqloss.yqlossclientmixinkt.event.YCEventRegistration
 import yqloss.yqlossclientmixinkt.event.buildEventEntries
@@ -11,6 +10,7 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.event.registerEventEntries
 import yqloss.yqlossclientmixinkt.module.YCModule
+import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.noexcept
 import yqloss.yqlossclientmixinkt.ycLogger
 

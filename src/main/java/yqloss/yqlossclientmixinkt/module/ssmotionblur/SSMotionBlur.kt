@@ -3,7 +3,6 @@ package yqloss.yqlossclientmixinkt.module.ssmotionblur
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import org.lwjgl.opengl.GL11
-import yqloss.yqlossclientmixinkt.MC
 import yqloss.yqlossclientmixinkt.YqlossClient
 import yqloss.yqlossclientmixinkt.event.YCEventRegistration
 import yqloss.yqlossclientmixinkt.event.buildEventEntries
@@ -11,6 +10,7 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.event.registerEventEntries
 import yqloss.yqlossclientmixinkt.module.YCModule
+import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.asDouble
 import yqloss.yqlossclientmixinkt.util.glStateScope
 import yqloss.yqlossclientmixinkt.util.mcRenderScope

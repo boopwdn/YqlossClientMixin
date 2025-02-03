@@ -1,6 +1,5 @@
 package yqloss.yqlossclientmixinkt
 
-import net.minecraft.client.Minecraft
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import yqloss.yqlossclientmixinkt.api.YCAPI
@@ -19,8 +18,6 @@ val YC_LOGGER: Logger = LogManager.getLogger("YqlossClient")
 var theYC: YqlossClient by latelet()
 
 val YC by ::theYC
-
-val MC: Minecraft by lazy { Minecraft.getMinecraft() }
 
 interface YqlossClient {
     val modID: String
