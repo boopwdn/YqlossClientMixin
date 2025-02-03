@@ -9,6 +9,7 @@
     "verbose": true,
     "client": [
         "ssmotionblur.MixinEntityRenderer",
+        "tweaks.MixinMinecraft",
         "yqlossclient.MixinEntityRenderer",
         "yqlossclient.MixinMain",
         "yqlossclient.MixinMinecraft"

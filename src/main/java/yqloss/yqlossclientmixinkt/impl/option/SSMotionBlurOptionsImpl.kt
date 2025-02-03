@@ -34,6 +34,5 @@ class SSMotionBlurOptionsImpl :
     var balancedOption = true
 
     override val strength get() = strengthOption / 100.0
-
     override val balanced by ::balancedOption
 }
