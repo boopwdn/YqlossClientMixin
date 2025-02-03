@@ -1,0 +1,13 @@
+[
+  {
+    "modid": "${id}",
+    "name": "${name}",
+    "description": "Ciallo\\\\uFF5E(\\\\u2220\\\\u30FB\\\\u03C9< )\\\\u2312\\\\u2605\\\\nYqloss Client features rewritten in Forge 1.8.9. (WIP)",
+    "version": "${version}",
+    "mcversion": "${mcVersionStr}",
+    "url": "https://clientforge.yqloss.net/",
+    "authorList": [
+      "Yqloss"
+    ]
+  }
+]
