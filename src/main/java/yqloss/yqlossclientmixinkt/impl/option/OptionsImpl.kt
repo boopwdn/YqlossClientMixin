@@ -90,17 +90,16 @@ private fun handleExtensionOption(
 ): BasicOption? {
     val args = annotation.id.split(":")
     return when (args[0]) {
-        "extract" -> handleExtractOption(config, field, page, mod, args)
+        "extract" -> handleExtractOption(config, field, page, mod)
         else -> null
     }
 }
 
-// usage: @CustomOption(id = "extract:OPTION_KEY")
+// usage: @CustomOption(id = "extract")
 // currently cannot handle recursive @CustomOption
 private fun handleExtractOption(
     config: Config,
     field: Field,
     page: OptionPage,
     mod: Mod,
-    args: List<String>,
-) = null.also { addOptions(config, field.get(config), field.type, page, mod, "${args[1]}.") }
+) = null.also { addOptions(config, field.get(config), field.type, page, mod, "${field.name}.") }
