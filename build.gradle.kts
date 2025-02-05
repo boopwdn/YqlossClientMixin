@@ -67,12 +67,14 @@ sourceSets {
 
 repositories {
     maven("https://repo.polyfrost.org/releases")
+    maven("https://repo.hypixel.net/repository/Hypixel/")
 }
 
 dependencies {
     modCompileOnly("cc.polyfrost:oneconfig-$platform:0.2.2-alpha+")
     modRuntimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.2.0")
     compileOnly("org.spongepowered:mixin:0.7.11-SNAPSHOT")
+    implementation("net.hypixel:mod-api:1.0.1")
     shade("cc.polyfrost:oneconfig-wrapper-launchwrapper:1.0.0-beta17")
 }
 
