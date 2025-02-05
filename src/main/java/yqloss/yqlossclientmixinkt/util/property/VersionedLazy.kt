@@ -3,13 +3,13 @@ package yqloss.yqlossclientmixinkt.util.property
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-class VersionedLazy<T>(
+class VersionedLazy<T, TV : Any>(
     private val function: () -> T,
-    private val versionGetter: () -> Int,
+    private val versionGetter: () -> TV,
     private var initialized: Boolean,
     private var value: T?,
 ) : ReadOnlyProperty<Any?, T> {
-    private var version: Int? = null
+    private var version: TV? = null
 
     fun reset() {
         initialized = false
@@ -34,13 +34,13 @@ class VersionedLazy<T>(
     }
 }
 
-fun <T> versionedLazy(
-    versionGetter: () -> Int,
+fun <T, TV : Any> versionedLazy(
+    versionGetter: () -> TV,
     function: () -> T,
 ) = VersionedLazy(function, versionGetter, false, null)
 
-fun <T> versionedLazy(
+fun <T, TV : Any> versionedLazy(
     initial: T,
-    versionGetter: () -> Int,
+    versionGetter: () -> TV,
     function: () -> T,
 ) = VersionedLazy(function, versionGetter, true, initial)
