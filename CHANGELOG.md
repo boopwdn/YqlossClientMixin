@@ -5,9 +5,9 @@
 * add module: RawInput
 * add module: SSMotionBlur
 * add module: Tweaks
-* feat Tweaks: Instant Aim
+* feat Tweaks: enableInstantAim
 
 ## 0.2.0 (Under Development)
 
-* feat Tweaks: Cancel Pearl Click-On-Block Packet
+* feat(Tweaks): disablePearlClickBlock
 * feat: feature legitimacy disclaimers
