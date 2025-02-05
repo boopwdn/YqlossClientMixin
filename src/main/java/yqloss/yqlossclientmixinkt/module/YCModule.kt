@@ -5,6 +5,7 @@ import yqloss.yqlossclientmixinkt.event.RegistrationEventDispatcher
 import yqloss.yqlossclientmixinkt.event.YCEventRegistration
 import yqloss.yqlossclientmixinkt.event.YCEventRegistration.Entry
 import yqloss.yqlossclientmixinkt.event.registerEventEntries
+import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.property.versionedLazy
 
 interface YCModule<T : YCModuleOptions> {

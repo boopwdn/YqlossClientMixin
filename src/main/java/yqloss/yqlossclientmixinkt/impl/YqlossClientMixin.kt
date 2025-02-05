@@ -5,7 +5,7 @@ import yqloss.yqlossclientmixinkt.YqlossClient
 import yqloss.yqlossclientmixinkt.impl.api.YCAPIImpl
 import yqloss.yqlossclientmixinkt.impl.event.EventDispatcherImpl
 import yqloss.yqlossclientmixinkt.impl.option.MainConfig
-import yqloss.yqlossclientmixinkt.module.YCModuleOptions
+import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlur
 import yqloss.yqlossclientmixinkt.module.tweaks.Tweaks

@@ -10,7 +10,7 @@ import cc.polyfrost.oneconfig.config.elements.OptionPage
 import cc.polyfrost.oneconfig.config.elements.SubConfig
 import cc.polyfrost.oneconfig.config.migration.Migrator
 import yqloss.yqlossclientmixinkt.module.YCModuleInfo
-import yqloss.yqlossclientmixinkt.module.YCModuleOptions
+import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.general.inBox
 import java.lang.reflect.Field
 import java.lang.reflect.Method

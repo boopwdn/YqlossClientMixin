@@ -2,6 +2,7 @@ package yqloss.yqlossclientmixinkt.module
 
 import yqloss.yqlossclientmixinkt.event.RegistrationEventDispatcher
 import yqloss.yqlossclientmixinkt.event.YCEventRegistration
+import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.ycLogger
 
 abstract class YCModuleBase<T : YCModuleOptions>(
