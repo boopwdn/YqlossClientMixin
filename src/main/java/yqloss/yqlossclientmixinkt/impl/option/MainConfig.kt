@@ -20,7 +20,7 @@ import kotlin.reflect.full.starProjectedType
 
 private val optionsImplMap = mutableMapOf<KClass<*>, () -> YCModuleOptions>()
 
-private val LOGGER = ycLogger("Config")
+private val logger = ycLogger("Config")
 
 object MainConfig : Config(Mod("Yqloss Client $MOD_VERSION", ModType.THIRD_PARTY), "yqlossclient.json") {
     @SubConfig
@@ -40,7 +40,7 @@ object MainConfig : Config(Mod("Yqloss Client $MOD_VERSION", ModType.THIRD_PARTY
             .filter { it.returnType.isSubtypeOf(YCModuleOptions::class.starProjectedType) }
             .forEach { property ->
                 property(this).let { instance ->
-                    LOGGER.info("detected Options implementation $instance")
+                    logger.info("detected Options implementation $instance")
                     (instance as Config).initialize()
                     instance::class.allSuperclasses.plus(instance::class).forEach {
                         optionsImplMap[it] = { property(this) as YCModuleOptions }
@@ -52,12 +52,12 @@ object MainConfig : Config(Mod("Yqloss Client $MOD_VERSION", ModType.THIRD_PARTY
     override fun load() {
         super.load()
         val version = ++YCMixin.configVersion
-        LOGGER.info("increased config version to $version")
+        logger.info("increased config version to $version")
     }
 
     fun <T : YCModuleOptions> getOptionsImpl(type: KClass<T>): T {
         return optionsImplMap[type]?.invoke()?.inBox?.cast<T>()?.also {
-            LOGGER.info("loaded Options implementation $it for type $type")
+            logger.info("loaded Options implementation $it for type $type")
         } ?: throw NotImplementedError("$type")
     }
 }
