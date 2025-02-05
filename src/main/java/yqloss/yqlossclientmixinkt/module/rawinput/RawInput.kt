@@ -10,6 +10,7 @@ import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
+import yqloss.yqlossclientmixinkt.util.general.intervalAction
 import yqloss.yqlossclientmixinkt.util.property.latelet
 import yqloss.yqlossclientmixinkt.util.scope.longrun
 import yqloss.yqlossclientmixinkt.util.scope.noexcept
@@ -20,24 +21,28 @@ object RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
     private var mouseHelper: RawMouseHelper by latelet()
     private var savedMouse: Mouse? = null
 
-    private fun findMouse() {
-        logger.info("trying to find a mouse")
-        for (controller in ControllerEnvironment.getDefaultEnvironment().controllers) {
-            run {
-                noexcept(logger::catching) {
-                    if (controller.type === Controller.Type.MOUSE) {
-                        val mouse = controller as Mouse
-                        mouse.poll()
-                        if (mouse.x.pollData !in -0.1..0.1 || mouse.y.pollData !in -0.1..0.1) {
-                            savedMouse = mouse
-                            logger.info("found mouse $mouse")
-                            return@run null
+    private val findMouse =
+        intervalAction(1000000000L) {
+            logger.info("trying to find a mouse")
+
+            noexcept(logger::catching) {
+                for (controller in ControllerEnvironment.getDefaultEnvironment().controllers) {
+                    noexcept(logger::catching) {
+                        if (controller.type === Controller.Type.MOUSE) {
+                            val mouse = controller as Mouse
+                            mouse.poll()
+                            if (mouse.x.pollData !in -0.1..0.1 || mouse.y.pollData !in -0.1..0.1) {
+                                savedMouse = mouse
+                                logger.info("found mouse $mouse")
+                                return@intervalAction
+                            }
                         }
                     }
                 }
-            } ?: break
+            }
+
+            logger.info("failed to find a mouse")
         }
-    }
 
     override fun RegistrationEventDispatcher.registerEvents() {
         register<YCMinecraftEvent.Load.Post> {
@@ -58,7 +63,7 @@ object RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
                             mouseHelper.x += mouse.x.pollData
                             mouseHelper.y += mouse.y.pollData
                         }
-                    } ?: logger.info("failed to find a mouse")
+                    }
                 }
             }
         }
