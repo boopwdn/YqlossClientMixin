@@ -1,6 +1,4 @@
-package yqloss.yqlossclientmixinkt.util
-
-infix fun <T> T.rem(comment: Any?) = this
+package yqloss.yqlossclientmixinkt.util.scope
 
 inline fun noexcept(
     exceptionHandler: (Exception) -> Unit = {},

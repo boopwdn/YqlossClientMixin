@@ -1,4 +1,4 @@
-package yqloss.yqlossclientmixinkt.util
+package yqloss.yqlossclientmixinkt.util.scope
 
 class WithScopeContext(
     private val resourceSet: MutableSet<AutoCloseable>,

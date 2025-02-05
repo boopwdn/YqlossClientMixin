@@ -1,5 +1,7 @@
-package yqloss.yqlossclientmixinkt.util
+package yqloss.yqlossclientmixinkt.util.property
 
+import yqloss.yqlossclientmixinkt.util.general.Box
+import yqloss.yqlossclientmixinkt.util.general.inBox
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 

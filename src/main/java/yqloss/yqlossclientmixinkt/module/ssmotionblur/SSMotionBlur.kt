@@ -10,10 +10,10 @@ import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.buildRegisterEventEntries
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.asDouble
-import yqloss.yqlossclientmixinkt.util.glStateScope
+import yqloss.yqlossclientmixinkt.util.math.asDouble
 import yqloss.yqlossclientmixinkt.util.mcRenderScope
-import yqloss.yqlossclientmixinkt.util.noexcept
+import yqloss.yqlossclientmixinkt.util.scope.glStateScope
+import yqloss.yqlossclientmixinkt.util.scope.noexcept
 import yqloss.yqlossclientmixinkt.ycLogger
 import java.nio.ByteBuffer
 import kotlin.math.max

@@ -1,6 +1,6 @@
 package yqloss.yqlossclientmixinkt.event
 
-import yqloss.yqlossclientmixinkt.util.inBox
+import yqloss.yqlossclientmixinkt.util.general.inBox
 import kotlin.reflect.KClass
 
 interface YCEventDispatcher : (YCEvent) -> Unit {

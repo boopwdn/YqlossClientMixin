@@ -3,10 +3,10 @@ package yqloss.yqlossclientmixinkt.impl.event
 import yqloss.yqlossclientmixinkt.event.YCEvent
 import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
 import yqloss.yqlossclientmixinkt.event.YCEventHandler
-import yqloss.yqlossclientmixinkt.util.AnyComparator
-import yqloss.yqlossclientmixinkt.util.UniqueHash
-import yqloss.yqlossclientmixinkt.util.inBox
-import yqloss.yqlossclientmixinkt.util.prepend
+import yqloss.yqlossclientmixinkt.util.extension.prepend
+import yqloss.yqlossclientmixinkt.util.general.AnyComparator
+import yqloss.yqlossclientmixinkt.util.general.UniqueHash
+import yqloss.yqlossclientmixinkt.util.general.inBox
 import java.util.TreeSet
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSuperclasses

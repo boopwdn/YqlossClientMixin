@@ -10,7 +10,7 @@ import yqloss.yqlossclientmixinkt.impl.option.impl.RawInputOptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.impl.SSMotionBlurOptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.impl.TweaksOptionsImpl
 import yqloss.yqlossclientmixinkt.module.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.inBox
+import yqloss.yqlossclientmixinkt.util.general.inBox
 import yqloss.yqlossclientmixinkt.ycLogger
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSuperclasses

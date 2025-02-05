@@ -2,7 +2,7 @@ package yqloss.yqlossclientmixinkt.module.rawinput
 
 import net.minecraft.util.MouseHelper
 import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.util.asInt
+import yqloss.yqlossclientmixinkt.util.math.asInt
 
 class RawMouseHelper(
     private val parent: MouseHelper,

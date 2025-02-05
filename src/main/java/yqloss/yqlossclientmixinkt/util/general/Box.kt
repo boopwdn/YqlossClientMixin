@@ -1,4 +1,4 @@
-package yqloss.yqlossclientmixinkt.util
+package yqloss.yqlossclientmixinkt.util.general
 
 sealed interface BoxType<T> {
     val value: T

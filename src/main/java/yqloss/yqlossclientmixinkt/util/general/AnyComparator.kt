@@ -1,4 +1,4 @@
-package yqloss.yqlossclientmixinkt.util
+package yqloss.yqlossclientmixinkt.util.general
 
 class AnyComparator(
     private val hash: (Any?) -> Long,

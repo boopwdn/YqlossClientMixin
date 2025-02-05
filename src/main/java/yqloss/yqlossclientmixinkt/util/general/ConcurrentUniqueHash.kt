@@ -1,4 +1,4 @@
-package yqloss.yqlossclientmixinkt.util
+package yqloss.yqlossclientmixinkt.util.general
 
 import kotlinx.atomicfu.atomic
 import java.util.WeakHashMap

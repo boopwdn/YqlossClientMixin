@@ -8,7 +8,7 @@ import yqloss.yqlossclientmixinkt.module.YCModuleOptions
 import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlur
 import yqloss.yqlossclientmixinkt.module.tweaks.Tweaks
-import yqloss.yqlossclientmixinkt.util.latelet
+import yqloss.yqlossclientmixinkt.util.property.latelet
 import kotlin.reflect.KClass
 
 fun ycLogger(name: String): Logger = LogManager.getLogger("YqlossClient $name")

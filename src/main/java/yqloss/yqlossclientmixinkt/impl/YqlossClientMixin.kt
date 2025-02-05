@@ -10,7 +10,7 @@ import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlur
 import yqloss.yqlossclientmixinkt.module.tweaks.Tweaks
 import yqloss.yqlossclientmixinkt.theYC
-import yqloss.yqlossclientmixinkt.util.latelet
+import yqloss.yqlossclientmixinkt.util.property.latelet
 import kotlin.reflect.KClass
 
 const val MOD_ID = "@ID@"

@@ -10,8 +10,8 @@ import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.buildRegisterEventEntries
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.latelet
-import yqloss.yqlossclientmixinkt.util.noexcept
+import yqloss.yqlossclientmixinkt.util.property.latelet
+import yqloss.yqlossclientmixinkt.util.scope.noexcept
 import yqloss.yqlossclientmixinkt.ycLogger
 
 val INFO_RAW_INPUT = moduleInfo<RawInputOptions>("raw_input", "Raw Input")

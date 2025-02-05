@@ -1,4 +1,4 @@
-package yqloss.yqlossclientmixinkt.util
+package yqloss.yqlossclientmixinkt.util.property
 
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
