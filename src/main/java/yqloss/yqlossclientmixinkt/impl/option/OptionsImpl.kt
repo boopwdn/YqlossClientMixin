@@ -32,7 +32,8 @@ abstract class OptionsImpl(
         mod: Mod,
         migrate: Boolean,
     ): BasicOption? {
-        return handleExtensionOption(this, field, annotation, page, mod)
+        field.isAccessible = true
+        return handleExtensionOption(this, { field[this] }, annotation, page, mod, "${field.name}.")
     }
 }
 
@@ -65,15 +66,28 @@ private fun addOptions(
         ?.let { addOptions(config, instance, it, page, mod, prefix) }
 
     type.declaredFields.forEach { field ->
+        field.isAccessible = true
         val optionName = "$prefix${field.name}"
 
-        ConfigUtils.findAnnotation(field, internalOptionClass)?.let { annotation ->
+        ConfigUtils.findAnnotation(field, internalOptionClass)?.also { annotation ->
             config.optionNames[optionName] =
                 internalAddOptionToPageMethod(null, page, annotation, field, instance, null) as BasicOption
+        } ?: ConfigUtils.findAnnotation(field, CustomOption::class.java)?.also { annotation ->
+            handleExtensionOption(
+                config,
+                { field[instance] },
+                annotation,
+                page,
+                mod,
+                "$prefix${field.name}.",
+            )?.let { basicOption ->
+                config.optionNames[optionName] = basicOption
+            }
         }
     }
 
     type.declaredMethods.forEach { method ->
+        method.isAccessible = true
         ConfigUtils.findAnnotation(method, Button::class.java)?.let {
             config.optionNames["$prefix${method.name}"] = ConfigUtils.addOptionToPage(page, method, instance)
         }
@@ -82,24 +96,29 @@ private fun addOptions(
 
 private fun handleExtensionOption(
     config: Config,
-    field: Field,
+    fieldGetter: () -> Any,
     annotation: CustomOption,
     page: OptionPage,
     mod: Mod,
+    prefix: String,
 ): BasicOption? {
-    field.isAccessible = true
     val args = annotation.id.split(":")
     return when (args[0]) {
-        "extract" -> handleExtractOption(config, field, page, mod)
+        "extract" -> handleExtractOption(config, fieldGetter, page, mod, prefix)
         else -> null
     }
 }
 
 // usage: @CustomOption(id = "extract")
-// currently cannot handle recursive @CustomOption
+// recursive extraction is supported
 private fun handleExtractOption(
     config: Config,
-    field: Field,
+    fieldGetter: () -> Any,
     page: OptionPage,
     mod: Mod,
-) = null.also { addOptions(config, field.get(config), field.type, page, mod, "${field.name}.") }
+    prefix: String,
+): BasicOption? {
+    val value = fieldGetter()
+    addOptions(config, value, value::class.java, page, mod, prefix)
+    return null
+}
