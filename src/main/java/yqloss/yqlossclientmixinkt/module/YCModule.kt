@@ -15,7 +15,7 @@ interface YCModule<T : YCModuleOptions> {
 }
 
 abstract class YCModuleInfo<T : YCModuleOptions> : YCModule<T> {
-    val configFile get() = "yqlossclient-$id.json"
+    inline val configFile get() = "yqlossclient-$id.json"
 }
 
 inline fun <reified T : YCModuleOptions> moduleInfo(

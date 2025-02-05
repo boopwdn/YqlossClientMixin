@@ -8,7 +8,7 @@ inline fun ensure(
     frame: Int = 0,
     predicate: () -> Boolean,
 ) {
-    if (!predicate()) longreturn { } scope frame
+    if (!predicate()) longreturn(frame) {}
 }
 
 fun YCModule<*>.ensureEnabled(frame: Int = 0) = ensure(frame) { options.enabled }

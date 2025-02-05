@@ -9,9 +9,9 @@ import yqloss.yqlossclientmixinkt.util.math.Vec3I
 
 val MC: Minecraft by lazy { Minecraft.getMinecraft() }
 
-val BlockPos.asVec3I get() = Vec3I(x, y, z)
+inline val BlockPos.asVec3I get() = Vec3I(x, y, z)
 
-val Vec3I.asBlockPos get() = BlockPos(x, y, z)
+inline val Vec3I.asBlockPos get() = BlockPos(x, y, z)
 
 inline fun mcRenderScope(
     mode: Int,

@@ -10,7 +10,7 @@ data class LongReturn(
     val frame: Int,
     val value: Any?,
 ) : Throwable() {
-    val next: LongReturn
+    inline val next: LongReturn
         get() = if (frame < 0) LongReturn(frame + 1, value) else this
 }
 
@@ -53,9 +53,17 @@ class LongReturnContext3(
 
 inline fun <T> longreturn(getter: () -> T) = LongReturnContext1(getter())
 
+inline fun <T> longreturn(
+    scope: Int = 0,
+    getter: () -> T,
+) {
+    val value = getter()
+    throw LongReturn(scope, value)
+}
+
 fun longscope(function: (Int) -> Unit) = LongReturnContext3(function)
 
-fun <R> longrun(function: (Int) -> R): R {
+inline fun <R> longrun(function: (Int) -> R): R {
     frameCounter += 1
     val currentFrame = frameCounter
     try {
@@ -69,3 +77,5 @@ fun <R> longrun(function: (Int) -> R): R {
         frameCounter -= 1
     }
 }
+
+inline val Int.longreturnTimes get() = 1 - this
