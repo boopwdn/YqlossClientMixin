@@ -5,9 +5,6 @@ import org.apache.logging.log4j.Logger
 import yqloss.yqlossclientmixinkt.api.YCAPI
 import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
-import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlur
-import yqloss.yqlossclientmixinkt.module.tweaks.Tweaks
 import yqloss.yqlossclientmixinkt.util.property.latelet
 import kotlin.reflect.KClass
 
@@ -29,10 +26,6 @@ interface YqlossClient {
     val eventDispatcher: YCEventDispatcher
 
     val configVersion: Int
-
-    val ssMotionBlur: SSMotionBlur
-    val rawInput: RawInput
-    val tweaks: Tweaks
 
     fun <T : YCModuleOptions> getOptionsImpl(type: KClass<T>): T
 }

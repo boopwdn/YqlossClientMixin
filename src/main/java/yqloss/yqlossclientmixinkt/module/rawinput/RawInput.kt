@@ -14,7 +14,7 @@ import yqloss.yqlossclientmixinkt.util.scope.noexcept
 
 val INFO_RAW_INPUT = moduleInfo<RawInputOptions>("raw_input", "Raw Input")
 
-class RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
+object RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
     private var mouseHelper: RawMouseHelper by latelet()
     private var savedMouse: Mouse? = null
 

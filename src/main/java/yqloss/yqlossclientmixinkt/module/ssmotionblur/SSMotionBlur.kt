@@ -22,7 +22,7 @@ val INFO_SS_MOTION_BLUR = moduleInfo<SSMotionBlurOptions>("ss_motion_blur", "SS 
 
 private const val FRAME_TIME_256 = 1000000000.0 / 256.0
 
-class SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
+object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
     private var lastWidth = -1
     private var lastHeight = -1
     private var widthFactor = 1.0

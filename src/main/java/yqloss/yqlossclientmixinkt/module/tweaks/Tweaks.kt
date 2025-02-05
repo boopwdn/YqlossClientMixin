@@ -11,7 +11,7 @@ import yqloss.yqlossclientmixinkt.util.scope.noexcept
 
 val INFO_TWEAKS = moduleInfo<TweaksOptions>("tweaks", "Tweaks")
 
-class Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
+object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
     override fun RegistrationEventDispatcher.registerEvents() {
         register<TweaksEvent.SetAnglesPost> { event ->
             if (!options.enabled || !options.enableInstantAim) return@register

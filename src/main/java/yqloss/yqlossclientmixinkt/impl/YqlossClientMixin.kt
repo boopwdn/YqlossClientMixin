@@ -44,9 +44,11 @@ class YqlossClientMixin : YqlossClient {
 
     override var configVersion = 0
 
-    override val rawInput = RawInput()
-    override val ssMotionBlur = SSMotionBlur()
-    override val tweaks = Tweaks()
-
     override fun <T : YCModuleOptions> getOptionsImpl(type: KClass<T>) = MainConfig.getOptionsImpl(type)
+
+    init {
+        RawInput
+        SSMotionBlur
+        Tweaks
+    }
 }

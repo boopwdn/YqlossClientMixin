@@ -1,7 +1,6 @@
 package yqloss.yqlossclientmixinkt.module.rawinput
 
 import net.minecraft.util.MouseHelper
-import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.util.math.asInt
 
 class RawMouseHelper(
@@ -19,7 +18,7 @@ class RawMouseHelper(
     }
 
     override fun mouseXYChange() {
-        if (YC.rawInput.options.enabled) {
+        if (RawInput.options.enabled) {
             deltaX = x.asInt
             deltaY = -y.asInt
             x -= deltaX
