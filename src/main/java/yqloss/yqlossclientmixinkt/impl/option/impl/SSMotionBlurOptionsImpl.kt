@@ -1,43 +1,30 @@
 package yqloss.yqlossclientmixinkt.impl.option.impl
 
+import cc.polyfrost.oneconfig.config.annotations.CustomOption
 import cc.polyfrost.oneconfig.config.annotations.Header
-import cc.polyfrost.oneconfig.config.annotations.Info
 import cc.polyfrost.oneconfig.config.annotations.Slider
 import cc.polyfrost.oneconfig.config.annotations.Switch
-import cc.polyfrost.oneconfig.config.data.InfoType
-import yqloss.yqlossclientmixinkt.impl.option.INFO_DISCLAIMER
-import yqloss.yqlossclientmixinkt.impl.option.LEGITIMACY_LEGIT
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
+import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerLegit
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.INFO_SS_MOTION_BLUR
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlurOptions
 
 class SSMotionBlurOptionsImpl :
     OptionsImpl(INFO_SS_MOTION_BLUR),
     SSMotionBlurOptions {
-    @JvmField
-    @Info(
-        text = INFO_DISCLAIMER,
-        type = InfoType.WARNING,
-        size = 2,
-    )
-    var infoDisclaimer = false
+    @CustomOption(id = "extract")
+    var disclaimer = DisclaimerAtOwnRisk()
 
-    @JvmField
-    @Info(
-        text = LEGITIMACY_LEGIT,
-        type = InfoType.INFO,
-        size = 2,
-    )
-    var infoLegitimacy = false
+    @CustomOption(id = "extract")
+    var legit = DisclaimerLegit()
 
-    @JvmField
     @Header(
         text = "SS Motion Blur",
         size = 2,
     )
     var headerModule = false
 
-    @JvmField
     @Slider(
         name = "Strength",
         min = 0.0F,
@@ -46,7 +33,6 @@ class SSMotionBlurOptionsImpl :
     )
     var strengthOption = 50.0F
 
-    @JvmField
     @Switch(
         name = "FPS Balanced",
         description = "Make the blur on whatever FPS look as if it's 256 FPS.",

@@ -87,6 +87,7 @@ private fun handleExtensionOption(
     page: OptionPage,
     mod: Mod,
 ): BasicOption? {
+    field.isAccessible = true
     val args = annotation.id.split(":")
     return when (args[0]) {
         "extract" -> handleExtractOption(config, field, page, mod)
