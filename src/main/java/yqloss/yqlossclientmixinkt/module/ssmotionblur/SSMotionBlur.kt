@@ -1,5 +1,6 @@
 package yqloss.yqlossclientmixinkt.module.ssmotionblur
 
+import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import org.lwjgl.opengl.GL11
@@ -7,11 +8,13 @@ import yqloss.yqlossclientmixinkt.event.RegistrationEventDispatcher
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
+import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.math.asDouble
 import yqloss.yqlossclientmixinkt.util.mcRenderScope
 import yqloss.yqlossclientmixinkt.util.scope.glStateScope
+import yqloss.yqlossclientmixinkt.util.scope.longrun
 import yqloss.yqlossclientmixinkt.util.scope.noexcept
 import java.nio.ByteBuffer
 import kotlin.math.max
@@ -118,10 +121,46 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
         return max(0.0, min(1.0, alpha))
     }
 
+    private fun renderMotionBlur(
+        screenWidth: Int,
+        screenHeight: Int,
+        scaledResolution: ScaledResolution,
+    ) {
+        MC.entityRenderer.setupOverlayRendering()
+
+        glStateScope {
+            if (textureId === null || lastWidth != screenWidth || lastHeight != screenHeight) {
+                allocate(true, screenWidth, screenHeight)
+            }
+
+            textureId?.let { texture ->
+                GL11.glEnable(GL11.GL_TEXTURE_2D)
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture)
+                GL11.glEnable(GL11.GL_BLEND)
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+                GL11.glDisable(GL11.GL_DEPTH_TEST)
+                GL11.glDisable(GL11.GL_ALPHA_TEST)
+                GL11.glColor4d(1.0, 1.0, 1.0, getAlpha())
+
+                val scaledWidth = scaledResolution.scaledWidth_double
+                val scaledHeight = scaledResolution.scaledHeight_double
+
+                mcRenderScope(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX) {
+                    pos(0.0, scaledHeight, 0.0).tex(0.0, 0.0).endVertex()
+                    pos(scaledWidth, scaledHeight, 0.0).tex(widthFactor, 0.0).endVertex()
+                    pos(scaledWidth, 0.0, 0.0).tex(widthFactor, heightFactor).endVertex()
+                    pos(0.0, 0.0, 0.0).tex(0.0, heightFactor).endVertex()
+                }
+            }
+
+            takeScreenShot(screenWidth, screenHeight)
+        }
+    }
+
     override fun RegistrationEventDispatcher.registerEvents() {
         register<YCRenderEvent.Pre> {
             noexcept(logger::catching) {
-                if (MC.theWorld === null) {
+                MC.theWorld ?: run {
                     lastNanos = System.nanoTime()
                     glStateScope {
                         allocate(false, -1, -1)
@@ -131,37 +170,11 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
         }
 
         register<SSMotionBlurEvent.Render> { event ->
-            if (!options.enabled) return@register
+            longrun {
+                ensureEnabled()
 
-            noexcept(logger::catching) {
-                MC.entityRenderer.setupOverlayRendering()
-
-                glStateScope {
-                    if (textureId === null || lastWidth != event.screenWidth || lastHeight != event.screenHeight) {
-                        allocate(true, event.screenWidth, event.screenHeight)
-                    }
-
-                    textureId?.let { texture ->
-                        GL11.glEnable(GL11.GL_TEXTURE_2D)
-                        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture)
-                        GL11.glEnable(GL11.GL_BLEND)
-                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-                        GL11.glDisable(GL11.GL_DEPTH_TEST)
-                        GL11.glDisable(GL11.GL_ALPHA_TEST)
-                        GL11.glColor4d(1.0, 1.0, 1.0, getAlpha())
-
-                        val scaledWidth = event.scaledResolution.scaledWidth_double
-                        val scaledHeight = event.scaledResolution.scaledHeight_double
-
-                        mcRenderScope(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX) {
-                            pos(0.0, scaledHeight, 0.0).tex(0.0, 0.0).endVertex()
-                            pos(scaledWidth, scaledHeight, 0.0).tex(widthFactor, 0.0).endVertex()
-                            pos(scaledWidth, 0.0, 0.0).tex(widthFactor, heightFactor).endVertex()
-                            pos(0.0, 0.0, 0.0).tex(0.0, heightFactor).endVertex()
-                        }
-                    }
-
-                    takeScreenShot(event.screenWidth, event.screenHeight)
+                noexcept(logger::catching) {
+                    renderMotionBlur(event.screenWidth, event.screenHeight, event.scaledResolution)
                 }
             }
         }

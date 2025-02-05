@@ -5,8 +5,11 @@ import net.minecraft.init.Items
 import yqloss.yqlossclientmixinkt.event.RegistrationEventDispatcher
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
+import yqloss.yqlossclientmixinkt.module.ensureEnabled
+import yqloss.yqlossclientmixinkt.module.ensureNotCanceled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
+import yqloss.yqlossclientmixinkt.util.scope.longrun
 import yqloss.yqlossclientmixinkt.util.scope.noexcept
 
 val INFO_TWEAKS = moduleInfo<TweaksOptions>("tweaks", "Tweaks")
@@ -14,26 +17,30 @@ val INFO_TWEAKS = moduleInfo<TweaksOptions>("tweaks", "Tweaks")
 object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
     override fun RegistrationEventDispatcher.registerEvents() {
         register<TweaksEvent.SetAnglesPost> { event ->
-            if (!options.enabled || !options.enableInstantAim) return@register
+            longrun {
+                ensureEnabled { enableInstantAim }
 
-            noexcept(logger::catching) {
-                val entity = event.entity
-                if (entity !is EntityPlayerSP) return@register
+                noexcept(logger::catching) {
+                    if (event.entity !is EntityPlayerSP) return@longrun
 
-                entity.prevRotationYawHead = entity.prevRotationYaw
-                entity.rotationYawHead = entity.rotationYaw
+                    event.entity.prevRotationYawHead = event.entity.prevRotationYaw
+                    event.entity.rotationYawHead = event.entity.rotationYaw
+                }
             }
         }
 
         register<TweaksEvent.RightClickBlockPre> { event ->
-            if (event.canceled || !options.enabled || !options.disablePearlClickBlock) return@register
+            longrun {
+                ensureNotCanceled(event)
+                ensureEnabled { disablePearlClickBlock }
 
-            noexcept(logger::catching) {
-                if (MC.thePlayer.inventory
-                        .getCurrentItem()
-                        ?.item === Items.ender_pearl
-                ) {
-                    event.canceled = true
+                noexcept(logger::catching) {
+                    if (MC.thePlayer.inventory
+                            .getCurrentItem()
+                            ?.item === Items.ender_pearl
+                    ) {
+                        event.canceled = true
+                    }
                 }
             }
         }

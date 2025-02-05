@@ -5,7 +5,7 @@ import yqloss.yqlossclientmixinkt.event.YCEvent
 sealed interface YCRenderEvent : YCEvent {
     val partialTicks: Double
 
-    class Pre(
+    data class Pre(
         override val partialTicks: Double,
     ) : YCRenderEvent
 }

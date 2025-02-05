@@ -20,7 +20,7 @@ class LateLet<T> : ReadWriteProperty<Any?, T> {
         property: KProperty<*>,
         value: T,
     ) {
-        if (box !== null) throw IllegalStateException()
+        box?.let { throw IllegalStateException() }
         box = value.inBox
     }
 }
