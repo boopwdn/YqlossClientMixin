@@ -9,7 +9,6 @@ import cc.polyfrost.oneconfig.config.elements.BasicOption
 import cc.polyfrost.oneconfig.config.elements.OptionPage
 import cc.polyfrost.oneconfig.config.elements.SubConfig
 import cc.polyfrost.oneconfig.config.migration.Migrator
-import yqloss.yqlossclientmixinkt.impl.MainConfig
 import yqloss.yqlossclientmixinkt.module.YCModuleInfo
 import yqloss.yqlossclientmixinkt.module.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.inBox

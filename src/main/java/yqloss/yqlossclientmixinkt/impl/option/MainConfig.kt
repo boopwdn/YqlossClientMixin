@@ -1,12 +1,14 @@
-package yqloss.yqlossclientmixinkt.impl
+package yqloss.yqlossclientmixinkt.impl.option
 
 import cc.polyfrost.oneconfig.config.Config
 import cc.polyfrost.oneconfig.config.annotations.SubConfig
 import cc.polyfrost.oneconfig.config.data.Mod
 import cc.polyfrost.oneconfig.config.data.ModType
-import yqloss.yqlossclientmixinkt.impl.option.RawInputOptionsImpl
-import yqloss.yqlossclientmixinkt.impl.option.SSMotionBlurOptionsImpl
-import yqloss.yqlossclientmixinkt.impl.option.TweaksOptionsImpl
+import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
+import yqloss.yqlossclientmixinkt.impl.YCMixin
+import yqloss.yqlossclientmixinkt.impl.option.impl.RawInputOptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.impl.SSMotionBlurOptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.impl.TweaksOptionsImpl
 import yqloss.yqlossclientmixinkt.module.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.inBox
 import yqloss.yqlossclientmixinkt.ycLogger

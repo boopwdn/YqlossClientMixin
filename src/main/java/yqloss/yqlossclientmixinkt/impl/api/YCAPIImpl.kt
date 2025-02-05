@@ -1,4 +1,4 @@
-package yqloss.yqlossclientmixinkt.impl
+package yqloss.yqlossclientmixinkt.impl.api
 
 import yqloss.yqlossclientmixinkt.api.YCAPI
 
