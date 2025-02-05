@@ -1,7 +1,7 @@
 package yqloss.yqlossclientmixinkt.impl.mixincallback.yqlossclient
 
-import yqloss.yqlossclientmixinkt.impl.InitYqlossClientMixin
+import yqloss.yqlossclientmixinkt.impl.initYqlossClientMixin
 
 fun mainPre() {
-    InitYqlossClientMixin
+    initYqlossClientMixin
 }

@@ -17,7 +17,7 @@ const val MOD_ID = "@ID@"
 const val MOD_NAME = "@NAME@"
 const val MOD_VERSION = "@VER@"
 
-val InitYqlossClientMixin by lazy {
+val initYqlossClientMixin by lazy {
     YC_LOGGER.info("creating YqlossClientMixin instance")
     YqlossClientMixin()
     YC_LOGGER.info("created YqlossClientMixin instance")
