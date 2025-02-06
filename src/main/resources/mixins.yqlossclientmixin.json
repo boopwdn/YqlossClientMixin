@@ -10,9 +10,11 @@
     "client": [
         "ssmotionblur.MixinEntityRenderer",
         "tweaks.MixinMinecraft",
+        "yqlossclient.AccessorMinecraft",
         "yqlossclient.MixinEntityRenderer",
         "yqlossclient.MixinMain",
-        "yqlossclient.MixinMinecraft"
+        "yqlossclient.MixinMinecraft",
+        "yqlossclient.MixinRenderGlobal"
     ],
     "mixins": [
         "tweaks.MixinEntity"

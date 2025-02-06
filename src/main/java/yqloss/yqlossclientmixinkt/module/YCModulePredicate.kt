@@ -1,7 +1,9 @@
 package yqloss.yqlossclientmixinkt.module
 
+import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.YCCancelableEvent
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
+import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.scope.longreturn
 
 inline fun ensure(
@@ -22,3 +24,21 @@ fun ensureNotCanceled(
     event: YCCancelableEvent,
     frame: Int = 0,
 ) = ensure { !event.canceled }
+
+fun ensureInWorld(frame: Int = 0) = ensure { MC.theWorld !== null }
+
+fun ensureSkyBlock(frame: Int = 0) =
+    ensure {
+        YC.api.hypixelLocation
+            ?.serverType
+            ?.name == "SkyBlock"
+    }
+
+fun ensureSkyBlockMode(
+    mode: String,
+    frame: Int = 0,
+) = ensure {
+    YC.api.hypixelLocation?.run {
+        serverType?.name == "SkyBlock" && this.mode == mode
+    } ?: false
+}

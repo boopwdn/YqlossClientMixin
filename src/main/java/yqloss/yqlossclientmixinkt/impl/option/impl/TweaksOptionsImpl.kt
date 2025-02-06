@@ -1,9 +1,9 @@
 package yqloss.yqlossclientmixinkt.impl.option.impl
 
-import cc.polyfrost.oneconfig.config.annotations.CustomOption
 import cc.polyfrost.oneconfig.config.annotations.Header
 import cc.polyfrost.oneconfig.config.annotations.Switch
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerQOL
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerUnknownBlatant
@@ -13,7 +13,7 @@ import yqloss.yqlossclientmixinkt.module.tweaks.TweaksOptions
 class TweaksOptionsImpl :
     OptionsImpl(INFO_TWEAKS),
     TweaksOptions {
-    @CustomOption(id = "extract")
+    @Extract
     var disclaimer = DisclaimerAtOwnRisk()
 
     @Header(
@@ -22,17 +22,17 @@ class TweaksOptionsImpl :
     )
     var headerModule = false
 
-    @CustomOption(id = "extract")
+    @Extract
     var qol = DisclaimerQOL()
 
     @Switch(
         name = "Enable Instant Aim",
         description = "Set prevRotationYawHead and rotationYawHead of EntityPlayerSP to prevRotationYaw and rotationYaw.",
-        size = 2,
+        size = 1,
     )
     var enableInstantAimOption = false
 
-    @CustomOption(id = "extract")
+    @Extract
     var unknownBlatant = DisclaimerUnknownBlatant()
 
     @Switch(
@@ -40,7 +40,7 @@ class TweaksOptionsImpl :
         description =
             "Cancel the first C08PacketPlayerBlockPlacement packet when throwing an ender pearl while aiming at a block. " +
                 "This fixes not being able to throw pearls while aiming at a block on public islands in Hypixel SkyBlock.",
-        size = 2,
+        size = 1,
     )
     var disablePearlClickBlockOption = false
 

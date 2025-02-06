@@ -11,9 +11,9 @@ import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
+import yqloss.yqlossclientmixinkt.util.glStateScope
 import yqloss.yqlossclientmixinkt.util.math.asDouble
 import yqloss.yqlossclientmixinkt.util.mcRenderScope
-import yqloss.yqlossclientmixinkt.util.scope.glStateScope
 import yqloss.yqlossclientmixinkt.util.scope.longrun
 import yqloss.yqlossclientmixinkt.util.scope.noexcept
 import java.nio.ByteBuffer
@@ -140,6 +140,8 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
                 GL11.glDisable(GL11.GL_DEPTH_TEST)
                 GL11.glDisable(GL11.GL_ALPHA_TEST)
+                GL11.glDisable(GL11.GL_CULL_FACE)
+                GL11.glDisable(GL11.GL_LIGHTING)
                 GL11.glColor4d(1.0, 1.0, 1.0, getAlpha())
 
                 val scaledWidth = scaledResolution.scaledWidth_double
@@ -158,7 +160,7 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
     }
 
     override fun RegistrationEventDispatcher.registerEvents() {
-        register<YCRenderEvent.Pre> {
+        register<YCRenderEvent.Render.Pre> {
             noexcept(logger::catching) {
                 MC.theWorld ?: run {
                     lastNanos = System.nanoTime()

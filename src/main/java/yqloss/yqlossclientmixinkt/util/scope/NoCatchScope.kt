@@ -1,21 +1,21 @@
 package yqloss.yqlossclientmixinkt.util.scope
 
-inline fun noexcept(
-    exceptionHandler: (Exception) -> Unit = {},
-    function: () -> Unit,
-) {
-    try {
+inline fun <R> noexcept(
+    exceptionHandler: (Exception) -> R? = { null },
+    function: () -> R,
+): R? {
+    return try {
         function()
     } catch (exception: Exception) {
         exceptionHandler(exception)
     }
 }
 
-inline fun nothrow(
-    throwableHandler: (Throwable) -> Unit = {},
-    function: () -> Unit,
-) {
-    try {
+inline fun <R> nothrow(
+    throwableHandler: (Throwable) -> R? = { null },
+    function: () -> R,
+): R? {
+    return try {
         function()
     } catch (exception: Throwable) {
         throwableHandler(exception)

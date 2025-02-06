@@ -1,4 +1,4 @@
-package yqloss.yqlossclientmixinkt.util.extension
+package yqloss.yqlossclientmixinkt.util
 
 infix fun <T> Collection<T>.prepend(element: T): List<T> {
     return buildList(this.size + 1) {

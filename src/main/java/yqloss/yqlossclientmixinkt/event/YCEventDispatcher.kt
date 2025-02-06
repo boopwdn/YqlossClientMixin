@@ -5,8 +5,8 @@ import kotlin.reflect.KClass
 
 interface YCEventDispatcher : (YCEvent) -> Unit {
     /*
-     * Registering the same handler for two classes with direct inheritance is undefined!
-     * Only the first call would take effect if the method is called more than one time with the same arguments.
+     * registering the same handler for two classes with direct inheritance is undefined
+     * only the first call would take effect if the method is called more than one time with the same arguments
      */
     fun <T : YCEvent> register(
         type: KClass<T>,

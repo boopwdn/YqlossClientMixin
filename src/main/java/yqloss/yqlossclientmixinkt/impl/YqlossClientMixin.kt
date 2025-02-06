@@ -4,7 +4,9 @@ import yqloss.yqlossclientmixinkt.YC_LOGGER
 import yqloss.yqlossclientmixinkt.YqlossClient
 import yqloss.yqlossclientmixinkt.impl.api.YCAPIImpl
 import yqloss.yqlossclientmixinkt.impl.event.EventDispatcherImpl
+import yqloss.yqlossclientmixinkt.impl.hypixel.loadHypixelModAPI
 import yqloss.yqlossclientmixinkt.impl.option.MainConfig
+import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlur
@@ -47,8 +49,10 @@ class YqlossClientMixin : YqlossClient {
     override fun <T : YCModuleOptions> getOptionsImpl(type: KClass<T>) = MainConfig.getOptionsImpl(type)
 
     init {
+        loadHypixelModAPI
         RawInput
         SSMotionBlur
         Tweaks
+        CorpseFinder
     }
 }

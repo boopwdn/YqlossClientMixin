@@ -3,9 +3,11 @@ package yqloss.yqlossclientmixinkt.event.minecraft
 import yqloss.yqlossclientmixinkt.event.YCEvent
 
 sealed interface YCRenderEvent : YCEvent {
-    val partialTicks: Double
+    sealed interface Render : YCRenderEvent {
+        data object Pre : Render
+    }
 
-    data class Pre(
-        override val partialTicks: Double,
-    ) : YCRenderEvent
+    sealed interface Entity : YCRenderEvent {
+        data object Post : Entity
+    }
 }

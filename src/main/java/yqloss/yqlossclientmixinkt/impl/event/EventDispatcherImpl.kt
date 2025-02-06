@@ -3,16 +3,21 @@ package yqloss.yqlossclientmixinkt.impl.event
 import yqloss.yqlossclientmixinkt.event.YCEvent
 import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
 import yqloss.yqlossclientmixinkt.event.YCEventHandler
-import yqloss.yqlossclientmixinkt.util.extension.prepend
 import yqloss.yqlossclientmixinkt.util.general.AnyComparator
 import yqloss.yqlossclientmixinkt.util.general.UniqueHash
 import yqloss.yqlossclientmixinkt.util.general.inBox
+import yqloss.yqlossclientmixinkt.util.prepend
 import java.util.TreeSet
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSuperclasses
 import kotlin.reflect.full.isSubclassOf
 
 class EventDispatcherImpl : YCEventDispatcher {
+    private val lock = ReentrantReadWriteLock()
+
     private val anyComparator = AnyComparator(UniqueHash())
 
     private inner class RegistryEntry(
@@ -57,9 +62,11 @@ class EventDispatcherImpl : YCEventDispatcher {
         priority: Int,
         handler: YCEventHandler<T>,
     ) {
-        clearCache()
-        unregister(type, handler)
-        parentTypeHandlerMap.getOrPut(type) { TreeSet() }.add(RegistryEntry(priority, handler))
+        lock.write {
+            clearCache()
+            unregister(type, handler)
+            parentTypeHandlerMap.getOrPut(type) { TreeSet() }.add(RegistryEntry(priority, handler))
+        }
     }
 
     override fun <T : YCEvent> registerOnly(
@@ -67,19 +74,23 @@ class EventDispatcherImpl : YCEventDispatcher {
         priority: Int,
         handler: YCEventHandler<T>,
     ) {
-        clearCache()
-        unregisterOnly(type, handler)
-        onlyTypeHandlerMap.getOrPut(type) { TreeSet() }.add(RegistryEntry(priority, handler))
+        lock.write {
+            clearCache()
+            unregisterOnly(type, handler)
+            onlyTypeHandlerMap.getOrPut(type) { TreeSet() }.add(RegistryEntry(priority, handler))
+        }
     }
 
     override fun <T : YCEvent> unregister(
         type: KClass<T>,
         handler: YCEventHandler<T>,
     ) {
-        clearCache()
-        val entry = RegistryEntry(0, handler)
-        parentTypeHandlerMap.values.forEach {
-            it.remove(entry)
+        lock.write {
+            clearCache()
+            val entry = RegistryEntry(0, handler)
+            parentTypeHandlerMap.values.forEach {
+                it.remove(entry)
+            }
         }
     }
 
@@ -87,49 +98,59 @@ class EventDispatcherImpl : YCEventDispatcher {
         type: KClass<T>,
         handler: YCEventHandler<T>,
     ) {
-        clearCache()
-        val entry = RegistryEntry(0, handler)
-        onlyTypeHandlerMap.values.forEach {
-            it.remove(entry)
+        lock.write {
+            clearCache()
+            val entry = RegistryEntry(0, handler)
+            onlyTypeHandlerMap.values.forEach {
+                it.remove(entry)
+            }
         }
     }
 
     override fun unregisterAll(handler: YCEventHandler<*>) {
-        clearCache()
-        val entry = RegistryEntry(0, handler)
-        (parentTypeHandlerMap.values + onlyTypeHandlerMap.values).forEach {
-            it.remove(entry)
+        lock.write {
+            clearCache()
+            val entry = RegistryEntry(0, handler)
+            (parentTypeHandlerMap.values + onlyTypeHandlerMap.values).forEach {
+                it.remove(entry)
+            }
         }
     }
 
     override fun clear() {
-        parentTypeHandlerMap.clear()
-        onlyTypeHandlerMap.clear()
-        clearCache()
+        lock.write {
+            parentTypeHandlerMap.clear()
+            onlyTypeHandlerMap.clear()
+            clearCache()
+        }
     }
 
     override fun <T : YCEvent> getHandler(type: KClass<T>): YCEventHandler<T> {
-        return parentHandlerCache
-            .getOrPut(type) {
-                val set = TreeSet<RegistryEntry>()
-                type.allSuperclasses
-                    .prepend(type)
-                    .filter { it.isSubclassOf(YCEvent::class) }
-                    .forEach { parentTypeHandlerMap[it]?.let(set::addAll) }
-                onlyTypeHandlerMap[type]?.let(set::addAll)
-                EventHandlerHolder(set.toList().map { it.handler })
-            }.inBox
-            .cast()
+        lock.read {
+            return parentHandlerCache
+                .getOrPut(type) {
+                    val set = TreeSet<RegistryEntry>()
+                    type.allSuperclasses
+                        .prepend(type)
+                        .filter { it.isSubclassOf(YCEvent::class) }
+                        .forEach { parentTypeHandlerMap[it]?.let(set::addAll) }
+                    onlyTypeHandlerMap[type]?.let(set::addAll)
+                    EventHandlerHolder(set.toList().map { it.handler })
+                }.inBox
+                .cast()
+        }
     }
 
     override fun <T : YCEvent> getHandlerOnly(type: KClass<T>): YCEventHandler<T> {
-        return onlyHandlerCache
-            .getOrPut(type) {
-                val set = TreeSet<RegistryEntry>()
-                parentTypeHandlerMap[type]?.let(set::addAll)
-                onlyTypeHandlerMap[type]?.let(set::addAll)
-                EventHandlerHolder(set.toList().map { it.handler })
-            }.inBox
-            .cast()
+        lock.read {
+            return onlyHandlerCache
+                .getOrPut(type) {
+                    val set = TreeSet<RegistryEntry>()
+                    parentTypeHandlerMap[type]?.let(set::addAll)
+                    onlyTypeHandlerMap[type]?.let(set::addAll)
+                    EventHandlerHolder(set.toList().map { it.handler })
+                }.inBox
+                .cast()
+        }
     }
 }

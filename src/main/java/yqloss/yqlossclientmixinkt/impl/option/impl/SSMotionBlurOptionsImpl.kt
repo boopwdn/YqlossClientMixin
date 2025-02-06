@@ -1,10 +1,10 @@
 package yqloss.yqlossclientmixinkt.impl.option.impl
 
-import cc.polyfrost.oneconfig.config.annotations.CustomOption
 import cc.polyfrost.oneconfig.config.annotations.Header
 import cc.polyfrost.oneconfig.config.annotations.Slider
 import cc.polyfrost.oneconfig.config.annotations.Switch
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerLegit
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.INFO_SS_MOTION_BLUR
@@ -13,10 +13,10 @@ import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlurOptions
 class SSMotionBlurOptionsImpl :
     OptionsImpl(INFO_SS_MOTION_BLUR),
     SSMotionBlurOptions {
-    @CustomOption(id = "extract")
+    @Extract
     var disclaimer = DisclaimerAtOwnRisk()
 
-    @CustomOption(id = "extract")
+    @Extract
     var legit = DisclaimerLegit()
 
     @Header(

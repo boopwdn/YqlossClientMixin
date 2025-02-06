@@ -1,6 +1,8 @@
-package yqloss.yqlossclientmixinkt.util.scope
+package yqloss.yqlossclientmixinkt.util
 
 import org.lwjgl.opengl.GL11
+import yqloss.yqlossclientmixinkt.module.option.YCColor
+import yqloss.yqlossclientmixinkt.util.math.Vec3D
 
 inline fun <R> glMatrixScope(function: () -> R) {
     GL11.glPushMatrix()
@@ -29,4 +31,12 @@ inline fun <R> glStateScope(function: () -> R) {
         GL11.glPopMatrix()
         GL11.glPopAttrib()
     }
+}
+
+fun Vec3D.glTranslate() {
+    GL11.glTranslated(x, y, z)
+}
+
+fun YCColor.glColor() {
+    GL11.glColor4d(r, g, b, a)
 }

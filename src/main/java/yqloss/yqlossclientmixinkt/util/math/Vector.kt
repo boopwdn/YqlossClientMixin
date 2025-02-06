@@ -90,7 +90,7 @@ data class Vec3I(
 ) {
     operator fun plus(vec: Vec3I) = Vec3I(x + vec.x, y + vec.y, z + vec.z)
 
-    operator fun minus(vec: Vec3I) = Vec3I(x - vec.x, y - vec.y, z + vec.z)
+    operator fun minus(vec: Vec3I) = Vec3I(x - vec.x, y - vec.y, z - vec.z)
 
     operator fun times(value: Int) = Vec3I(x * value, y * value, z * value)
 
@@ -132,7 +132,7 @@ data class Vec3D(
 ) {
     operator fun plus(vec: Vec3D) = Vec3D(x + vec.x, y + vec.y, z + vec.z)
 
-    operator fun minus(vec: Vec3D) = Vec3D(x - vec.x, y - vec.y, z + vec.z)
+    operator fun minus(vec: Vec3D) = Vec3D(x - vec.x, y - vec.y, z - vec.z)
 
     operator fun times(value: Double) = Vec3D(x * value, y * value, z * value)
 

@@ -109,7 +109,7 @@ private fun handleExtensionOption(
     }
 }
 
-// usage: @CustomOption(id = "extract")
+// usage: @Extract
 // recursive extraction is supported
 private fun handleExtractOption(
     config: Config,

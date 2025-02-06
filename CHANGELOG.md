@@ -12,3 +12,4 @@
 * feat(Tweaks): disablePearlClickBlock
 * feat: feature legitimacy disclaimers
 * build: add soft dependency net.hypixel:mod-api:1.0.1
+* add module: CorpseFinder
