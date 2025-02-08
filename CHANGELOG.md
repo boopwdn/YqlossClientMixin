@@ -7,7 +7,7 @@
 * add module: Tweaks
 * feat Tweaks: enableInstantAim
 
-## 0.2.0 (Under Development)
+## 0.2.0 (UTC+8 2025/2/9 06:30)
 
 * feat(Tweaks): disablePearlClickBlock
 * feat: feature legitimacy disclaimers
