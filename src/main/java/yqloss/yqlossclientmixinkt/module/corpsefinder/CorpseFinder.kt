@@ -101,6 +101,7 @@ object CorpseFinder : YCModuleBase<CorpseFinderOptions>(INFO_CORPSE_FINDER) {
         }
 
         register<YCMinecraftEvent.LoadWorld.Pre> {
+            exit = null
             corpses.clear()
         }
 
