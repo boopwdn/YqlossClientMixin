@@ -16,10 +16,9 @@ import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import kotlin.jvm.optionals.getOrNull
 
-object HypixelModAPIWrapper :
-    YCModuleBase<YCModuleOptions>(moduleInfo("hypixel_mod_api_wrapper", "Hypixel Mod API Wrapper")) {
-    private val api by lazy { HypixelModAPI.getInstance() }
-
+class HypixelModAPIWrapper(
+    private val api: HypixelModAPI,
+) : YCModuleBase<YCModuleOptions>(moduleInfo("hypixel_mod_api_wrapper", "Hypixel Mod API Wrapper")) {
     private inline fun <reified T : EventPacket> registerPacket(noinline handler: (T) -> Unit) {
         api.subscribeToEventPacket(T::class.java)
         api.createHandler(T::class.java, handler)

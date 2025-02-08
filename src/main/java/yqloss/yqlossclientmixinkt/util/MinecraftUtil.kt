@@ -11,6 +11,7 @@ import net.minecraft.util.ChatComponentText
 import net.minecraft.util.ResourceLocation
 import yqloss.yqlossclientmixinkt.impl.mixincallback.yqlossclient.mcPartialTicks
 import yqloss.yqlossclientmixinkt.module.option.YCColor
+import yqloss.yqlossclientmixinkt.util.math.Area3I
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.math.Vec3D
 import yqloss.yqlossclientmixinkt.util.math.Vec3I
@@ -95,4 +96,19 @@ class CustomSound(
     override fun getZPosF() = argZPos.toFloat()
 
     override fun getAttenuationType() = argAttenuationType
+}
+
+fun updateWorldRender() {
+    MC.renderGlobal.loadRenderers()
+}
+
+fun updateWorldRenderArea(area: Area3I) {
+    MC.renderGlobal.markBlockRangeForRenderUpdate(
+        area.first.x,
+        area.first.y,
+        area.first.z,
+        area.second.x,
+        area.second.y,
+        area.second.z,
+    )
 }

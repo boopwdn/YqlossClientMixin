@@ -1,12 +1,13 @@
 package yqloss.yqlossclientmixinkt.impl.hypixel
 
-import yqloss.yqlossclientmixinkt.util.scope.noexcept
+import net.hypixel.modapi.HypixelModAPI
+import yqloss.yqlossclientmixinkt.util.scope.nothrow
 import yqloss.yqlossclientmixinkt.ycLogger
 
 private val logger = ycLogger("Hypixel Mod API Wrapper Loader")
 
 val loadHypixelModAPI by lazy {
-    noexcept(logger::catching) {
-        HypixelModAPIWrapper
+    nothrow(logger::catching) {
+        HypixelModAPIWrapper(HypixelModAPI.getInstance())
     }
 }

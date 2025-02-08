@@ -1,5 +1,6 @@
 package yqloss.yqlossclientmixinkt.util.math
 
+import java.math.BigInteger
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -11,3 +12,6 @@ inline val Number.asFloat get() = toFloat()
 inline val Number.asDouble get() = toDouble()
 inline val Number.floorInt get() = floor(toDouble()).toInt()
 inline val Number.ceilInt get() = ceil(toDouble()).toInt()
+inline val Long.asBigInteger: BigInteger get() = BigInteger.valueOf(this)
+inline val Int.asBigInteger: BigInteger get() = BigInteger.valueOf(this.asLong)
+inline val Number.asStringBigInteger get() = BigInteger(toString())

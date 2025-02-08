@@ -2,10 +2,28 @@ package yqloss.yqlossclientmixinkt.util.math
 
 import kotlin.math.sqrt
 
+sealed interface Vector<T : Vector<T>> {
+    val length: Double
+
+    infix fun min(other: T): T
+
+    infix fun max(other: T): T
+
+    infix fun allLess(other: T): Boolean
+
+    infix fun allLessEqual(other: T): Boolean
+
+    infix fun areaTo(other: T) = min(other) to max(other)
+}
+
+typealias Area<T> = Pair<T, T>
+
+operator fun <T : Vector<T>> Area<T>.contains(vec: T) = first allLessEqual vec && vec allLess second
+
 data class Vec2I(
     val x: Int,
     val y: Int,
-) {
+) : Vector<Vec2I> {
     operator fun plus(vec: Vec2I) = Vec2I(x + vec.x, y + vec.y)
 
     operator fun minus(vec: Vec2I) = Vec2I(x - vec.x, y - vec.y)
@@ -30,7 +48,15 @@ data class Vec2I(
 
     inline val lengthSquared get() = x * x + y * y
 
-    inline val length get() = sqrt(lengthSquared.asDouble)
+    override val length get() = sqrt(lengthSquared.asDouble)
+
+    override fun min(other: Vec2I) = Vec2I(minOf(x, other.x), minOf(y, other.y))
+
+    override fun max(other: Vec2I) = Vec2I(maxOf(x, other.x), maxOf(y, other.y))
+
+    override fun allLess(other: Vec2I) = x < other.x && y < other.y
+
+    override fun allLessEqual(other: Vec2I) = x <= other.x && y <= other.y
 
     inline val asVec2D get() = Vec2D(x.asDouble, y.asDouble)
 
@@ -39,10 +65,12 @@ data class Vec2I(
     inline val asMaxVec2D get() = Vec2D(x + 1.0, y + 1.0)
 }
 
+typealias Area2I = Area<Vec2I>
+
 data class Vec2D(
     val x: Double,
     val y: Double,
-) {
+) : Vector<Vec2D> {
     operator fun plus(vec: Vec2D) = Vec2D(x + vec.x, y + vec.y)
 
     operator fun minus(vec: Vec2D) = Vec2D(x - vec.x, y - vec.y)
@@ -74,7 +102,15 @@ data class Vec2D(
 
     inline val lengthSquared get() = x * x + y * y
 
-    inline val length get() = sqrt(lengthSquared.asDouble)
+    override val length get() = sqrt(lengthSquared.asDouble)
+
+    override fun min(other: Vec2D) = Vec2D(minOf(x, other.x), minOf(y, other.y))
+
+    override fun max(other: Vec2D) = Vec2D(maxOf(x, other.x), maxOf(y, other.y))
+
+    override fun allLess(other: Vec2D) = x < other.x && y < other.y
+
+    override fun allLessEqual(other: Vec2D) = x <= other.x && y <= other.y
 
     inline val asVec2I get() = Vec2I(x.asInt, y.asInt)
 
@@ -83,11 +119,13 @@ data class Vec2D(
     inline val asCeilVec2I get() = Vec2I(x.ceilInt, y.ceilInt)
 }
 
+typealias Area2D = Area<Vec2D>
+
 data class Vec3I(
     val x: Int,
     val y: Int,
     val z: Int,
-) {
+) : Vector<Vec3I> {
     operator fun plus(vec: Vec3I) = Vec3I(x + vec.x, y + vec.y, z + vec.z)
 
     operator fun minus(vec: Vec3I) = Vec3I(x - vec.x, y - vec.y, z - vec.z)
@@ -116,7 +154,15 @@ data class Vec3I(
 
     inline val lengthSquared get() = x * x + y * y + z * z
 
-    inline val length get() = sqrt(lengthSquared.asDouble)
+    override val length get() = sqrt(lengthSquared.asDouble)
+
+    override fun min(other: Vec3I) = Vec3I(minOf(x, other.x), minOf(y, other.y), minOf(z, other.z))
+
+    override fun max(other: Vec3I) = Vec3I(maxOf(x, other.x), maxOf(y, other.y), maxOf(z, other.z))
+
+    override fun allLess(other: Vec3I) = x < other.x && y < other.y && z < other.z
+
+    override fun allLessEqual(other: Vec3I) = x <= other.x && y <= other.y && z <= other.z
 
     inline val asVec3D get() = Vec3D(x.asDouble, y.asDouble, z.asDouble)
 
@@ -125,11 +171,13 @@ data class Vec3I(
     inline val asMaxVec3D get() = Vec3D(x + 1.0, y + 1.0, z + 1.0)
 }
 
+typealias Area3I = Area<Vec3I>
+
 data class Vec3D(
     val x: Double,
     val y: Double,
     val z: Double,
-) {
+) : Vector<Vec3D> {
     operator fun plus(vec: Vec3D) = Vec3D(x + vec.x, y + vec.y, z + vec.z)
 
     operator fun minus(vec: Vec3D) = Vec3D(x - vec.x, y - vec.y, z - vec.z)
@@ -166,7 +214,15 @@ data class Vec3D(
 
     inline val lengthSquared get() = x * x + y * y + z * z
 
-    inline val length get() = sqrt(lengthSquared.asDouble)
+    override val length get() = sqrt(lengthSquared.asDouble)
+
+    override fun min(other: Vec3D) = Vec3D(minOf(x, other.x), minOf(y, other.y), minOf(z, other.z))
+
+    override fun max(other: Vec3D) = Vec3D(maxOf(x, other.x), maxOf(y, other.y), maxOf(z, other.z))
+
+    override fun allLess(other: Vec3D) = x < other.x && y < other.y && z < other.z
+
+    override fun allLessEqual(other: Vec3D) = x <= other.x && y <= other.y && z <= other.z
 
     inline val asVec3I get() = Vec3I(x.asInt, y.asInt, z.asInt)
 
@@ -174,3 +230,5 @@ data class Vec3D(
 
     inline val asCeilVec3I get() = Vec3I(x.ceilInt, y.ceilInt, z.ceilInt)
 }
+
+typealias Area3D = Area<Vec3D>

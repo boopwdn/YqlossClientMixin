@@ -12,6 +12,8 @@ data class LongReturn(
 ) : Throwable() {
     inline val next: LongReturn
         get() = if (frame < 0) LongReturn(frame + 1, value) else this
+
+    override fun fillInStackTrace(): Throwable = this
 }
 
 class LongReturnContext1(

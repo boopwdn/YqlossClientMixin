@@ -14,9 +14,11 @@
         "yqlossclient.MixinEntityRenderer",
         "yqlossclient.MixinMain",
         "yqlossclient.MixinMinecraft",
+        "yqlossclient.MixinRenderChunk",
         "yqlossclient.MixinRenderGlobal"
     ],
     "mixins": [
-        "tweaks.MixinEntity"
+        "tweaks.MixinEntity",
+        "yqlossclient.optifine.MixinChunkCacheOF"
     ]
 }
