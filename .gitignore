@@ -285,6 +285,7 @@ fabric.properties
 
 # Package Files #
 *.jar
+!/libraries/**/*
 *.war
 *.nar
 *.ear
