@@ -9,6 +9,7 @@ import yqloss.yqlossclientmixinkt.impl.event.EventDispatcherImpl
 import yqloss.yqlossclientmixinkt.impl.hypixel.loadHypixelModAPI
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
+import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPrediction
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlur
@@ -55,6 +56,7 @@ class YqlossClientMixin : YqlossClient {
         SSMotionBlur
         Tweaks
         CorpseFinder
+        MiningPrediction
 
         eventDispatcher.register<YCMinecraftEvent.Load.Post> {
             loadHypixelModAPI

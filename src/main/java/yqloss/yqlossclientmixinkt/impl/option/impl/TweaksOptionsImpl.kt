@@ -6,6 +6,7 @@ import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerQOL
+import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerSafeBlatantSkyBlock
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerUnknownBlatant
 import yqloss.yqlossclientmixinkt.module.tweaks.INFO_TWEAKS
 import yqloss.yqlossclientmixinkt.module.tweaks.TweaksOptions
@@ -33,6 +34,18 @@ class TweaksOptionsImpl :
     var enableInstantAimOption = false
 
     @Extract
+    var safeBlatantSkyBlock = DisclaimerSafeBlatantSkyBlock()
+
+    @Switch(
+        name = "Disable NBT Update Reset Digging on SkyBlock Mining Islands",
+        description =
+            "This applies to all pickaxes, prismarine shards, skulls on these islands: Gold Mine, Deep Caverns, " +
+                "Dwarven Mines, Crystal Hollows, Mineshaft, The End, Crimson Isle.",
+        size = 1,
+    )
+    var disableSkyBlockToolsNBTUpdateResetDiggingOption = false
+
+    @Extract
     var unknownBlatant = DisclaimerUnknownBlatant()
 
     @Switch(
@@ -46,4 +59,5 @@ class TweaksOptionsImpl :
 
     override val enableInstantAim by ::enableInstantAimOption
     override val disablePearlClickBlock by ::disablePearlClickBlockOption
+    override val disableSkyBlockToolsNBTUpdateResetDigging by ::disableSkyBlockToolsNBTUpdateResetDiggingOption
 }

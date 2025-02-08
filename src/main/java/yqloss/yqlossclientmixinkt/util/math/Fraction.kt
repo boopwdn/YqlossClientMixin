@@ -24,9 +24,18 @@ sealed interface Fraction {
 
     operator fun unaryMinus(): Fraction = FractionImpl(-num, den)
 
+    operator fun compareTo(other: Fraction) = (num * other.den).compareTo(den * other.num)
+
     val asBigInteger get() = num / den
 
     val asDouble get() = num.asDouble / den.asDouble
+
+    companion object {
+        val NEG_ONE: Fraction = -1 over 1
+        val ZERO: Fraction = 0 over 1
+        val ONE: Fraction = 1 over 1
+        val TWO: Fraction = 2 over 1
+    }
 }
 
 private data class FractionImpl(

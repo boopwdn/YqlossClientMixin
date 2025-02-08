@@ -107,8 +107,12 @@ fun updateWorldRenderArea(area: Area3I) {
         area.first.x,
         area.first.y,
         area.first.z,
-        area.second.x,
-        area.second.y,
-        area.second.z,
+        area.second.x - 1,
+        area.second.y - 1,
+        area.second.z - 1,
     )
+}
+
+fun updateWorldRenderBlock(pos: Vec3I) {
+    MC.renderGlobal.markBlockRangeForRenderUpdate(pos.x, pos.y, pos.z, pos.x, pos.y, pos.z)
 }

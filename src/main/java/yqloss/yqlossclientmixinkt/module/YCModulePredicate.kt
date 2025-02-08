@@ -23,22 +23,54 @@ inline fun <T : YCModuleOptions> YCModule<T>.ensureEnabled(
 fun ensureNotCanceled(
     event: YCCancelableEvent,
     frame: Int = 0,
-) = ensure { !event.canceled }
+) = ensure(frame) { !event.canceled }
 
-fun ensureInWorld(frame: Int = 0) = ensure { MC.theWorld !== null }
+fun ensureInWorld(frame: Int = 0) = ensure(frame) { MC.theWorld !== null }
 
-fun ensureSkyBlock(frame: Int = 0) =
-    ensure {
-        YC.api.hypixelLocation
-            ?.serverType
-            ?.name == "SkyBlock"
+fun ensureSkyBlock(frame: Int = 0) {
+    ensure(frame) {
+        MC.theWorld !== null &&
+            YC.api.hypixelLocation
+                ?.serverType
+                ?.name == "SkyBlock"
     }
+}
 
 fun ensureSkyBlockMode(
     mode: String,
     frame: Int = 0,
-) = ensure {
-    YC.api.hypixelLocation?.run {
-        serverType?.name == "SkyBlock" && this.mode == mode
-    } ?: false
+) {
+    ensure(frame) {
+        MC.theWorld !== null &&
+            (
+                YC.api.hypixelLocation?.run {
+                    serverType?.name == "SkyBlock" && this.mode == mode
+                } ?: false
+            )
+    }
 }
+
+fun ensureSkyBlockModes(
+    modes: Set<String>,
+    frame: Int = 0,
+) {
+    ensure(frame) {
+        MC.theWorld !== null &&
+            (
+                YC.api.hypixelLocation?.run {
+                    serverType?.name == "SkyBlock" && mode in modes
+                } ?: false
+            )
+    }
+}
+
+val SKYBLOCK_MINING_ISLANDS =
+    setOf(
+        "mining_1",
+        "mining_2",
+        "mining_3",
+        "crystal_hollows",
+        "mineshaft",
+        "combat_3",
+        "crimson_isle",
+    )

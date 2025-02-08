@@ -27,7 +27,6 @@ import yqloss.yqlossclientmixinkt.util.mcRenderScope
 import yqloss.yqlossclientmixinkt.util.pos
 import yqloss.yqlossclientmixinkt.util.renderPos
 import yqloss.yqlossclientmixinkt.util.scope.longrun
-import yqloss.yqlossclientmixinkt.util.scope.noexcept
 import yqloss.yqlossclientmixinkt.util.skyBlockID
 import yqloss.yqlossclientmixinkt.util.trimStyle
 
@@ -71,30 +70,28 @@ object CorpseFinder : YCModuleBase<CorpseFinderOptions>(INFO_CORPSE_FINDER) {
         pos: Vec3D,
         color: YCColor,
     ) {
-        noexcept(logger::catching) {
-            color.glColor()
+        color.glColor()
 
-            mcRenderScope(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION) {
-                pos(Vec3D(-0.5, 0.0, -0.5) + pos).endVertex()
-                pos(Vec3D(-0.5, 1.0, -0.5) + pos).endVertex()
-                pos(Vec3D(0.5, 0.0, -0.5) + pos).endVertex()
-                pos(Vec3D(0.5, 1.0, -0.5) + pos).endVertex()
-                pos(Vec3D(0.5, 0.0, 0.5) + pos).endVertex()
-                pos(Vec3D(0.5, 1.0, 0.5) + pos).endVertex()
-                pos(Vec3D(-0.5, 0.0, 0.5) + pos).endVertex()
-                pos(Vec3D(-0.5, 1.0, 0.5) + pos).endVertex()
-            }
+        mcRenderScope(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION) {
+            pos(Vec3D(-0.5, 0.0, -0.5) + pos).endVertex()
+            pos(Vec3D(-0.5, 1.0, -0.5) + pos).endVertex()
+            pos(Vec3D(0.5, 0.0, -0.5) + pos).endVertex()
+            pos(Vec3D(0.5, 1.0, -0.5) + pos).endVertex()
+            pos(Vec3D(0.5, 0.0, 0.5) + pos).endVertex()
+            pos(Vec3D(0.5, 1.0, 0.5) + pos).endVertex()
+            pos(Vec3D(-0.5, 0.0, 0.5) + pos).endVertex()
+            pos(Vec3D(-0.5, 1.0, 0.5) + pos).endVertex()
+        }
 
-            mcRenderScope(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION) {
-                pos(Vec3D(0.5, 0.0, -0.5) + pos).endVertex()
-                pos(Vec3D(0.5, 0.0, 0.5) + pos).endVertex()
-                pos(Vec3D(-0.5, 0.0, -0.5) + pos).endVertex()
-                pos(Vec3D(-0.5, 0.0, 0.5) + pos).endVertex()
-                pos(Vec3D(-0.5, 1.0, -0.5) + pos).endVertex()
-                pos(Vec3D(-0.5, 1.0, 0.5) + pos).endVertex()
-                pos(Vec3D(0.5, 1.0, -0.5) + pos).endVertex()
-                pos(Vec3D(0.5, 1.0, 0.5) + pos).endVertex()
-            }
+        mcRenderScope(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION) {
+            pos(Vec3D(0.5, 0.0, -0.5) + pos).endVertex()
+            pos(Vec3D(0.5, 0.0, 0.5) + pos).endVertex()
+            pos(Vec3D(-0.5, 0.0, -0.5) + pos).endVertex()
+            pos(Vec3D(-0.5, 0.0, 0.5) + pos).endVertex()
+            pos(Vec3D(-0.5, 1.0, -0.5) + pos).endVertex()
+            pos(Vec3D(-0.5, 1.0, 0.5) + pos).endVertex()
+            pos(Vec3D(0.5, 1.0, -0.5) + pos).endVertex()
+            pos(Vec3D(0.5, 1.0, 0.5) + pos).endVertex()
         }
     }
 

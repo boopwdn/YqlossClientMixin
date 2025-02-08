@@ -7,6 +7,7 @@ import cc.polyfrost.oneconfig.config.data.ModType
 import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
 import yqloss.yqlossclientmixinkt.impl.YCMixin
 import yqloss.yqlossclientmixinkt.impl.option.impl.CorpseFinderOptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.impl.MiningPredictionOptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.impl.RawInputOptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.impl.SSMotionBlurOptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.impl.TweaksOptionsImpl
@@ -38,6 +39,9 @@ object YqlossClientConfig : Config(Mod("Yqloss Client $MOD_VERSION", ModType.THI
 
     @SubConfig
     var corpseFinder = CorpseFinderOptionsImpl()
+
+    @SubConfig
+    var miningPrediction = MiningPredictionOptionsImpl()
 
     init {
         initialize()

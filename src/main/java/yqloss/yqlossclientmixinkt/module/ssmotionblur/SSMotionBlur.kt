@@ -15,7 +15,6 @@ import yqloss.yqlossclientmixinkt.util.glStateScope
 import yqloss.yqlossclientmixinkt.util.math.asDouble
 import yqloss.yqlossclientmixinkt.util.mcRenderScope
 import yqloss.yqlossclientmixinkt.util.scope.longrun
-import yqloss.yqlossclientmixinkt.util.scope.noexcept
 import java.nio.ByteBuffer
 import kotlin.math.max
 import kotlin.math.min
@@ -95,15 +94,13 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
     ) {
         if (!options.enabled) return
 
-        noexcept(logger::catching) {
-            if (textureId === null || lastWidth != width || lastHeight != height) {
-                allocate(true, width, height)
-            }
+        if (textureId === null || lastWidth != width || lastHeight != height) {
+            allocate(true, width, height)
+        }
 
-            textureId?.let { texture ->
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture)
-                GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height)
-            }
+        textureId?.let { texture ->
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture)
+            GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height)
         }
     }
 
@@ -161,12 +158,10 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
 
     override fun RegistrationEventDispatcher.registerEvents() {
         register<YCRenderEvent.Render.Pre> {
-            noexcept(logger::catching) {
-                MC.theWorld ?: run {
-                    lastNanos = System.nanoTime()
-                    glStateScope {
-                        allocate(false, -1, -1)
-                    }
+            MC.theWorld ?: run {
+                lastNanos = System.nanoTime()
+                glStateScope {
+                    allocate(false, -1, -1)
                 }
             }
         }
@@ -175,9 +170,7 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
             longrun {
                 ensureEnabled()
 
-                noexcept(logger::catching) {
-                    renderMotionBlur(event.screenWidth, event.screenHeight, event.scaledResolution)
-                }
+                renderMotionBlur(event.screenWidth, event.screenHeight, event.scaledResolution)
             }
         }
     }

@@ -54,15 +54,13 @@ object RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
             longrun {
                 ensureEnabled()
 
-                noexcept(logger::catching) {
-                    savedMouse ?: findMouse()
+                savedMouse ?: findMouse()
 
-                    savedMouse?.let { mouse ->
-                        mouse.poll()
-                        MC.currentScreen ?: run {
-                            mouseHelper.x += mouse.x.pollData
-                            mouseHelper.y += mouse.y.pollData
-                        }
+                savedMouse?.let { mouse ->
+                    mouse.poll()
+                    MC.currentScreen ?: run {
+                        mouseHelper.x += mouse.x.pollData
+                        mouseHelper.y += mouse.y.pollData
                     }
                 }
             }
