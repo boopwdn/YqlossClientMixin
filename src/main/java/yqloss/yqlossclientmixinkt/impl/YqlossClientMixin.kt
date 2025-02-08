@@ -2,10 +2,12 @@ package yqloss.yqlossclientmixinkt.impl
 
 import yqloss.yqlossclientmixinkt.YC_LOGGER
 import yqloss.yqlossclientmixinkt.YqlossClient
+import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
+import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.api.YCAPIImpl
 import yqloss.yqlossclientmixinkt.impl.event.EventDispatcherImpl
 import yqloss.yqlossclientmixinkt.impl.hypixel.loadHypixelModAPI
-import yqloss.yqlossclientmixinkt.impl.option.MainConfig
+import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
@@ -33,7 +35,7 @@ class YqlossClientMixin : YqlossClient {
     init {
         theYC = this
         theYCMixin = this
-        MainConfig
+        YqlossClientConfig
     }
 
     override val modID = MOD_ID
@@ -46,13 +48,16 @@ class YqlossClientMixin : YqlossClient {
 
     override var configVersion = 0
 
-    override fun <T : YCModuleOptions> getOptionsImpl(type: KClass<T>) = MainConfig.getOptionsImpl(type)
+    override fun <T : YCModuleOptions> getOptionsImpl(type: KClass<T>) = YqlossClientConfig.getOptionsImpl(type)
 
     init {
-        loadHypixelModAPI
         RawInput
         SSMotionBlur
         Tweaks
         CorpseFinder
+
+        eventDispatcher.register<YCMinecraftEvent.Load.Post> {
+            loadHypixelModAPI
+        }
     }
 }

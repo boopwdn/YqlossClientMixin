@@ -24,22 +24,22 @@ class HypixelModAPIWrapper(
         api.createHandler(T::class.java, handler)
     }
 
-    override fun RegistrationEventDispatcher.registerEvents() {
-        register<YCMinecraftEvent.Load.Post> {
-            registerPacket<ClientboundLocationPacket> { packet ->
-                val location =
-                    YCHypixelLocation(
-                        packet.serverName,
-                        packet.serverType.getOrNull()?.let { YCHypixelServerType(it.name) },
-                        packet.lobbyName.getOrNull(),
-                        packet.mode.getOrNull(),
-                        packet.map.getOrNull(),
-                    )
-                YCMixin.api.hypixelLocation = location
-                YC.eventDispatcher(YCHypixelAPIEvent.Location(location))
-            }
+    init {
+        registerPacket<ClientboundLocationPacket> { packet ->
+            val location =
+                YCHypixelLocation(
+                    packet.serverName,
+                    packet.serverType.getOrNull()?.let { YCHypixelServerType(it.name) },
+                    packet.lobbyName.getOrNull(),
+                    packet.mode.getOrNull(),
+                    packet.map.getOrNull(),
+                )
+            YCMixin.api.hypixelLocation = location
+            YC.eventDispatcher(YCHypixelAPIEvent.Location(location))
         }
+    }
 
+    override fun RegistrationEventDispatcher.registerEvents() {
         register<YCMinecraftEvent.LoadWorld.Pre> {
             YCMixin.api.hypixelLocation = null
             YC.eventDispatcher(YCHypixelAPIEvent.Location(null))

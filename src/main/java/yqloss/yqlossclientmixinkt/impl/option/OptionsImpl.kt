@@ -23,7 +23,7 @@ abstract class OptionsImpl(
         super.enabled = false
     }
 
-    override val enabled get() = MainConfig.enabled && super.enabled
+    override val enabled get() = YqlossClientConfig.enabled && super.enabled
 
     override fun getCustomOption(
         field: Field,

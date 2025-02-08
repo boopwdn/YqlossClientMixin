@@ -1,67 +1,17 @@
 package yqloss.yqlossclientmixinkt.impl.option
 
-import cc.polyfrost.oneconfig.config.Config
-import cc.polyfrost.oneconfig.config.annotations.SubConfig
-import cc.polyfrost.oneconfig.config.data.Mod
-import cc.polyfrost.oneconfig.config.data.ModType
-import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
-import yqloss.yqlossclientmixinkt.impl.YCMixin
-import yqloss.yqlossclientmixinkt.impl.option.impl.CorpseFinderOptionsImpl
-import yqloss.yqlossclientmixinkt.impl.option.impl.RawInputOptionsImpl
-import yqloss.yqlossclientmixinkt.impl.option.impl.SSMotionBlurOptionsImpl
-import yqloss.yqlossclientmixinkt.impl.option.impl.TweaksOptionsImpl
-import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.general.inBox
-import yqloss.yqlossclientmixinkt.ycLogger
-import kotlin.reflect.KClass
-import kotlin.reflect.full.allSuperclasses
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.isSubtypeOf
-import kotlin.reflect.full.starProjectedType
+import cc.polyfrost.oneconfig.config.annotations.Button
+import cc.polyfrost.oneconfig.config.elements.SubConfig
+import yqloss.yqlossclientmixinkt.YC
+import yqloss.yqlossclientmixinkt.util.printChat
 
-private val optionsImplMap = mutableMapOf<KClass<*>, () -> YCModuleOptions>()
-
-private val logger = ycLogger("Config")
-
-object MainConfig : Config(Mod("Yqloss Client $MOD_VERSION", ModType.THIRD_PARTY), "yqlossclient.json") {
-    @SubConfig
-    var rawInput = RawInputOptionsImpl()
-
-    @SubConfig
-    var ssMotionBlur = SSMotionBlurOptionsImpl()
-
-    @SubConfig
-    var tweaks = TweaksOptionsImpl()
-
-    @SubConfig
-    var corpseFinder = CorpseFinderOptionsImpl()
-
-    init {
-        initialize()
-
-        MainConfig::class
-            .declaredMemberProperties
-            .filter { it.returnType.isSubtypeOf(YCModuleOptions::class.starProjectedType) }
-            .forEach { property ->
-                property(this).let { instance ->
-                    logger.info("detected Options implementation $instance")
-                    (instance as Config).initialize()
-                    instance::class.allSuperclasses.plus(instance::class).forEach {
-                        optionsImplMap[it] = { property(this) as YCModuleOptions }
-                    }
-                }
-            }
-    }
-
-    override fun load() {
-        super.load()
-        val version = ++YCMixin.configVersion
-        logger.info("increased config version to $version")
-    }
-
-    fun <T : YCModuleOptions> getOptionsImpl(type: KClass<T>): T {
-        return optionsImplMap[type]?.invoke()?.inBox?.cast<T>()?.also {
-            logger.info("loaded Options implementation $it for type $type")
-        } ?: throw NotImplementedError("$type")
+class MainConfig : SubConfig("!Yqloss Client", "yqlossclient-main.json") {
+    @Button(
+        name = "Print Hypixel Mod API Location",
+        text = "Print",
+        size = 1,
+    )
+    fun printHypixelModAPILocation() {
+        printChat(YC.api.hypixelLocation.toString())
     }
 }
