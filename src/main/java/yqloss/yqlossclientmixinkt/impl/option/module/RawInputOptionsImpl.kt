@@ -1,4 +1,4 @@
-package yqloss.yqlossclientmixinkt.impl.option.impl
+package yqloss.yqlossclientmixinkt.impl.option.module
 
 import cc.polyfrost.oneconfig.config.annotations.Header
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl

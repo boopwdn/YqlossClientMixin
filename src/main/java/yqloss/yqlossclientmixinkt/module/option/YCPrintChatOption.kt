@@ -2,6 +2,7 @@ package yqloss.yqlossclientmixinkt.module.option
 
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCTemplate
+import yqloss.yqlossclientmixinkt.api.format
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.printChat
 
@@ -12,11 +13,6 @@ interface YCPrintChatOption {
 
 inline operator fun YCPrintChatOption.invoke(placeholder: YCTemplate.() -> Unit) {
     if (enabled && MC.theWorld != null) {
-        printChat(
-            YC.api
-                .templateProvider(text)
-                .also(placeholder)
-                .format(),
-        )
+        printChat(YC.api.format(text, placeholder))
     }
 }

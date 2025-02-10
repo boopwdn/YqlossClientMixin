@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.Logger
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCTemplate
+import yqloss.yqlossclientmixinkt.api.format
 
 interface YCLogOption {
     val enabled: Boolean
@@ -25,10 +26,7 @@ inline operator fun YCLogOption.invoke(
                 4 -> Level.DEBUG
                 else -> Level.TRACE
             },
-            YC.api
-                .templateProvider(text)
-                .also(placeholder)
-                .format(),
+            YC.api.format(text, placeholder),
         )
     }
 }

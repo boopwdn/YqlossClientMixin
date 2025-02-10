@@ -7,14 +7,14 @@ import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPredictionEvent
 private var savedDamageMap: Map<Int, DestroyBlockProgress> = mapOf()
 
 fun drawBlockDamageTexturePre(damageMap: MutableMap<Int, DestroyBlockProgress>) {
-    val damages = damageMap.values.toList()
+    val damages = damageMap.toMap()
     MiningPredictionEvent
         .RenderBlockDamage(damages)
         .also(YC.eventDispatcher)
         .let { event ->
             savedDamageMap = damageMap.toMap()
             damageMap.clear()
-            event.mutableDamages.forEachIndexed { i, v -> damageMap[i] = v }
+            event.mutableDamages.forEach { (i, v) -> damageMap[i] = v }
         }
 }
 

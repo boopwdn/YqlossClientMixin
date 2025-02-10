@@ -6,6 +6,7 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.api.YCAPIImpl
 import yqloss.yqlossclientmixinkt.impl.event.EventDispatcherImpl
+import yqloss.yqlossclientmixinkt.impl.gui.hud.MiningPredictionHUD
 import yqloss.yqlossclientmixinkt.impl.hypixel.loadHypixelModAPI
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
@@ -36,7 +37,6 @@ class YqlossClientMixin : YqlossClient {
     init {
         theYC = this
         theYCMixin = this
-        YqlossClientConfig
     }
 
     override val modID = MOD_ID
@@ -52,11 +52,15 @@ class YqlossClientMixin : YqlossClient {
     override fun <T : YCModuleOptions> getOptionsImpl(type: KClass<T>) = YqlossClientConfig.getOptionsImpl(type)
 
     init {
+        YqlossClientConfig
+
         RawInput
         SSMotionBlur
         Tweaks
         CorpseFinder
         MiningPrediction
+
+        MiningPredictionHUD
 
         eventDispatcher.register<YCMinecraftEvent.Load.Post> {
             loadHypixelModAPI

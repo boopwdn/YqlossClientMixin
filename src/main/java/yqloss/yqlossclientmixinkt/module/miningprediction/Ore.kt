@@ -18,14 +18,14 @@ enum class Ore(
     OBSIDIAN(OreType.OTHER, "Obsidian", Blocks.obsidian, 500, 30001),
     NETHERRACK(OreType.OTHER, "Netherrack", Blocks.netherrack, 4, 241),
     ICE(OreType.OTHER, "Ice", Blocks.ice, 5, 301),
-    COAL_ORE(OreType.OTHER, "Coal Ore", Blocks.coal_ore, 30, 1801),
-    IRON_ORE(OreType.OTHER, "Iron Ore", Blocks.iron_ore, 30, 1801),
-    GOLD_ORE(OreType.OTHER, "Gold Ore", Blocks.gold_ore, 30, 1801),
-    LAPIS_LAZULI_ORE(OreType.OTHER, "Lapis Lazuli Ore", Blocks.lapis_ore, 30, 1801),
-    REDSTONE_ORE(OreType.OTHER, "Redstone Ore", Blocks.redstone_ore, 30, 1801),
-    EMERALD_ORE(OreType.OTHER, "Emerald Ore", Blocks.emerald_ore, 30, 1801),
-    DIAMOND_ORE(OreType.OTHER, "Diamond Ore", Blocks.diamond_ore, 30, 1801),
-    NETHER_QUARTZ_ORE(OreType.OTHER, "Nether Quartz Ore", Blocks.quartz_ore, 30, 1801),
+    COAL_ORE(OreType.OTHER, "Coal", Blocks.coal_ore, 30, 1801),
+    IRON_ORE(OreType.OTHER, "Iron", Blocks.iron_ore, 30, 1801),
+    GOLD_ORE(OreType.OTHER, "Gold", Blocks.gold_ore, 30, 1801),
+    LAPIS_LAZULI_ORE(OreType.OTHER, "Lapis", Blocks.lapis_ore, 30, 1801),
+    REDSTONE_ORE(OreType.OTHER, "Redstone", Blocks.redstone_ore, 30, 1801),
+    EMERALD_ORE(OreType.OTHER, "Emerald", Blocks.emerald_ore, 30, 1801),
+    DIAMOND_ORE(OreType.OTHER, "Diamond", Blocks.diamond_ore, 30, 1801),
+    NETHER_QUARTZ_ORE(OreType.OTHER, "Quartz", Blocks.quartz_ore, 30, 1801),
     PURE_COAL(OreType.OTHER, "Pure Coal", Blocks.coal_block, 600, 36001),
     PURE_IRON(OreType.OTHER, "Pure Iron", Blocks.iron_block, 600, 36001),
     PURE_GOLD(OreType.OTHER, "Pure Gold", Blocks.gold_block, 600, 36001),
@@ -40,36 +40,36 @@ enum class Ore(
     MITHRIL_PRISMARINE_3(OreType.DWARVEN_METAL, "Mithril", Blocks.prismarine, 800, 48001, 2),
     MITHRIL_BLUE(OreType.DWARVEN_METAL, "Mithril", Blocks.wool, 1500, 90001, 3),
     TITANIUM(OreType.DWARVEN_METAL, "Titanium", Blocks.stone, 2000, 120001, 4),
-    RUBY_GEMSTONE_BLOCK(OreType.GEMSTONE, "Ruby Gemstone", Blocks.stained_glass, 2300, 138001, 14),
-    RUBY_GEMSTONE_PANE(OreType.GEMSTONE, "Ruby Gemstone", Blocks.stained_glass_pane, 2300, 138001, 14),
-    AMBER_GEMSTONE_BLOCK(OreType.GEMSTONE, "Amber Gemstone", Blocks.stained_glass, 3000, 180001, 1),
-    AMBER_GEMSTONE_PANE(OreType.GEMSTONE, "Amber Gemstone", Blocks.stained_glass_pane, 3000, 180001, 1),
-    AMETHYST_GEMSTONE_BLOCK(OreType.GEMSTONE, "Amethyst Gemstone", Blocks.stained_glass, 3000, 180001, 10),
-    AMETHYST_GEMSTONE_PANE(OreType.GEMSTONE, "Amethyst Gemstone", Blocks.stained_glass_pane, 3000, 180001, 10),
-    JADE_GEMSTONE_BLOCK(OreType.GEMSTONE, "Jade Gemstone", Blocks.stained_glass, 3000, 180001, 5),
-    JADE_GEMSTONE_PANE(OreType.GEMSTONE, "Jade Gemstone", Blocks.stained_glass_pane, 3000, 180001, 5),
-    SAPPHIRE_GEMSTONE_BLOCK(OreType.GEMSTONE, "Sapphire Gemstone", Blocks.stained_glass, 3000, 180001, 3),
-    SAPPHIRE_GEMSTONE_PANE(OreType.GEMSTONE, "Sapphire Gemstone", Blocks.stained_glass_pane, 3000, 180001, 3),
-    OPAL_GEMSTONE_BLOCK(OreType.GEMSTONE, "Opal Gemstone", Blocks.stained_glass, 3000, 180001, 0),
-    OPAL_GEMSTONE_PANE(OreType.GEMSTONE, "Opal Gemstone", Blocks.stained_glass_pane, 3000, 180001, 0),
-    TOPAZ_GEMSTONE_BLOCK(OreType.GEMSTONE, "Topaz Gemstone", Blocks.stained_glass, 3800, 228001, 4),
-    TOPAZ_GEMSTONE_PANE(OreType.GEMSTONE, "Topaz Gemstone", Blocks.stained_glass_pane, 3800, 228001, 4),
-    JASPER_GEMSTONE_BLOCK(OreType.GEMSTONE, "Jasper Gemstone", Blocks.stained_glass, 4800, 288001, 2),
-    JASPER_GEMSTONE_PANE(OreType.GEMSTONE, "Jasper Gemstone", Blocks.stained_glass_pane, 4800, 288001, 2),
+    RUBY_GEMSTONE_BLOCK(OreType.GEMSTONE, "Ruby", Blocks.stained_glass, 2300, 138001, 14),
+    RUBY_GEMSTONE_PANE(OreType.GEMSTONE, "Ruby", Blocks.stained_glass_pane, 2300, 138001, 14),
+    AMBER_GEMSTONE_BLOCK(OreType.GEMSTONE, "Amber", Blocks.stained_glass, 3000, 180001, 1),
+    AMBER_GEMSTONE_PANE(OreType.GEMSTONE, "Amber", Blocks.stained_glass_pane, 3000, 180001, 1),
+    AMETHYST_GEMSTONE_BLOCK(OreType.GEMSTONE, "Amethyst", Blocks.stained_glass, 3000, 180001, 10),
+    AMETHYST_GEMSTONE_PANE(OreType.GEMSTONE, "Amethyst", Blocks.stained_glass_pane, 3000, 180001, 10),
+    JADE_GEMSTONE_BLOCK(OreType.GEMSTONE, "Jade", Blocks.stained_glass, 3000, 180001, 5),
+    JADE_GEMSTONE_PANE(OreType.GEMSTONE, "Jade", Blocks.stained_glass_pane, 3000, 180001, 5),
+    SAPPHIRE_GEMSTONE_BLOCK(OreType.GEMSTONE, "Sapphire", Blocks.stained_glass, 3000, 180001, 3),
+    SAPPHIRE_GEMSTONE_PANE(OreType.GEMSTONE, "Sapphire", Blocks.stained_glass_pane, 3000, 180001, 3),
+    OPAL_GEMSTONE_BLOCK(OreType.GEMSTONE, "Opal", Blocks.stained_glass, 3000, 180001, 0),
+    OPAL_GEMSTONE_PANE(OreType.GEMSTONE, "Opal", Blocks.stained_glass_pane, 3000, 180001, 0),
+    TOPAZ_GEMSTONE_BLOCK(OreType.GEMSTONE, "Topaz", Blocks.stained_glass, 3800, 228001, 4),
+    TOPAZ_GEMSTONE_PANE(OreType.GEMSTONE, "Topaz", Blocks.stained_glass_pane, 3800, 228001, 4),
+    JASPER_GEMSTONE_BLOCK(OreType.GEMSTONE, "Jasper", Blocks.stained_glass, 4800, 288001, 2),
+    JASPER_GEMSTONE_PANE(OreType.GEMSTONE, "Jasper", Blocks.stained_glass_pane, 4800, 288001, 2),
     GLACITE(OreType.DWARVEN_METAL, "Glacite", Blocks.packed_ice, 6000, 360001),
     UMBER_1(OreType.DWARVEN_METAL, "Umber", Blocks.hardened_clay, 5600, 336001),
     UMBER_2(OreType.DWARVEN_METAL, "Umber", Blocks.stained_hardened_clay, 5600, 336001, 12),
     UMBER_3(OreType.DWARVEN_METAL, "Umber", Blocks.double_stone_slab2, 5600, 336001, 8),
     TUNGSTEN_1(OreType.DWARVEN_METAL, "Tungsten", Blocks.monster_egg, 5600, 336001, 1),
     TUNGSTEN_2(OreType.DWARVEN_METAL, "Tungsten", Blocks.clay, 5600, 336001),
-    ONYX_GEMSTONE_BLOCK(OreType.GEMSTONE, "Onyx Gemstone", Blocks.stained_glass, 5200, 312001, 15),
-    ONYX_GEMSTONE_PANE(OreType.GEMSTONE, "Onyx Gemstone", Blocks.stained_glass_pane, 5200, 312001, 15),
-    AQUAMARINE_GEMSTONE_BLOCK(OreType.GEMSTONE, "Aquamarine Gemstone", Blocks.stained_glass, 5200, 312001, 11),
-    AQUAMARINE_GEMSTONE_PANE(OreType.GEMSTONE, "Aquamarine Gemstone", Blocks.stained_glass_pane, 5200, 312001, 11),
-    CITRINE_GEMSTONE_BLOCK(OreType.GEMSTONE, "Citrine Gemstone", Blocks.stained_glass, 5200, 312001, 12),
-    CITRINE_GEMSTONE_PANE(OreType.GEMSTONE, "Citrine Gemstone", Blocks.stained_glass_pane, 5200, 312001, 12),
-    PERIDOT_GEMSTONE_BLOCK(OreType.GEMSTONE, "Peridot Gemstone", Blocks.stained_glass, 5200, 312001, 13),
-    PERIDOT_GEMSTONE_PANE(OreType.GEMSTONE, "Peridot Gemstone", Blocks.stained_glass_pane, 5200, 312001, 13),
+    ONYX_GEMSTONE_BLOCK(OreType.GEMSTONE, "Onyx", Blocks.stained_glass, 5200, 312001, 15),
+    ONYX_GEMSTONE_PANE(OreType.GEMSTONE, "Onyx", Blocks.stained_glass_pane, 5200, 312001, 15),
+    AQUAMARINE_GEMSTONE_BLOCK(OreType.GEMSTONE, "Aquamarine", Blocks.stained_glass, 5200, 312001, 11),
+    AQUAMARINE_GEMSTONE_PANE(OreType.GEMSTONE, "Aquamarine", Blocks.stained_glass_pane, 5200, 312001, 11),
+    CITRINE_GEMSTONE_BLOCK(OreType.GEMSTONE, "Citrine", Blocks.stained_glass, 5200, 312001, 12),
+    CITRINE_GEMSTONE_PANE(OreType.GEMSTONE, "Citrine", Blocks.stained_glass_pane, 5200, 312001, 12),
+    PERIDOT_GEMSTONE_BLOCK(OreType.GEMSTONE, "Peridot", Blocks.stained_glass, 5200, 312001, 13),
+    PERIDOT_GEMSTONE_PANE(OreType.GEMSTONE, "Peridot", Blocks.stained_glass_pane, 5200, 312001, 13),
     SULPHUR(OreType.OTHER, "Sulphur", Blocks.sponge, 500, 30001),
     ;
 
@@ -78,12 +78,20 @@ enum class Ore(
     fun getTicksOriginal(miningSpeed: Int): Int {
         return if (canInstaMine(miningSpeed)) {
             0
+        } else if (miningSpeed < 0) {
+            2147483647
         } else {
             (30 * strength + miningSpeed / 2) / miningSpeed
         }
     }
 
-    fun getTicksActual(miningSpeed: Int) = getTicksOriginal(miningSpeed).takeIf { it > 4 } ?: 4
+    fun getTicksActual(miningSpeed: Int): Int {
+        return if (canInstaMine(miningSpeed)) {
+            0
+        } else {
+            getTicksOriginal(miningSpeed).takeIf { it > 4 } ?: 4
+        }
+    }
 
     companion object {
         fun getByBlockState(

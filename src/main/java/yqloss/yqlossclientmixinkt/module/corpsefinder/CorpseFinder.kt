@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.item.EntityArmorStand
 import org.lwjgl.opengl.GL11
 import yqloss.yqlossclientmixinkt.api.setDefault
-import yqloss.yqlossclientmixinkt.event.RegistrationEventDispatcher
+import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
@@ -95,38 +95,40 @@ object CorpseFinder : YCModuleBase<CorpseFinderOptions>(INFO_CORPSE_FINDER) {
         }
     }
 
-    override fun RegistrationEventDispatcher.registerEvents() {
-        register<YCMinecraftEvent.Tick.Pre> {
-            scanCorpses()
-        }
+    override fun registerEvents(registry: RegistryEventDispatcher) {
+        registry.run {
+            register<YCMinecraftEvent.Tick.Pre> {
+                scanCorpses()
+            }
 
-        register<YCMinecraftEvent.LoadWorld.Pre> {
-            exit = null
-            corpses.clear()
-        }
+            register<YCMinecraftEvent.LoadWorld.Pre> {
+                exit = null
+                corpses.clear()
+            }
 
-        register<YCRenderEvent.Entity.Post> {
-            longrun {
-                ensureEnabled()
-                ensureInWorld()
-                ensureSkyBlockMode("mineshaft")
+            register<YCRenderEvent.Entity.Post> {
+                longrun {
+                    ensureEnabled()
+                    ensureInWorld()
+                    ensureSkyBlockMode("mineshaft")
 
-                glStateScope {
-                    GL11.glDisable(GL11.GL_TEXTURE_2D)
-                    GL11.glEnable(GL11.GL_BLEND)
-                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-                    GL11.glDisable(GL11.GL_DEPTH_TEST)
-                    GL11.glDisable(GL11.GL_ALPHA_TEST)
-                    GL11.glEnable(GL11.GL_CULL_FACE)
-                    GL11.glDisable(GL11.GL_LIGHTING)
-                    (-MC.renderViewEntity.renderPos).glTranslate()
+                    glStateScope {
+                        GL11.glDisable(GL11.GL_TEXTURE_2D)
+                        GL11.glEnable(GL11.GL_BLEND)
+                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+                        GL11.glDisable(GL11.GL_DEPTH_TEST)
+                        GL11.glDisable(GL11.GL_ALPHA_TEST)
+                        GL11.glEnable(GL11.GL_CULL_FACE)
+                        GL11.glDisable(GL11.GL_LIGHTING)
+                        (-MC.renderViewEntity.renderPos).glTranslate()
 
-                    if (options.showExit) {
-                        exit?.let { renderBox(it, options.exitColor) }
-                    }
+                        if (options.showExit) {
+                            exit?.let { renderBox(it, options.exitColor) }
+                        }
 
-                    corpses.values.forEach { (pos, corpse) ->
-                        renderBox(pos + Vec3D(0.0, 0.5, 0.0), corpse.option.color)
+                        corpses.values.forEach { (pos, corpse) ->
+                            renderBox(pos + Vec3D(0.0, 0.5, 0.0), corpse.option.color)
+                        }
                     }
                 }
             }

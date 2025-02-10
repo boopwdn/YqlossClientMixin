@@ -12,7 +12,9 @@ sealed interface MiningPredictionEvent : YCEvent {
     data object NotMining : MiningPredictionEvent
 
     data class RenderBlockDamage(
-        val damages: List<DestroyBlockProgress>,
-        var mutableDamages: MutableList<DestroyBlockProgress> = damages.toMutableList(),
+        val damages: Map<Int, DestroyBlockProgress>,
+        var mutableDamages: MutableMap<Int, DestroyBlockProgress> = damages.toMutableMap(),
     ) : MiningPredictionEvent
+
+    data object BreakBlock : MiningPredictionEvent
 }

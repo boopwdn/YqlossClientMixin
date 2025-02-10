@@ -6,11 +6,11 @@ import cc.polyfrost.oneconfig.config.data.Mod
 import cc.polyfrost.oneconfig.config.data.ModType
 import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
 import yqloss.yqlossclientmixinkt.impl.YCMixin
-import yqloss.yqlossclientmixinkt.impl.option.impl.CorpseFinderOptionsImpl
-import yqloss.yqlossclientmixinkt.impl.option.impl.MiningPredictionOptionsImpl
-import yqloss.yqlossclientmixinkt.impl.option.impl.RawInputOptionsImpl
-import yqloss.yqlossclientmixinkt.impl.option.impl.SSMotionBlurOptionsImpl
-import yqloss.yqlossclientmixinkt.impl.option.impl.TweaksOptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.module.CorpseFinderOptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.module.MiningPredictionOptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.module.RawInputOptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.module.SSMotionBlurOptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.module.TweaksOptionsImpl
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.general.inBox
 import yqloss.yqlossclientmixinkt.ycLogger

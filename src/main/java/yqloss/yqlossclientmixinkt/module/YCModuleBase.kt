@@ -1,6 +1,6 @@
 package yqloss.yqlossclientmixinkt.module
 
-import yqloss.yqlossclientmixinkt.event.RegistrationEventDispatcher
+import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
 import yqloss.yqlossclientmixinkt.event.YCEventRegistration
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.ycLogger
@@ -11,7 +11,7 @@ abstract class YCModuleBase<T : YCModuleOptions>(
     YCEventRegistration {
     val logger = ycLogger(moduleInfo.name)
 
-    override val eventEntries = buildRegisterEventEntries { registerEvents() }
+    override val eventEntries = buildRegisterEventEntries { registerEvents(this) }
 
-    protected abstract fun RegistrationEventDispatcher.registerEvents()
+    protected abstract fun registerEvents(registry: RegistryEventDispatcher)
 }

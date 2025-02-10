@@ -2,6 +2,7 @@ package yqloss.yqlossclientmixinkt.module.option
 
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCTemplate
+import yqloss.yqlossclientmixinkt.api.format
 import yqloss.yqlossclientmixinkt.util.MC
 
 interface YCTitleOption {
@@ -21,10 +22,7 @@ inline operator fun YCTitleOption.invoke(placeholder: YCTemplate.() -> Unit) {
             MC.ingameGUI.displayTitle(null, null, fadeIn, stay, fadeOut)
         }
         MC.ingameGUI.displayTitle(
-            YC.api
-                .templateProvider(text)
-                .also(placeholder)
-                .format(),
+            YC.api.format(text, placeholder),
             null,
             0,
             0,
@@ -33,10 +31,7 @@ inline operator fun YCTitleOption.invoke(placeholder: YCTemplate.() -> Unit) {
         if (setSubtitle) {
             MC.ingameGUI.displayTitle(
                 null,
-                YC.api
-                    .templateProvider(subtitle)
-                    .also(placeholder)
-                    .format(),
+                YC.api.format(subtitle, placeholder),
                 0,
                 0,
                 0,

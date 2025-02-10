@@ -1,7 +1,7 @@
 package yqloss.yqlossclientmixinkt.module
 
 import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.event.RegistrationEventDispatcher
+import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
 import yqloss.yqlossclientmixinkt.event.YCEventRegistration
 import yqloss.yqlossclientmixinkt.event.YCEventRegistration.Entry
 import yqloss.yqlossclientmixinkt.event.registerEventEntries
@@ -29,10 +29,12 @@ inline fun <reified T : YCModuleOptions> moduleInfo(
     }
 }
 
+val NO_MODULE_INFO = moduleInfo<YCModuleOptions>("", "")
+
 fun <T> T.buildRegisterEventEntries(
-    function: RegistrationEventDispatcher.() -> Unit,
+    function: RegistryEventDispatcher.() -> Unit,
 ): List<Entry> where T : YCEventRegistration, T : YCModule<*> {
     return mutableListOf<Entry>()
-        .also { function(RegistrationEventDispatcher(it)) }
+        .also { function(RegistryEventDispatcher(it)) }
         .also { it.registerEventEntries(YC.eventDispatcher) }
 }

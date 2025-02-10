@@ -15,3 +15,13 @@
 * add module: CorpseFinder
 * add module: MiningPrediction
 * feat(Tweaks): disableSkyBlockToolsNBTUpdateResetDigging
+
+## 0.3.0 (UTC+8 2025/2/10 23:30)
+
+* fix(MiningPrediction): fix not being able to instamine
+* fix(MiningPrediction): option disambiguation
+* fix(MiningPrediction): fix mining animation not compatible with some mods
+* fix(MiningPrediction): fix being able to use the features without Mining Speed in tab and Override enabled
+* fix(Tweaks): fix crashing when mining blocks in SkyBlock with empty hand
+* feat(MiningPrediction): add progress HUD
+* feat(MiningPrediction): add destroyed block replacement option

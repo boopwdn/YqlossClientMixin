@@ -3,7 +3,7 @@ package yqloss.yqlossclientmixinkt.module.rawinput
 import net.java.games.input.Controller
 import net.java.games.input.ControllerEnvironment
 import net.java.games.input.Mouse
-import yqloss.yqlossclientmixinkt.event.RegistrationEventDispatcher
+import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
@@ -44,23 +44,25 @@ object RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
             logger.info("failed to find a mouse")
         }
 
-    override fun RegistrationEventDispatcher.registerEvents() {
-        register<YCMinecraftEvent.Load.Post> {
-            mouseHelper = RawMouseHelper(MC.mouseHelper)
-            MC.mouseHelper = mouseHelper
-        }
+    override fun registerEvents(registry: RegistryEventDispatcher) {
+        registry.run {
+            register<YCMinecraftEvent.Load.Post> {
+                mouseHelper = RawMouseHelper(MC.mouseHelper)
+                MC.mouseHelper = mouseHelper
+            }
 
-        register<YCMinecraftEvent.Loop.Pre> {
-            longrun {
-                ensureEnabled()
+            register<YCMinecraftEvent.Loop.Pre> {
+                longrun {
+                    ensureEnabled()
 
-                savedMouse ?: findMouse()
+                    savedMouse ?: findMouse()
 
-                savedMouse?.let { mouse ->
-                    mouse.poll()
-                    MC.currentScreen ?: run {
-                        mouseHelper.x += mouse.x.pollData
-                        mouseHelper.y += mouse.y.pollData
+                    savedMouse?.let { mouse ->
+                        mouse.poll()
+                        MC.currentScreen ?: run {
+                            mouseHelper.x += mouse.x.pollData
+                            mouseHelper.y += mouse.y.pollData
+                        }
                     }
                 }
             }

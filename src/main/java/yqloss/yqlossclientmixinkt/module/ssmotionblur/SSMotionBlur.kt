@@ -4,7 +4,7 @@ import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import org.lwjgl.opengl.GL11
-import yqloss.yqlossclientmixinkt.event.RegistrationEventDispatcher
+import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
@@ -156,21 +156,23 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
         }
     }
 
-    override fun RegistrationEventDispatcher.registerEvents() {
-        register<YCRenderEvent.Render.Pre> {
-            MC.theWorld ?: run {
-                lastNanos = System.nanoTime()
-                glStateScope {
-                    allocate(false, -1, -1)
+    override fun registerEvents(registry: RegistryEventDispatcher) {
+        registry.run {
+            register<YCRenderEvent.Render.Pre> {
+                MC.theWorld ?: run {
+                    lastNanos = System.nanoTime()
+                    glStateScope {
+                        allocate(false, -1, -1)
+                    }
                 }
             }
-        }
 
-        register<SSMotionBlurEvent.Render> { event ->
-            longrun {
-                ensureEnabled()
+            register<SSMotionBlurEvent.Render> { event ->
+                longrun {
+                    ensureEnabled()
 
-                renderMotionBlur(event.screenWidth, event.screenHeight, event.scaledResolution)
+                    renderMotionBlur(event.screenWidth, event.screenHeight, event.scaledResolution)
+                }
             }
         }
     }

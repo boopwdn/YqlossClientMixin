@@ -2,7 +2,8 @@ package yqloss.yqlossclientmixinkt.module.option
 
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCTemplate
-import yqloss.yqlossclientmixinkt.event.RegistrationEventDispatcher
+import yqloss.yqlossclientmixinkt.api.format
+import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
@@ -43,31 +44,33 @@ object SendMessagePool :
         }
     }
 
-    override fun RegistrationEventDispatcher.registerEvents() {
-        register<YCMinecraftEvent.LoadWorld.Pre> {
-            synchronized(this) {
-                poolMap.clear()
+    override fun registerEvents(registry: RegistryEventDispatcher) {
+        registry.run {
+            register<YCMinecraftEvent.LoadWorld.Pre> {
+                synchronized(this) {
+                    poolMap.clear()
+                }
             }
-        }
 
-        register<YCMinecraftEvent.Tick.Pre> {
-            synchronized(this) {
-                poolMap.forEach { (_, list) ->
-                    while (true) {
-                        list.firstOrNull()?.let { (message, interval) ->
-                            if (interval.value == 0) {
-                                MC.thePlayer.sendChatMessage(message)
-                                return@let
-                            } else if (interval.value < 0) {
-                                interval.value = -interval.value
-                                MC.thePlayer.sendChatMessage(message)
-                            }
-                            --interval.value
-                            if (interval.value == 0) {
-                                list.removeFirstOrNull()
-                            }
-                            return@forEach
-                        } ?: break
+            register<YCMinecraftEvent.Tick.Pre> {
+                synchronized(this) {
+                    poolMap.forEach { (_, list) ->
+                        while (true) {
+                            list.firstOrNull()?.let { (message, interval) ->
+                                if (interval.value == 0) {
+                                    MC.thePlayer.sendChatMessage(message)
+                                    return@let
+                                } else if (interval.value < 0) {
+                                    interval.value = -interval.value
+                                    MC.thePlayer.sendChatMessage(message)
+                                }
+                                --interval.value
+                                if (interval.value == 0) {
+                                    list.removeFirstOrNull()
+                                }
+                                return@forEach
+                            } ?: break
+                        }
                     }
                 }
             }
@@ -77,12 +80,7 @@ object SendMessagePool :
 
 inline operator fun YCSendMessageOption.invoke(placeholder: YCTemplate.() -> Unit) {
     if (enabled && MC.theWorld != null) {
-        val messages =
-            YC.api
-                .templateProvider(text)
-                .also(placeholder)
-                .format()
-                .split("\n")
+        val messages = YC.api.format(text, placeholder).split("\n")
         if (enableInterval) {
             messages.forEach { SendMessagePool.add(intervalPool, interval, it, maxPoolSize) }
         } else {

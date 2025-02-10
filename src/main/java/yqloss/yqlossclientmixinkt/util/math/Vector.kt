@@ -2,8 +2,22 @@ package yqloss.yqlossclientmixinkt.util.math
 
 import kotlin.math.sqrt
 
-sealed interface Vector<T : Vector<T>> {
+sealed interface Vector<TV : Number, T : Vector<TV, T>> {
     val length: Double
+
+    val lengthSquared: TV
+
+    operator fun plus(vec: T): T
+
+    operator fun minus(vec: T): T
+
+    operator fun times(value: TV): T
+
+    operator fun times(vec: T): TV
+
+    operator fun unaryPlus(): T
+
+    operator fun unaryMinus(): T
 
     infix fun min(other: T): T
 
@@ -16,25 +30,31 @@ sealed interface Vector<T : Vector<T>> {
     infix fun areaTo(other: T) = min(other) to max(other)
 }
 
+fun <T : Vector<Double, T>> lerp(
+    from: T,
+    to: T,
+    progress: Double,
+) = from + (to - from) * progress
+
 typealias Area<T> = Pair<T, T>
 
-operator fun <T : Vector<T>> Area<T>.contains(vec: T) = first allLessEqual vec && vec allLess second
+operator fun <TV : Number, T : Vector<TV, T>> Area<T>.contains(vec: T) = first allLessEqual vec && vec allLess second
 
 data class Vec2I(
     val x: Int,
     val y: Int,
-) : Vector<Vec2I> {
-    operator fun plus(vec: Vec2I) = Vec2I(x + vec.x, y + vec.y)
+) : Vector<Int, Vec2I> {
+    override operator fun plus(vec: Vec2I) = Vec2I(x + vec.x, y + vec.y)
 
-    operator fun minus(vec: Vec2I) = Vec2I(x - vec.x, y - vec.y)
+    override operator fun minus(vec: Vec2I) = Vec2I(x - vec.x, y - vec.y)
 
-    operator fun times(value: Int) = Vec2I(x * value, y * value)
+    override operator fun times(value: Int) = Vec2I(x * value, y * value)
 
-    operator fun times(vec: Vec2I) = x * vec.x + y * vec.y
+    override operator fun times(vec: Vec2I) = x * vec.x + y * vec.y
 
-    operator fun unaryPlus() = this
+    override operator fun unaryPlus() = this
 
-    operator fun unaryMinus() = Vec2I(-x, -y)
+    override operator fun unaryMinus() = Vec2I(-x, -y)
 
     fun plus(
         dX: Int = 0,
@@ -46,7 +66,7 @@ data class Vec2I(
         nY: Int = 1,
     ) = Vec2I(x * nX, y * nY)
 
-    inline val lengthSquared get() = x * x + y * y
+    override val lengthSquared get() = x * x + y * y
 
     override val length get() = sqrt(lengthSquared.asDouble)
 
@@ -70,20 +90,22 @@ typealias Area2I = Area<Vec2I>
 data class Vec2D(
     val x: Double,
     val y: Double,
-) : Vector<Vec2D> {
-    operator fun plus(vec: Vec2D) = Vec2D(x + vec.x, y + vec.y)
+) : Vector<Double, Vec2D> {
+    constructor(x: Float, y: Float) : this(x.asDouble, y.asDouble)
 
-    operator fun minus(vec: Vec2D) = Vec2D(x - vec.x, y - vec.y)
+    override operator fun plus(vec: Vec2D) = Vec2D(x + vec.x, y + vec.y)
 
-    operator fun times(value: Double) = Vec2D(x * value, y * value)
+    override operator fun minus(vec: Vec2D) = Vec2D(x - vec.x, y - vec.y)
 
-    operator fun times(vec: Vec2D) = x * vec.x + y * vec.y
+    override operator fun times(value: Double) = Vec2D(x * value, y * value)
+
+    override operator fun times(vec: Vec2D) = x * vec.x + y * vec.y
 
     operator fun div(value: Double) = Vec2D(x / value, y / value)
 
-    operator fun unaryPlus() = this
+    override operator fun unaryPlus() = this
 
-    operator fun unaryMinus() = Vec2D(-x, -y)
+    override operator fun unaryMinus() = Vec2D(-x, -y)
 
     fun plus(
         dX: Double = 0.0,
@@ -100,7 +122,7 @@ data class Vec2D(
         nY: Double = 1.0,
     ) = Vec2D(x / nX, y / nY)
 
-    inline val lengthSquared get() = x * x + y * y
+    override val lengthSquared get() = x * x + y * y
 
     override val length get() = sqrt(lengthSquared.asDouble)
 
@@ -125,18 +147,18 @@ data class Vec3I(
     val x: Int,
     val y: Int,
     val z: Int,
-) : Vector<Vec3I> {
-    operator fun plus(vec: Vec3I) = Vec3I(x + vec.x, y + vec.y, z + vec.z)
+) : Vector<Int, Vec3I> {
+    override operator fun plus(vec: Vec3I) = Vec3I(x + vec.x, y + vec.y, z + vec.z)
 
-    operator fun minus(vec: Vec3I) = Vec3I(x - vec.x, y - vec.y, z - vec.z)
+    override operator fun minus(vec: Vec3I) = Vec3I(x - vec.x, y - vec.y, z - vec.z)
 
-    operator fun times(value: Int) = Vec3I(x * value, y * value, z * value)
+    override operator fun times(value: Int) = Vec3I(x * value, y * value, z * value)
 
-    operator fun times(vec: Vec3I) = x * vec.x + y * vec.y + z * vec.z
+    override operator fun times(vec: Vec3I) = x * vec.x + y * vec.y + z * vec.z
 
-    operator fun unaryPlus() = this
+    override operator fun unaryPlus() = this
 
-    operator fun unaryMinus() = Vec3I(-x, -y, -z)
+    override operator fun unaryMinus() = Vec3I(-x, -y, -z)
 
     fun plus(
         dX: Int = 0,
@@ -152,7 +174,7 @@ data class Vec3I(
 
     fun cross(vec: Vec3I) = Vec3I(y * vec.z - z * vec.y, z * vec.x - x * vec.z, x * vec.y - y * vec.x)
 
-    inline val lengthSquared get() = x * x + y * y + z * z
+    override val lengthSquared get() = x * x + y * y + z * z
 
     override val length get() = sqrt(lengthSquared.asDouble)
 
@@ -177,20 +199,22 @@ data class Vec3D(
     val x: Double,
     val y: Double,
     val z: Double,
-) : Vector<Vec3D> {
-    operator fun plus(vec: Vec3D) = Vec3D(x + vec.x, y + vec.y, z + vec.z)
+) : Vector<Double, Vec3D> {
+    constructor(x: Float, y: Float, z: Float) : this(x.asDouble, y.asDouble, z.asDouble)
 
-    operator fun minus(vec: Vec3D) = Vec3D(x - vec.x, y - vec.y, z - vec.z)
+    override operator fun plus(vec: Vec3D) = Vec3D(x + vec.x, y + vec.y, z + vec.z)
 
-    operator fun times(value: Double) = Vec3D(x * value, y * value, z * value)
+    override operator fun minus(vec: Vec3D) = Vec3D(x - vec.x, y - vec.y, z - vec.z)
 
-    operator fun times(vec: Vec3D) = x * vec.x + y * vec.y + z * vec.z
+    override operator fun times(value: Double) = Vec3D(x * value, y * value, z * value)
+
+    override operator fun times(vec: Vec3D) = x * vec.x + y * vec.y + z * vec.z
 
     operator fun div(value: Double) = Vec3D(x / value, y / value, z / value)
 
-    operator fun unaryPlus() = this
+    override operator fun unaryPlus() = this
 
-    operator fun unaryMinus() = Vec3D(-x, -y, -z)
+    override operator fun unaryMinus() = Vec3D(-x, -y, -z)
 
     fun plus(
         dX: Double = 0.0,
@@ -212,7 +236,7 @@ data class Vec3D(
 
     fun cross(vec: Vec3D) = Vec3D(y * vec.z - z * vec.y, z * vec.x - x * vec.z, x * vec.y - y * vec.x)
 
-    inline val lengthSquared get() = x * x + y * y + z * z
+    override val lengthSquared get() = x * x + y * y + z * z
 
     override val length get() = sqrt(lengthSquared.asDouble)
 

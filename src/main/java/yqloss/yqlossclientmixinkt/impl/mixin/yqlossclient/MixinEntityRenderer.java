@@ -13,4 +13,14 @@ public abstract class MixinEntityRenderer {
     private void yc$updateCameraAndRenderPre(float partialTicks, long nanoTime, CallbackInfo ci) {
         CallbackEntityRendererKt.updateCameraAndRenderPre(partialTicks);
     }
+
+    @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiIngame;renderGameOverlay(F)V", shift = At.Shift.AFTER))
+    private void yc$ssmotionblur$updateCameraAndRenderRenderHUD(float partialTicks, long nanoTime, CallbackInfo ci) {
+        CallbackEntityRendererKt.updateCameraAndRenderRenderHUD();
+    }
+
+    @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/ForgeHooksClient;drawScreen(Lnet/minecraft/client/gui/GuiScreen;IIF)V", shift = At.Shift.AFTER), remap = false)
+    private void yc$ssmotionblur$updateCameraAndRenderRenderScreen(float partialTicks, long nanoTime, CallbackInfo ci) {
+        CallbackEntityRendererKt.updateCameraAndRenderRenderScreen();
+    }
 }

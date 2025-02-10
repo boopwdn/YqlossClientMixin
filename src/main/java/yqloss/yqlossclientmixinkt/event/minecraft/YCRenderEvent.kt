@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.IBlockAccess
 import yqloss.yqlossclientmixinkt.event.YCEvent
+import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.util.asBlockPos
 import yqloss.yqlossclientmixinkt.util.math.Vec3I
 
@@ -14,6 +15,22 @@ sealed interface YCRenderEvent : YCEvent {
 
     sealed interface Entity : YCRenderEvent {
         data object Post : Entity
+    }
+
+    sealed interface GUI : YCRenderEvent {
+        val widgets: MutableList<Widget<*>>
+
+        sealed interface HUD : GUI {
+            data class Post(
+                override val widgets: MutableList<Widget<*>> = mutableListOf(),
+            ) : HUD
+        }
+
+        sealed interface Screen : GUI {
+            data class Post(
+                override val widgets: MutableList<Widget<*>> = mutableListOf(),
+            ) : Screen
+        }
     }
 
     sealed interface Block : YCRenderEvent {

@@ -24,5 +24,5 @@ enum class OreType(
     ),
     ;
 
-    fun modifyMiningSpeed(miningSpeed: Int) = max(0, overrideGetter() ?: (miningSpeed + offsetGetter()))
+    fun modifyMiningSpeed(miningSpeed: Int) = max(0, overrideGetter() ?: if (miningSpeed > 0) miningSpeed + offsetGetter() else 0)
 }

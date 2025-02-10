@@ -8,13 +8,13 @@ import yqloss.yqlossclientmixinkt.module.tweaks.TweaksEvent
 import yqloss.yqlossclientmixinkt.util.asVec3I
 
 fun isHittingPositionCheck(
-    pos: BlockPos,
-    currentBlock: BlockPos,
-    currentItemHittingBlock: ItemStack,
+    pos: BlockPos?,
+    currentBlock: BlockPos?,
+    currentItemHittingBlock: ItemStack?,
     cir: CallbackInfoReturnable<Boolean>,
 ) {
     TweaksEvent
-        .IsHittingPositionCheck(pos.asVec3I, currentBlock.asVec3I, currentItemHittingBlock)
+        .IsHittingPositionCheck(pos?.asVec3I, currentBlock?.asVec3I, currentItemHittingBlock)
         .also(YC.eventDispatcher)
         .also {
             if (it.canceled) {

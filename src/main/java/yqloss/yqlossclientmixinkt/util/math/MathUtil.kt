@@ -22,3 +22,9 @@ inline val Long.asBigInteger: BigInteger get() = BigInteger.valueOf(this)
 inline val Int.asBigInteger: BigInteger get() = BigInteger.valueOf(this.asLong)
 inline val Number.asStringBigInteger get() = BigInteger(toString())
 inline val String.asBigInteger get() = BigInteger(this)
+
+fun lerp(
+    from: Double,
+    to: Double,
+    progress: Double,
+) = from + (to - from) * progress

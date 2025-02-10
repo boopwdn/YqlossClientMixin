@@ -9,20 +9,20 @@ import net.minecraft.entity.Entity
 import net.minecraft.util.BlockPos
 import net.minecraft.util.ChatComponentText
 import net.minecraft.util.ResourceLocation
-import yqloss.yqlossclientmixinkt.impl.mixincallback.yqlossclient.mcPartialTicks
 import yqloss.yqlossclientmixinkt.module.option.YCColor
 import yqloss.yqlossclientmixinkt.util.math.Area3I
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.math.Vec3D
 import yqloss.yqlossclientmixinkt.util.math.Vec3I
 import yqloss.yqlossclientmixinkt.util.math.asFloat
+import yqloss.yqlossclientmixinkt.util.math.lerp
 import yqloss.yqlossclientmixinkt.ycLogger
 
 private val logger = ycLogger("Minecraft Util")
 
 val MC: Minecraft by lazy { Minecraft.getMinecraft() }
 
-val partialTicks by ::mcPartialTicks
+var partialTicks = 0.0
 
 inline val BlockPos.asVec3I get() = Vec3I(x, y, z)
 
@@ -32,7 +32,7 @@ inline val Entity.lastPos get() = Vec3D(prevPosX, prevPosY, prevPosZ)
 
 inline val Entity.currPos get() = Vec3D(posX, posY, posZ)
 
-inline val Entity.renderPos get() = lastPos + (currPos - lastPos) * partialTicks
+inline val Entity.renderPos get() = lerp(lastPos, currPos, partialTicks)
 
 val REGEX_STYLE = Regex("\\u00a7.")
 

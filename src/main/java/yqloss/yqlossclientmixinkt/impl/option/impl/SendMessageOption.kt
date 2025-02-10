@@ -1,4 +1,4 @@
-package yqloss.yqlossclientmixinkt.impl.option.notification
+package yqloss.yqlossclientmixinkt.impl.option.impl
 
 import cc.polyfrost.oneconfig.config.annotations.Button
 import cc.polyfrost.oneconfig.config.annotations.Checkbox

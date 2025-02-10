@@ -11,7 +11,7 @@ interface YCEventRegistration {
     val eventEntries: List<Entry>
 }
 
-class RegistrationEventDispatcher(
+class RegistryEventDispatcher(
     private val list: MutableList<Entry>,
 ) : YCEventDispatcher {
     private data class Register<T : YCEvent>(
@@ -69,16 +69,16 @@ class RegistrationEventDispatcher(
     override fun <T : YCEvent> getHandlerOnly(type: KClass<T>) = throw NotImplementedError()
 }
 
-fun buildEventEntries(function: RegistrationEventDispatcher.() -> Unit): List<Entry> {
-    return mutableListOf<Entry>().also { function(RegistrationEventDispatcher(it)) }
+fun buildEventEntries(function: RegistryEventDispatcher.() -> Unit): List<Entry> {
+    return mutableListOf<Entry>().also { function(RegistryEventDispatcher(it)) }
 }
 
 fun YCEventRegistration.buildRegisterEventEntries(
     dispatcher: YCEventDispatcher,
-    function: RegistrationEventDispatcher.() -> Unit,
+    function: RegistryEventDispatcher.() -> Unit,
 ): List<Entry> {
     return mutableListOf<Entry>()
-        .also { function(RegistrationEventDispatcher(it)) }
+        .also { function(RegistryEventDispatcher(it)) }
         .also { registerEventEntries(dispatcher) }
 }
 

@@ -20,8 +20,8 @@ sealed interface TweaksEvent : YCEvent {
         YCCancelableEvent
 
     data class IsHittingPositionCheck(
-        val pos: Vec3I,
-        val currentBlock: Vec3I,
+        val pos: Vec3I?,
+        val currentBlock: Vec3I?,
         val currentItemHittingBlock: ItemStack?,
         var returnValue: Boolean = false,
         override var canceled: Boolean = false,

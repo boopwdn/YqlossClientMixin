@@ -1,4 +1,4 @@
-package yqloss.yqlossclientmixinkt.impl.option.impl
+package yqloss.yqlossclientmixinkt.impl.option.module
 
 import cc.polyfrost.oneconfig.config.annotations.Color
 import cc.polyfrost.oneconfig.config.annotations.Header
@@ -10,7 +10,7 @@ import yqloss.yqlossclientmixinkt.impl.option.adapter.asYCColor
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerLegit
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerRequireHypixelModAPI
-import yqloss.yqlossclientmixinkt.impl.option.notification.NotificationOption
+import yqloss.yqlossclientmixinkt.impl.option.impl.NotificationOption
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinderOptions
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseOption
 import yqloss.yqlossclientmixinkt.module.corpsefinder.INFO_CORPSE_FINDER
