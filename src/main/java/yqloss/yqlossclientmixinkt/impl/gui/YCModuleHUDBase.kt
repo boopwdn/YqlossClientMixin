@@ -1,7 +1,6 @@
 package yqloss.yqlossclientmixinkt.impl.gui
 
 import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
-import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
@@ -62,7 +61,7 @@ abstract class YCModuleHUDBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
 
             register<YCHUD.GetHeightEvent> { it.height = height * hud.renderScale }
 
-            register<YCRenderEvent.GUI.HUD.Post> { event ->
+            register<GUIEvent.HUD> { event ->
                 val show = doesShow()
                 val box = size
                 val tr = transformation

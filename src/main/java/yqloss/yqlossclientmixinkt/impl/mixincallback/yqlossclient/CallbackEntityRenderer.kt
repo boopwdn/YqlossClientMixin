@@ -1,8 +1,10 @@
 package yqloss.yqlossclientmixinkt.impl.mixincallback.yqlossclient
 
 import cc.polyfrost.oneconfig.renderer.NanoVGHelper
+import net.minecraft.client.gui.GuiScreen
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
+import yqloss.yqlossclientmixinkt.impl.gui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
 import yqloss.yqlossclientmixinkt.util.partialTicks
 
@@ -12,7 +14,7 @@ fun updateCameraAndRenderPre(partialTicksIn: Double) {
 }
 
 fun updateCameraAndRenderRenderHUD() {
-    YCRenderEvent.GUI.HUD
+    GUIEvent.HUD
         .Post()
         .also(YC.eventDispatcher)
         .apply {
@@ -26,7 +28,7 @@ fun updateCameraAndRenderRenderHUD() {
 }
 
 fun updateCameraAndRenderRenderScreen() {
-    YCRenderEvent.GUI.Screen
+    GUIEvent.Screen
         .Post()
         .also(YC.eventDispatcher)
         .apply {
@@ -37,4 +39,17 @@ fun updateCameraAndRenderRenderScreen() {
                 widgets.forEach { it.draw(context) }
             }
         }
+}
+
+fun updateCameraAndRenderProxyScreen(
+    screen: GuiScreen,
+    mouseX: Int,
+    mouseY: Int,
+    partialTicks: Float,
+) {
+    YCRenderEvent.Screen
+        .Proxy(screen)
+        .also(YC.eventDispatcher)
+        .mutableScreen
+        .drawScreen(mouseX, mouseY, partialTicks)
 }
