@@ -1,0 +1,60 @@
+/*
+ * Copyright (C) 2025 Yqloss
+ *
+ * This file is part of Yqloss Client (Mixin).
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 (GPLv2)
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
+ */
+
+package yqloss.yqlossclientmixinkt.util
+
+import org.lwjgl.opengl.GL11.*
+import yqloss.yqlossclientmixinkt.module.option.YCColor
+import yqloss.yqlossclientmixinkt.util.math.Vec3D
+
+inline fun <R> glMatrixScope(function: () -> R) {
+    glPushMatrix()
+    try {
+        function()
+    } finally {
+        glPopMatrix()
+    }
+}
+
+inline fun <R> glAttribScope(function: () -> R) {
+    glPushAttrib(GL_ALL_ATTRIB_BITS)
+    try {
+        function()
+    } finally {
+        glPopAttrib()
+    }
+}
+
+inline fun <R> glStateScope(function: () -> R) {
+    glPushAttrib(GL_ALL_ATTRIB_BITS)
+    glPushMatrix()
+    try {
+        function()
+    } finally {
+        glPopMatrix()
+        glPopAttrib()
+    }
+}
+
+fun Vec3D.glTranslate() {
+    glTranslated(x, y, z)
+}
+
+fun YCColor.glColor() {
+    glColor4d(r, g, b, a)
+}

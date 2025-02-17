@@ -60,12 +60,16 @@ val modShade: Configuration by configurations.creating {
 }
 
 sourceSets {
+    val dummy by creating
     main {
+        dummy.compileClasspath += compileClasspath
+        compileClasspath += dummy.output
         output.setResourcesDir(java.classesDirectory)
     }
 }
 
 repositories {
+    mavenCentral()
     maven("https://repo.polyfrost.org/releases")
     maven("https://repo.hypixel.net/repository/Hypixel/")
 }
@@ -78,6 +82,9 @@ dependencies {
     implementation("net.hypixel:mod-api:1.0.1")
     implementation("org.antlr:ST4:4.3.4")
     shade("org.antlr:ST4:4.3.4")
+    compileOnly("org.lwjgl:lwjgl:3.3.1")
+    compileOnly("org.lwjgl:lwjgl-nanovg:3.3.1")
+    compileOnly(files("${project.rootDir}/libraries/oneconfig-internal.jar"))
     compileOnly(files("${project.rootDir}/libraries/optifine-compatibility.jar"))
 }
 

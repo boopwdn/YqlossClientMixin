@@ -8,21 +8,19 @@
     },
     "verbose": true,
     "client": [
-        "miningprediction.MixinMinecraft",
-        "miningprediction.MixinPlayerControllerMP",
-        "miningprediction.MixinRenderGlobal",
-        "ssmotionblur.MixinEntityRenderer",
-        "tweaks.MixinMinecraft",
-        "tweaks.MixinPlayerControllerMP",
-        "yqlossclient.AccessorMinecraft",
-        "yqlossclient.MixinEntityRenderer",
-        "yqlossclient.MixinMain",
-        "yqlossclient.MixinMinecraft",
-        "yqlossclient.MixinRenderChunk",
-        "yqlossclient.MixinRenderGlobal"
+        "AccessorGuiChest",
+        "AccessorGuiScreen",
+        "MixinEntityRenderer",
+        "MixinGuiScreen",
+        "MixinMain",
+        "MixinMinecraft",
+        "MixinPlayerControllerMP",
+        "MixinRenderChunk",
+        "MixinRenderGlobal"
     ],
     "mixins": [
-        "tweaks.MixinEntity",
-        "yqlossclient.optifine.MixinChunkCacheOF"
+        "MixinChunkCacheOF",
+        "MixinEntity",
+        "MixinLwjglManagerImpl"
     ]
 }

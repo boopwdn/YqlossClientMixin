@@ -1,0 +1,393 @@
+/*
+ * Copyright (C) 2025 Yqloss
+ *
+ * This file is part of Yqloss Client (Mixin).
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 (GPLv2)
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
+ */
+
+package yqloss.yqlossclientmixinkt.impl.option.module
+
+import cc.polyfrost.oneconfig.config.annotations.*
+import cc.polyfrost.oneconfig.config.annotations.Number
+import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
+import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
+import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
+import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerRequireHypixelModAPI
+import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerUnknownMacro
+import yqloss.yqlossclientmixinkt.impl.option.gui.GUIBackground
+import yqloss.yqlossclientmixinkt.impl.option.impl.NotificationOption
+import yqloss.yqlossclientmixinkt.impl.option.impl.ScreenScaleOption
+import yqloss.yqlossclientmixinkt.impl.util.Colors
+import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminalOptions
+import yqloss.yqlossclientmixinkt.module.betterterminal.INFO_BETTER_TERMINAL
+import yqloss.yqlossclientmixinkt.util.math.double
+
+class BetterTerminalOptionsImpl :
+    OptionsImpl(INFO_BETTER_TERMINAL),
+    BetterTerminalOptions {
+    @Extract
+    var disclaimer = DisclaimerAtOwnRisk()
+
+    @Extract
+    var unknownMacro = DisclaimerUnknownMacro()
+
+    @Extract
+    var requireHypixelModAPI = DisclaimerRequireHypixelModAPI()
+
+    @Header(
+        text = "Better Terminal",
+        size = 2,
+    )
+    var headerModule = false
+
+    @Extract
+    var scaleOverride = ScreenScaleOption()
+
+    @Switch(
+        name = "Enable Queueing Clicks",
+        size = 1,
+    )
+    var enableQueueOption = false
+
+    @Switch(
+        name = "Reload State When State Mismatch",
+        size = 1,
+    )
+    var reloadOnMismatchOption = false
+
+    @Switch(
+        name = "Prevent Fail",
+        size = 1,
+    )
+    var preventFailOption = false
+
+    @Switch(
+        name = "Prevent Misclick",
+        size = 1,
+    )
+    var preventMisclickOption = false
+
+    @Number(
+        name = "Click Delay From",
+        min = 0.0F,
+        max = Float.MAX_VALUE,
+        size = 1,
+    )
+    var clickDelayFromOption = 2
+
+    @Number(
+        name = "Click Delay Until",
+        min = 0.0F,
+        max = Float.MAX_VALUE,
+        size = 1,
+    )
+    var clickDelayUntilOption = 4
+
+    @Number(
+        name = "Slot Rounded Corner Radius",
+        min = 0.0F,
+        max = Float.MAX_VALUE,
+        size = 1,
+    )
+    var cornerRadius = 4.0F
+
+    @Switch(
+        name = "Smooth GUI",
+        size = 1,
+    )
+    var smoothGUI = true
+
+    @Switch(
+        name = "Show Vanilla Chest GUI",
+        size = 1,
+    )
+    var showChestOption = false
+
+    @Slider(
+        name = "Vanilla Chest GUI Scale",
+        min = 0.0F,
+        max = 1.0F,
+    )
+    var chestScaleOption = 0.25F
+
+    @Extract
+    var background =
+        GUIBackground().apply {
+            radiusOption = 12.0F
+            paddingXOption = 0.0F
+            paddingYOption = 0.0F
+        }
+
+    @Header(
+        text = "Click in order!",
+        size = 2,
+    )
+    var headerOrder = false
+
+    @Color(
+        name = "First",
+        size = 1,
+    )
+    var order1 = Colors.GREEN[6]
+
+    @Color(
+        name = "Second",
+        size = 1,
+    )
+    var order2 = Colors.YELLOW[6]
+
+    @Color(
+        name = "Third",
+        size = 1,
+    )
+    var order3 = Colors.RED[6]
+
+    @Color(
+        name = "Finished",
+        size = 1,
+    )
+    var orderClicked = Colors.NONE
+
+    @Color(
+        name = "Other",
+        size = 1,
+    )
+    var orderOther = Colors.GRAY[8]
+
+    @Header(
+        text = "Correct all the panes!",
+        size = 2,
+    )
+    var headerPanes = false
+
+    @Color(
+        name = "ON",
+        size = 1,
+    )
+    var panesOn = Colors.GREEN[6]
+
+    @Color(
+        name = "OFF",
+        size = 1,
+    )
+    var panesOff = Colors.RED[6]
+
+    @Header(
+        text = "What starts with: '?'?",
+        size = 2,
+    )
+    var headerStart = false
+
+    @Color(
+        name = "Answer",
+        size = 1,
+    )
+    var startAnswer = Colors.GREEN[6]
+
+    @Color(
+        name = "Clicked Answer",
+        size = 1,
+    )
+    var startClicked = Colors.GRAY[8]
+
+    @Color(
+        name = "Other",
+        size = 1,
+    )
+    var startOther = Colors.NONE
+
+    @Header(
+        text = "Select all the COLOR items!",
+        size = 2,
+    )
+    var headerColor = false
+
+    @Color(
+        name = "Answer",
+        size = 1,
+    )
+    var colorAnswer = Colors.GREEN[6]
+
+    @Color(
+        name = "Clicked Answer",
+        size = 1,
+    )
+    var colorClicked = Colors.GRAY[8]
+
+    @Color(
+        name = "Other",
+        size = 1,
+    )
+    var colorOther = Colors.NONE
+
+    @Header(
+        text = "Change all to same color!",
+        size = 2,
+    )
+    var headerRubix = false
+
+    @Color(
+        name = "-2",
+        size = 1,
+    )
+    var rubixRight2 = Colors.TEAL[5]
+
+    @Color(
+        name = "-1",
+        size = 1,
+    )
+    var rubixRight1 = Colors.TEAL[8]
+
+    @Color(
+        name = "0",
+        size = 2,
+    )
+    var rubix0 = Colors.GRAY[8]
+
+    @Color(
+        name = "1",
+        size = 1,
+    )
+    var rubixLeft1 = Colors.INDIGO[8]
+
+    @Color(
+        name = "2",
+        size = 1,
+    )
+    var rubixLeft2 = Colors.INDIGO[5]
+
+    @Header(
+        text = "Click the button on time!",
+        size = 2,
+    )
+    var headerAlign = false
+
+    @Color(
+        name = "Target",
+        size = 1,
+    )
+    var alignTarget = Colors.GRAPE[6]
+
+    @Color(
+        name = "Inactive",
+        size = 1,
+    )
+    var alignInactive = Colors.GRAY[8]
+
+    @Color(
+        name = "Current Active",
+        size = 1,
+    )
+    var alignActiveCurrent = Colors.GREEN[6]
+
+    @Color(
+        name = "Other Active",
+        size = 1,
+    )
+    var alignActiveOther = Colors.RED[6]
+
+    @Color(
+        name = "Lock In Slot",
+        size = 1,
+    )
+    var alignActiveButton = Colors.GREEN[6]
+
+    @Color(
+        name = "Row Not Active",
+        size = 1,
+    )
+    var alignInactiveButton = Colors.GRAY[8]
+
+    @Header(
+        text = "Notification On Correct Click",
+        size = 2,
+    )
+    var headerCorrect = false
+
+    @Extract
+    var onCorrectClickOption = NotificationOption()
+
+    @Header(
+        text = "Notification On Canceled Click",
+        size = 2,
+    )
+    var headerCanceled = false
+
+    @Extract
+    var onCanceledClickOption = NotificationOption()
+
+    @Header(
+        text = "Notification On Wrong Click",
+        size = 2,
+    )
+    var headerWrong = false
+
+    @Extract
+    var onWrongClickOption = NotificationOption()
+
+    @Header(
+        text = "Notification On Fail Click",
+        size = 2,
+    )
+    var headerFail = false
+
+    @Extract
+    var onFailClickOption = NotificationOption()
+
+    @Header(
+        text = "Notification On Non Queued Click",
+        size = 2,
+    )
+    var headerNonQueued = false
+
+    @Extract
+    var onNonQueuedClickOption = NotificationOption()
+
+    @Header(
+        text = "Notification On Actual Click (Sent To Server)",
+        size = 2,
+    )
+    var headerActual = false
+
+    @Extract
+    var onActualClickOption = NotificationOption()
+
+    @Header(
+        text = "Debug",
+        size = 2,
+    )
+    var headerDebug = false
+
+    @Switch(
+        name = "Force Enabled",
+        size = 1,
+    )
+    var forceEnabledOption = false
+
+    override val enableQueue by ::enableQueueOption
+    override val preventFail by ::preventFailOption
+    override val preventMisclick by ::preventMisclickOption
+    override val reloadOnMismatch by ::reloadOnMismatchOption
+    override val clickDelayFrom by ::clickDelayFromOption
+    override val clickDelayUntil by ::clickDelayUntilOption
+    override val onCorrectClick by ::onCorrectClickOption
+    override val onCanceledClick by ::onCanceledClickOption
+    override val onWrongClick by ::onWrongClickOption
+    override val onFailClick by ::onFailClickOption
+    override val onNonQueuedClick by ::onNonQueuedClickOption
+    override val onActualClick by ::onActualClickOption
+    override val showChest by ::showChestOption
+    override val chestScale get() = chestScaleOption.double
+    override val forceEnabled by ::forceEnabledOption
+}
