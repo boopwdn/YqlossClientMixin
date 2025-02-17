@@ -63,6 +63,13 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
 
     var data: TerminalData? = null
 
+    private fun validateData() {
+        val data = data ?: return
+        if (data.queue.count { !it.wrong } != data.states.size - 1) {
+            this.data = null
+        }
+    }
+
     fun reloadTerminal() {
         data = null
     }
@@ -156,6 +163,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
         chest: GuiChest,
         data: TerminalData?,
     ) {
+        validateData()
         val tick = lastTick != tickCounter
         lastTick = tickCounter
         val windowID = chest.inventorySlots.windowId
@@ -189,7 +197,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
                 if (data.clickDelay == 0) {
                     if (state === null) {
                         ++data.clickDelay
-                    } else {
+                    } else if (data.queue.isNotEmpty()) {
                         val click = data.queue[0]
                         if (click.wrong) {
                             data.queue.removeFirst()
@@ -275,6 +283,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
                     )
             }
         }
+        validateData()
     }
 
     private fun clickSlot(

@@ -4,3 +4,7 @@
 
 * Yqloss Client (Mixin) is released to public
 * All previous changelogs have been deleted
+
+## 0.5.1 (UTC+8 2025/02/18 02:00)
+
+* fix(BetterTerminal): fix a game crashing bug though the cause and reproducing method haven't been found
