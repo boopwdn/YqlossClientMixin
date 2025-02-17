@@ -10,9 +10,6 @@ Note that this mod is not registered as a Forge mod, nor do it use Forge events 
 
 [Hypixel Mod API](https://github.com/HypixelDev/ModAPI)
 
-Be aware that Hypixel Mod API sometimes bugs and doesn't send the location. Solve this by enabling the "Force Enabled"
-option or rejoining the server.
-
 ## Special Thanks
 
 [ench](https://github.com/EnchStudio): GUI design and ideas
