@@ -18,12 +18,10 @@
 
 package yqloss.yqlossclientmixinkt.impl.mixin;
 
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.EntityRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yqloss.yqlossclientmixinkt.impl.mixincallback.CallbackEntityRenderer;
 
@@ -39,19 +37,9 @@ public abstract class MixinEntityRenderer {
         CallbackEntityRenderer.YqlossClient.INSTANCE.updateCameraAndRenderRenderHUD();
     }
 
-    @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/ForgeHooksClient;drawScreen(Lnet/minecraft/client/gui/GuiScreen;IIF)V", shift = At.Shift.AFTER), remap = false)
-    private void yc$updateCameraAndRenderRenderScreen(float partialTicks, long nanoTime, CallbackInfo ci) {
-        CallbackEntityRenderer.YqlossClient.INSTANCE.updateCameraAndRenderRenderScreen();
-    }
-
     @Inject(method = "updateCameraAndRender", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;currentScreen:Lnet/minecraft/client/gui/GuiScreen;", ordinal = 1))
     private void yc$updateCameraAndRenderProxyScreenAtCondition(float partialTicks, long nanoTime, CallbackInfo ci) {
         CallbackEntityRenderer.YqlossClient.INSTANCE.updateCameraAndRenderProxyScreenAtCondition();
-    }
-
-    @Redirect(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/ForgeHooksClient;drawScreen(Lnet/minecraft/client/gui/GuiScreen;IIF)V"), remap = false)
-    private void yc$updateCameraAndRenderProxyScreen(GuiScreen screen, int mouseX, int mouseY, float partialTicks) {
-        CallbackEntityRenderer.YqlossClient.INSTANCE.updateCameraAndRenderProxyScreen(screen, mouseX, mouseY, partialTicks);
     }
 
     @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;endStartSection(Ljava/lang/String;)V"))

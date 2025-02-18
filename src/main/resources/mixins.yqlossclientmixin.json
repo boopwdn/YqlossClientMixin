@@ -21,6 +21,7 @@
     "mixins": [
         "MixinChunkCacheOF",
         "MixinEntity",
+        "MixinForgeHooksClient",
         "MixinLwjglManagerImpl"
     ]
 }

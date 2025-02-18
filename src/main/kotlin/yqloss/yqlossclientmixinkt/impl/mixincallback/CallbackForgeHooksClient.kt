@@ -19,41 +19,19 @@
 package yqloss.yqlossclientmixinkt.impl.mixincallback
 
 import cc.polyfrost.oneconfig.renderer.NanoVGHelper
-import net.minecraft.client.gui.ScaledResolution
+import net.minecraft.client.gui.GuiScreen
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
-import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlurEvent
-import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.glStateScope
-import yqloss.yqlossclientmixinkt.util.partialTicks
 
-object CallbackEntityRenderer {
+object CallbackForgeHooksClient {
     object YqlossClient {
-        fun updateCameraAndRenderPre(partialTicksIn: Double) {
-            partialTicks = partialTicksIn
-            YC.eventDispatcher(YCRenderEvent.Render.Pre)
-        }
+        private var drawYCScreenAtPost = false
 
-        fun updateCameraAndRenderRenderHUD() {
-            GUIEvent.HUD
-                .Post()
-                .also(YC.eventDispatcher)
-                .apply {
-                    glStateScope {
-                        val helper = NanoVGHelper.INSTANCE
-                        helper.setupAndDraw { vg ->
-                            val context = NanoVGUIContext(helper, vg)
-                            helper.setAlpha(vg, 1.0F)
-                            widgets.forEach { it.draw(context) }
-                        }
-                    }
-                }
-        }
-
-        fun updateCameraAndRenderProxyScreenAtCondition() {
-            if (MC.currentScreen !== null) return
+        private fun drawYCScreen() {
             GUIEvent.Screen
                 .Post()
                 .also(YC.eventDispatcher)
@@ -68,11 +46,32 @@ object CallbackEntityRenderer {
                     }
                 }
         }
-    }
 
-    object SSMotionBlur {
-        fun updateCameraAndRenderRenderMotionBlur() {
-            YC.eventDispatcher(SSMotionBlurEvent.Render(MC.displayWidth, MC.displayHeight, ScaledResolution(MC)))
+        fun drawScreenPre(
+            screen: GuiScreen,
+            mouseX: Int,
+            mouseY: Int,
+            partialTicks: Float,
+            ci: CallbackInfo,
+        ) {
+            YCRenderEvent.Screen
+                .Proxy(screen)
+                .also(YC.eventDispatcher)
+                .mutableScreen
+                ?.run {
+                    ci.cancel()
+                    drawScreen(mouseX, mouseY, partialTicks)
+                    drawYCScreen()
+                }
+                ?: run {
+                    drawYCScreenAtPost = true
+                }
+        }
+
+        fun drawScreenPost() {
+            if (drawYCScreenAtPost) {
+                drawYCScreen()
+            }
         }
     }
 }
