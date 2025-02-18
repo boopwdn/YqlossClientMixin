@@ -9,6 +9,6 @@
 
 * fix(BetterTerminal): fix a game crashing bug though the cause and reproducing method haven't been found
 
-## 0.5.1 (UTC+8 2025/02/19 01:30)
+## 0.5.2 (UTC+8 2025/02/19 01:30)
 
 * fix: fix being unable to proxy screen with only OptiFine installed
