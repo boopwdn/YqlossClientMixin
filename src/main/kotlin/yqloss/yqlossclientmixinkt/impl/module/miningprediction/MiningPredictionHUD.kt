@@ -36,6 +36,7 @@ import yqloss.yqlossclientmixinkt.util.math.Fraction
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.math.double
 import yqloss.yqlossclientmixinkt.util.partialTicks
+import yqloss.yqlossclientmixinkt.util.scope.longrun
 import kotlin.math.min
 
 object MiningPredictionHUD :
@@ -130,10 +131,14 @@ object MiningPredictionHUD :
         super.registerEvents(registry)
         registry.run {
             register<MiningPredictionEvent.BreakBlock> {
-                val box = size
-                val tr = transformation
-                animation.update(true, box, tr, fadeOut)
-                redraw(box, tr)
+                longrun {
+                    ensureHUDEnabled()
+
+                    val box = size
+                    val tr = transformation
+                    animation.update(true, box, tr, fadeOut)
+                    redraw(box, tr)
+                }
             }
         }
     }

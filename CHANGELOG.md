@@ -12,3 +12,7 @@
 ## 0.5.2 (UTC+8 2025/02/19 01:30)
 
 * fix: fix being unable to proxy screen with only OptiFine installed
+
+## 0.5.3 (UTC+8 2025/02/19 21:00)
+
+* fix(MiningPrediction): fix HUD showing up when you break a block with the HUD disabled

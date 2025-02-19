@@ -1,5 +1,7 @@
 # Yqloss Client (Mixin)
 
+Showcase Video: [https://www.bilibili.com/video/BV1Q4wfejEAB/](https://www.bilibili.com/video/BV1Q4wfejEAB/)
+
 Note that this mod is not registered as a Forge mod, nor do it use Forge events or API. It's all based on Mixin.
 
 ## Dependency
