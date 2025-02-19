@@ -68,18 +68,22 @@ data class TerminalRubix(
     private fun getSlot(
         state: Int,
         solution: Int,
-    ): SlotType {
+    ): Terminal.SlotRenderInfo {
         return when (clicksTo(state, solution)) {
-            -2 -> SlotType.RUBIX_RIGHT_2
-            -1 -> SlotType.RUBIX_RIGHT_1
-            0 -> SlotType.RUBIX_CORRECT
-            1 -> SlotType.RUBIX_LEFT_1
-            2 -> SlotType.RUBIX_LEFT_2
-            else -> SlotType.RUBIX_CORRECT
+            -2 -> Terminal.SlotRenderInfo(SlotType.RUBIX_RIGHT_2, "-2")
+            -1 -> Terminal.SlotRenderInfo(SlotType.RUBIX_RIGHT_1, "-1")
+            0 -> Terminal.SlotRenderInfo(SlotType.RUBIX_CORRECT, null)
+            1 -> Terminal.SlotRenderInfo(SlotType.RUBIX_LEFT_1, "1")
+            2 -> Terminal.SlotRenderInfo(SlotType.RUBIX_LEFT_2, "2")
+            else -> Terminal.SlotRenderInfo(SlotType.RUBIX_CORRECT, null)
+        }.apply {
+            if (!BetterTerminal.options.rubixShowNumber) {
+                return copy(text = null)
+            }
         }
     }
 
-    override fun draw(state: List<Int>): List<SlotType> {
+    override fun draw(state: List<Int>): List<Terminal.SlotRenderInfo> {
         return buildList {
             val solution = solve(state)
             repeat(12) { add(SlotType.EMPTY) }

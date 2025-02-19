@@ -57,7 +57,7 @@ data class TerminalStart(
         }
     }
 
-    override fun draw(state: List<Int>): List<SlotType> {
+    override fun draw(state: List<Int>): List<Terminal.SlotRenderInfo> {
         return buildList {
             repeat(10) { add(SlotType.EMPTY) }
             (0..6).forEach { add(getSlot(state[it])) }

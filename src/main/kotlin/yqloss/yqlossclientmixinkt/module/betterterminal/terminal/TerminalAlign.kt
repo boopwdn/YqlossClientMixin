@@ -50,7 +50,7 @@ data class TerminalAlign(
         }
     }
 
-    override fun draw(state: List<Int>): List<SlotType> {
+    override fun draw(state: List<Int>): List<Terminal.SlotRenderInfo> {
         return buildList {
             add(SlotType.EMPTY)
             repeat(state[0]) { add(SlotType.EMPTY) }

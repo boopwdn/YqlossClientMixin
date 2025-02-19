@@ -70,14 +70,6 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
             SlotType.ALIGN_INACTIVE_BUTTON to { options.alignInactiveButton },
         )
 
-    private val textMap =
-        mapOf(
-            SlotType.RUBIX_RIGHT_2 to "-2",
-            SlotType.RUBIX_RIGHT_1 to "-1",
-            SlotType.RUBIX_LEFT_1 to "1",
-            SlotType.RUBIX_LEFT_2 to "2",
-        )
-
     private var buttons: List<Button<Pair<Int, String?>>>? = null
 
     private var buttonNonQueue: TerminalButton<Boolean>? = null
@@ -213,10 +205,9 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
             .forEachIndexed { slotID, slot ->
                 val x = slotID % 9
                 val y = slotID / 9
-                val slotColor = colorGetterMap[slot]?.invoke()?.rgb ?: return@forEachIndexed
-                val slotText = textMap[slot]
+                val slotColor = colorGetterMap[slot.type]?.invoke()?.rgb ?: return@forEachIndexed
                 buttons[slotID + data.terminal.beginLine * 9].run {
-                    info = slotColor to slotText
+                    info = slotColor to slot.text
                     render(widgets, ttr + Vec2D(8.0 + 18.0 * x, 18.0 + 18.0 * y))
                 }
             }

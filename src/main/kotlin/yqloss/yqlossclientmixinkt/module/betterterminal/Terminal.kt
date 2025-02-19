@@ -32,13 +32,29 @@ interface Terminal {
 
     fun parse(items: List<ItemStack?>): List<Int>?
 
-    fun draw(state: List<Int>): List<SlotType>
+    fun draw(state: List<Int>): List<SlotRenderInfo>
 
     fun predict(
         state: List<Int>,
         slotID: Int,
         button: Int,
     ): Pair<List<Int>, ClickType>
+
+    data class SlotRenderInfo(
+        val type: SlotType,
+        val text: String?,
+    )
+
+    fun MutableList<SlotRenderInfo>.add(type: SlotType) {
+        add(SlotRenderInfo(type, null))
+    }
+
+    fun MutableList<SlotRenderInfo>.add(
+        type: SlotType,
+        text: String,
+    ) {
+        add(SlotRenderInfo(type, text))
+    }
 }
 
 interface TerminalFactory<T : Terminal> {

@@ -41,7 +41,7 @@ data class TerminalPanes(
 
     private fun getSlot(state: Int) = if (state == 0) SlotType.PANES_OFF else SlotType.PANES_ON
 
-    override fun draw(state: List<Int>): List<SlotType> {
+    override fun draw(state: List<Int>): List<Terminal.SlotRenderInfo> {
         return buildList {
             repeat(11) { add(SlotType.EMPTY) }
             (0..4).forEach { add(getSlot(state[it])) }

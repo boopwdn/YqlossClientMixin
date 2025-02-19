@@ -20,6 +20,7 @@ package yqloss.yqlossclientmixinkt.module.betterterminal.terminal
 
 import net.minecraft.item.ItemStack
 import yqloss.yqlossclientmixinkt.module.betterterminal.*
+import kotlin.math.abs
 
 private val SLOTS = rectSlots(1, 1, 7, 2)
 
@@ -44,20 +45,32 @@ data class TerminalOrder(
     private fun getSlot(
         state: Int,
         solution: Int,
-    ): SlotType {
+    ): Terminal.SlotRenderInfo {
+        val text = abs(state).toString()
         return if (state < 0) {
-            SlotType.ORDER_CLICKED
+            Terminal.SlotRenderInfo(
+                SlotType.ORDER_CLICKED,
+                if (BetterTerminal.options.orderShowClickedNumber) {
+                    text
+                } else {
+                    null
+                },
+            )
         } else {
             when (state - solution) {
-                0 -> SlotType.ORDER_1
-                1 -> SlotType.ORDER_2
-                2 -> SlotType.ORDER_3
-                else -> SlotType.ORDER_OTHER
+                0 -> Terminal.SlotRenderInfo(SlotType.ORDER_1, text)
+                1 -> Terminal.SlotRenderInfo(SlotType.ORDER_2, text)
+                2 -> Terminal.SlotRenderInfo(SlotType.ORDER_3, text)
+                else -> Terminal.SlotRenderInfo(SlotType.ORDER_OTHER, text)
+            }.apply {
+                if (!BetterTerminal.options.orderShowNumber) {
+                    return copy(text = null)
+                }
             }
         }
     }
 
-    override fun draw(state: List<Int>): List<SlotType> {
+    override fun draw(state: List<Int>): List<Terminal.SlotRenderInfo> {
         return buildList {
             val solution = solve(state)
             repeat(10) { add(SlotType.EMPTY) }

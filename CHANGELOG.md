@@ -16,3 +16,7 @@
 ## 0.5.3 (UTC+8 2025/02/19 21:00)
 
 * fix(MiningPrediction): fix HUD showing up when you break a block with the HUD disabled
+
+## 0.6.0 (UTC+8 2025/02/19 21:50)
+
+* feat(BetterTerminal): add "show number" option for Order and Rubix terminal

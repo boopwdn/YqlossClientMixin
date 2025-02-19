@@ -20,7 +20,6 @@ package yqloss.yqlossclientmixinkt.module.betterterminal.terminal
 
 import net.minecraft.item.ItemStack
 import yqloss.yqlossclientmixinkt.module.betterterminal.ClickType
-import yqloss.yqlossclientmixinkt.module.betterterminal.SlotType
 import yqloss.yqlossclientmixinkt.module.betterterminal.Terminal
 
 data class TerminalLoading(
@@ -34,7 +33,7 @@ data class TerminalLoading(
 
     override fun parse(items: List<ItemStack?>) = listOf<Int>()
 
-    override fun draw(state: List<Int>) = listOf<SlotType>()
+    override fun draw(state: List<Int>) = listOf<Terminal.SlotRenderInfo>()
 
     override fun predict(
         state: List<Int>,

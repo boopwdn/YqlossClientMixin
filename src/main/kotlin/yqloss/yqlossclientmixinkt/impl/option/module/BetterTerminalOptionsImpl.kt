@@ -135,6 +135,18 @@ class BetterTerminalOptionsImpl :
     )
     var headerOrder = false
 
+    @Switch(
+        name = "Show Number",
+        size = 1,
+    )
+    var orderShowNumberOption = false
+
+    @Switch(
+        name = "Show Finished Number",
+        size = 1,
+    )
+    var orderShowClickedNumberOption = false
+
     @Color(
         name = "First",
         size = 1,
@@ -236,6 +248,12 @@ class BetterTerminalOptionsImpl :
         size = 2,
     )
     var headerRubix = false
+
+    @Switch(
+        name = "Show Number",
+        size = 1,
+    )
+    var rubixShowNumberOption = true
 
     @Color(
         name = "-2",
@@ -381,6 +399,9 @@ class BetterTerminalOptionsImpl :
     override val reloadOnMismatch by ::reloadOnMismatchOption
     override val clickDelayFrom by ::clickDelayFromOption
     override val clickDelayUntil by ::clickDelayUntilOption
+    override val orderShowNumber by ::orderShowNumberOption
+    override val orderShowClickedNumber by ::orderShowClickedNumberOption
+    override val rubixShowNumber by ::rubixShowNumberOption
     override val onCorrectClick by ::onCorrectClickOption
     override val onCanceledClick by ::onCanceledClickOption
     override val onWrongClick by ::onWrongClickOption
