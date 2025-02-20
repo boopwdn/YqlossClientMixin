@@ -53,7 +53,7 @@ abstract class Fade<T>(
         if (smooth) {
             progress = progressSmooth.approach(1.0, 0.5)
         } else {
-            reset()
+            progressSmooth.reset(0.0)
         }
         renderSingle(widgets, tr, last, 1.0 - progress, true)
         renderSingle(widgets, tr, curr, progress, false)

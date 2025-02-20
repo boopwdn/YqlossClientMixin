@@ -26,8 +26,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yqloss.yqlossclientmixinkt.impl.mixincallback.CallbackForgeHooksClient;
 
-@Mixin(ForgeHooksClient.class)
-public class MixinForgeHooksClient {
+@Mixin(value = ForgeHooksClient.class, remap = false, priority = 999)
+public abstract class MixinForgeHooksClient {
     @Inject(method = "drawScreen", at = @At("HEAD"), cancellable = true, remap = false)
     private static void yc$drawScreenPre(GuiScreen screen, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
         CallbackForgeHooksClient.YqlossClient.INSTANCE.drawScreenPre(screen, mouseX, mouseY, partialTicks, ci);

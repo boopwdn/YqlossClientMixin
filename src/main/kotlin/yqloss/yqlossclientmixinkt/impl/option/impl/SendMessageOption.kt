@@ -20,6 +20,7 @@ package yqloss.yqlossclientmixinkt.impl.option.impl
 
 import cc.polyfrost.oneconfig.config.annotations.*
 import cc.polyfrost.oneconfig.config.annotations.Number
+import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.module.option.SendMessagePool
 import yqloss.yqlossclientmixinkt.module.option.YCSendMessageOption
 import yqloss.yqlossclientmixinkt.util.printChat
@@ -74,29 +75,35 @@ class SendMessageOption : YCSendMessageOption {
     override val intervalPool by ::intervalPoolOption
     override val maxPoolSize by ::maxPoolSizeOption
 
-    @Button(
-        name = "Clear this Pool",
-        text = "Clear",
-        size = 1,
-    )
-    fun clearPool() {
-        SendMessagePool.clear(intervalPool)
-        printChat("cleared pool $intervalPool")
-    }
-
-    @Button(
-        name = "Print Pool Sizes",
-        text = "Print",
-        size = 1,
-    )
-    fun viewPoolSize() {
-        printChat()
-        printChat("Pool Sizes:")
-        SendMessagePool.poolMap.forEach { (pool, list) ->
-            if (list.isNotEmpty()) {
-                printChat("    $pool: ${list.size}")
-            }
+    @Transient
+    @Extract
+    val clearPool =
+        @Button(
+            name = "Clear this Pool",
+            text = "Clear",
+            size = 1,
+        )
+        {
+            SendMessagePool.clear(intervalPool)
+            printChat("cleared pool $intervalPool")
         }
-        printChat()
-    }
+
+    @Transient
+    @Extract
+    val viewPoolSize =
+        @Button(
+            name = "Print Pool Sizes",
+            text = "Print",
+            size = 1,
+        )
+        {
+            printChat()
+            printChat("Pool Sizes:")
+            SendMessagePool.poolMap.forEach { (pool, list) ->
+                if (list.isNotEmpty()) {
+                    printChat("    $pool: ${list.size}")
+                }
+            }
+            printChat()
+        }
 }

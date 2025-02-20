@@ -38,7 +38,7 @@ private val optionsImplMap = mutableMapOf<KClass<*>, () -> YCModuleOptions>()
 
 private val logger = ycLogger("Config")
 
-object YqlossClientConfig : Config(Mod("Yqloss Client $MOD_VERSION", ModType.THIRD_PARTY), "yqlossclient.json") {
+object YqlossClientConfig : Config(Mod("# Yqloss Client $MOD_VERSION #", ModType.THIRD_PARTY), "yqlossclient.json") {
     @SubConfig
     var main = MainConfig()
 
@@ -63,9 +63,11 @@ object YqlossClientConfig : Config(Mod("Yqloss Client $MOD_VERSION", ModType.THI
     @SubConfig
     var ycLeapMenu = YCLeapMenuOptionsImpl()
 
+    @SubConfig
+    var mapMarker = MapMarkerOptionsImpl()
+
     init {
         initialize()
-        main.initialize()
 
         YqlossClientConfig::class
             .declaredMemberProperties

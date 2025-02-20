@@ -4,21 +4,30 @@ Showcase Video: [https://www.bilibili.com/video/BV1Q4wfejEAB/](https://www.bilib
 
 Note that this mod is not registered as a Forge mod, nor do it use Forge events or API. It's all based on Mixin.
 
+## Feature List
+
+* Better Terminal (queue clicks)
+* Corpse Finder (mineshaft)
+* Map Marker (purely visual block replacement)
+* Mining Prediction (shows when you should aim at the next block)
+* Raw Input
+* SS Motion Blur (based on screenshot instead of shader; can be used with Fast Render; little performance impact)
+* YC Leap Menu (5-grid ring-shaped menu; differs from most leap menus)
+* Tweaks (features that modify vanilla slightly)
+
 ## Dependency
 
-[OneConfig](https://github.com/Polyfrost/OneConfig)
+* [OneConfig](https://github.com/Polyfrost/OneConfig)
 
 ### Soft Dependency
 
-[Hypixel Mod API](https://github.com/HypixelDev/ModAPI)
+* [Hypixel Mod API](https://github.com/HypixelDev/ModAPI)
 
 ## Special Thanks
 
-[ench](https://github.com/EnchStudio): GUI design and ideas
-
-trytoquit: lend me a Puzzle Cube for testing BetterTerminal
-
-All early version testers (and those who crashed because of my mod)
+* [ench](https://github.com/EnchStudio): GUI design and ideas
+* trytoquit: lend me a Puzzle Cube for testing BetterTerminal
+* All early version testers (and those who crashed because of my mod)
 
 ## License
 
@@ -31,24 +40,21 @@ See the [LICENSE](LICENSE) file for details.
 
 This mod is based on [OneConfigExampleMod](https://github.com/Polyfrost/OneConfigExampleMod)
 
-Copyright (C) 2025 Yqloss ([GPLv2 License](LICENSE))
-
-Raw Input: Copyright (c) 2020
-Curi0 ([Project](https://github.com/xCuri0/RawInputMod)) ([MIT License](LICENSE_RAW_INPUT))
-
-Montserrat Font: Copyright 2024 The Montserrat.Git Project
-Authors (https://github.com/JulietaUla/Montserrat.git) ([Project](https://github.com/JulietaUla/Montserrat)) ([OFL License](src/main/resources/assets/yqlossclientmixin/font/montserrat/OFL.txt))
-
-Open Color (Default Color Scheme): Copyright (c) 2016
-heeyeun ([Project](https://github.com/yeun/open-color)) ([MIT License](LICENSE_OPEN_COLOR))
+* Copyright (C) 2025 Yqloss ([GPLv2 License](LICENSE))
+* Raw Input: Copyright (c) 2020
+  Curi0 ([Project](https://github.com/xCuri0/RawInputMod)) ([MIT License](LICENSE_RAW_INPUT))
+* Montserrat Font: Copyright 2024 The Montserrat.Git Project
+  Authors (https://github.com/JulietaUla/Montserrat.git) ([Project](https://github.com/JulietaUla/Montserrat)) ([OFL License](src/main/resources/assets/yqlossclientmixin/font/montserrat/OFL.txt))
+* Open Color (Default Color Scheme): Copyright (c) 2016
+  heeyeun ([Project](https://github.com/yeun/open-color)) ([MIT License](LICENSE_OPEN_COLOR))
 
 At the same time, for better user experience and compatibility, I included the following libraries in
 the [libraries](libraries) folder:
 
-The internal part of OneConfig (for accessing NanoVG): Copyright (C) 2021-2024 Polyfrost Inc. and
-contributors. ([Project](https://github.com/Polyfrost/OneConfig)) ([MIT License](libraries/LICENSE_ONECONFIG))
+* The internal part of OneConfig (for accessing NanoVG): Copyright (C) 2021-2024 Polyfrost Inc. and
+  contributors. ([Project](https://github.com/Polyfrost/OneConfig)) ([MIT License](libraries/LICENSE_ONECONFIG))
+* Some OptiFine classes exported from running Minecraft (for compatibility)
 
-Some OptiFine classes exported from running Minecraft (for compatibility)
 </details>
 
 ## Other Things I Want To Say

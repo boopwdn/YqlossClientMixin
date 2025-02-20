@@ -41,11 +41,11 @@ import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.general.Box
 import yqloss.yqlossclientmixinkt.util.general.inBox
 import yqloss.yqlossclientmixinkt.util.general.inMutableBox
-import yqloss.yqlossclientmixinkt.util.general.sameNotNull
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.math.blendColor
 import yqloss.yqlossclientmixinkt.util.math.unitVec
 import yqloss.yqlossclientmixinkt.util.property.versionedLazy
+import yqloss.yqlossclientmixinkt.util.sameNotNull
 import yqloss.yqlossclientmixinkt.util.scope.longrun
 import kotlin.math.PI
 import kotlin.math.sin
@@ -159,6 +159,8 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
     abstract class ClassLeapButton(
         private val index: Int,
     ) : RingArcButton<YCLeapMenu.PlayerInfo?>(null) {
+        override val smooth get() = options.smoothGUI
+
         override val outerRadius = 120.0 - PADDING_ARC / tan(0.2 * PI)
         override val innerRadius = 55.0 - PADDING_ARC / tan(0.2 * PI)
         private val extraRadius = 115.0 - PADDING_ARC / tan(0.2 * PI)
@@ -280,6 +282,8 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
     }
 
     class LeapFade : Fade<Box<YCLeapMenu.PlayerInfo?>?>(null) {
+        override val smooth get() = options.smoothGUI
+
         override fun renderSingle(
             widgets: MutableList<Widget<*>>,
             tr: Transformation,
@@ -339,6 +343,8 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
     }
 
     class PreferredLeapButton : EllipseButton<LeapFade>(LeapFade()) {
+        override val smooth get() = options.smoothGUI
+
         override val collisionSize = Vec2D(110.0 - PADDING_DEFAULT * 2, 110.0 - PADDING_DEFAULT * 2)
 
         override fun getColor(hovered: Boolean) = Colors.GRAY[9].rgb

@@ -29,15 +29,18 @@ import yqloss.yqlossclientmixinkt.module.rawinput.RawInputOptions
 class RawInputOptionsImpl :
     OptionsImpl(INFO_RAW_INPUT),
     RawInputOptions {
+    @Transient
     @Extract
-    var disclaimer = DisclaimerAtOwnRisk()
+    val disclaimer = DisclaimerAtOwnRisk()
 
+    @Transient
     @Extract
-    var legit = DisclaimerLegit()
+    val legit = DisclaimerLegit()
 
+    @Transient
     @Header(
         text = "Raw Input",
         size = 2,
     )
-    var headerModule = false
+    val headerModule = false
 }

@@ -20,3 +20,14 @@
 ## 0.6.0 (UTC+8 2025/02/19 21:50)
 
 * feat(BetterTerminal): add "show number" option for Order and Rubix terminal
+
+## 0.7.0 (UTC+8 2025/02/21 04:40)
+
+* feat(MapMarker): init
+* feat(YCLeapMenu): add option for smooth GUI
+* feat: add # before and after mod name
+* feat: add command /yc to open config menu
+* fix: fix button order in config menu being messed up
+* fix: fix fade in/out elements not showing up when smooth GUI is disabled
+* fix: should have fixed crashing because of IBlockAccess wrapping in some cases, though the cause is not clear
+* fix: fix incompatibility with PolyPatcher's GUI scale override by modifying mixin priority

@@ -38,42 +38,49 @@ import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPredictionOption
 class MiningPredictionOptionsImpl :
     OptionsImpl(INFO_MINING_PREDICTION),
     MiningPredictionOptions {
+    @Transient
     @Extract
-    var disclaimer = DisclaimerAtOwnRisk()
+    val disclaimer = DisclaimerAtOwnRisk()
 
+    @Transient
     @Extract
-    var legit = DisclaimerLegit()
+    val legit = DisclaimerLegit()
 
+    @Transient
     @Extract
-    var requireHypixelModAPI = DisclaimerRequireHypixelModAPI()
+    val requireHypixelModAPI = DisclaimerRequireHypixelModAPI()
 
+    @Transient
     @Header(
         text = "Mining Prediction",
         size = 2,
     )
-    var headerModule = false
+    val headerModule = false
 
+    @Transient
     @Info(
         text =
             "This applies to all pickaxes, prismarine shards, skulls on these islands:",
         type = InfoType.WARNING,
         size = 2,
     )
-    var warningUsage = false
+    val warningUsage = false
 
+    @Transient
     @Info(
         text = "Gold Mine, Deep Caverns, Dwarven Mines, Crystal Hollows, Mineshaft, The End, Crimson Isle.",
         type = InfoType.WARNING,
         size = 2,
     )
-    var warningIslands = false
+    val warningIslands = false
 
+    @Transient
     @Info(
         text = "If Mining Speed Override is not enabled, Mining Speed stat is required to show in tab for this to work.",
         type = InfoType.WARNING,
         size = 2,
     )
-    var warningWidget = false
+    val warningWidget = false
 
     @Number(
         name = "Breaking Time Offset",
@@ -111,12 +118,13 @@ class MiningPredictionOptionsImpl :
     )
     var generalMiningSpeedOffsetOption = 0
 
+    @Transient
     @Info(
         text = "Override means the FINAL Mining Speed used for calculation, not the specialized part.",
         type = InfoType.WARNING,
         size = 2,
     )
-    var warningOverride = false
+    val warningOverride = false
 
     @Switch(
         name = "Gemstone Mining Speed Override",
@@ -163,20 +171,22 @@ class MiningPredictionOptionsImpl :
     )
     var generalMiningSpeedOverrideOption = 0
 
+    @Transient
     @Header(
         text = "Replacement Block For Destroyed Blocks",
         size = 2,
     )
-    var headerReplacement = false
+    val headerReplacement = false
 
     @Extract
     var destroyedBlockOption = BlockOption()
 
+    @Transient
     @Header(
         text = "Notification On Breaking Block",
         size = 2,
     )
-    var headerBreakBlockNotification = false
+    val headerBreakBlockNotification = false
 
     @Extract
     var onBreakBlockOption = NotificationOption()
@@ -263,20 +273,12 @@ class MiningPredictionOptionsImpl :
     )
     var textProgressGap = 4.0F
 
+    @Transient
     @Header(
         text = "Debug",
         size = 2,
     )
-    var headerDebug = false
-
-    @Button(
-        name = "Print Debug Info",
-        text = "Print",
-        size = 1,
-    )
-    fun printDebugInfo() {
-        MiningPrediction.printDebugInfo()
-    }
+    val headerDebug = false
 
     @Switch(
         name = "Force Enabled",
@@ -289,6 +291,18 @@ class MiningPredictionOptionsImpl :
         size = 1,
     )
     var forceExample = false
+
+    @Transient
+    @Extract
+    val printDebugInfo =
+        @Button(
+            name = "Print Debug Info",
+            text = "Print",
+            size = 1,
+        )
+        {
+            MiningPrediction.printDebugInfo()
+        }
 
     override val onBreakBlock by ::onBreakBlockOption
     override val durationOffset by ::offsetOption

@@ -16,31 +16,12 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.util.general
+package yqloss.yqlossclientmixinkt.module.mapmarker
 
-import kotlinx.serialization.Serializable
+interface ModificationGroup {
+    fun onTick() {}
 
-sealed interface BoxType<out T> {
-    val value: T
+    operator fun get(name: String): Modification
 
-    @Suppress("UNCHECKED_CAST")
-    fun <R> cast() = value as R
+    fun listModifications(): List<Modification>
 }
-
-@Serializable
-data class Box<out T>(
-    override val value: T,
-) : BoxType<T>
-
-@Serializable
-data class MutableBox<T>(
-    override var value: T,
-) : BoxType<T>
-
-inline val <T> T.inBox get() = Box(this)
-
-inline val <T> T.inMutableBox get() = MutableBox(this)
-
-inline val <T> BoxType<T>.reBox get() = Box(value)
-
-inline val <T> BoxType<T>.reMutableBox get() = MutableBox(value)

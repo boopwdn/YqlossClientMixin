@@ -18,6 +18,7 @@
 
 package yqloss.yqlossclientmixinkt.util.math
 
+import kotlinx.serialization.Serializable
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
@@ -60,6 +61,7 @@ typealias Area<T> = Pair<T, T>
 
 operator fun <TV : Number, T : Vector<TV, T>> Area<T>.contains(vec: T) = first allLessEqual vec && vec allLess second
 
+@Serializable
 data class Vec2I(
     val x: Int,
     val y: Int,
@@ -97,16 +99,32 @@ data class Vec2I(
     override fun allLess(other: Vec2I) = x < other.x && y < other.y
 
     override fun allLessEqual(other: Vec2I) = x <= other.x && y <= other.y
-
-    inline val asVec2D get() = Vec2D(x.double, y.double)
-
-    inline val asCenterVec2D get() = Vec2D(x + 0.5, y + 0.5)
-
-    inline val asMaxVec2D get() = Vec2D(x + 1.0, y + 1.0)
 }
+
+inline val Vec2I.asVec2D get() = Vec2D(x.double, y.double)
+
+inline val Vec2I.asCenterVec2D get() = Vec2D(x + 0.5, y + 0.5)
+
+inline val Vec2I.asMaxVec2D get() = Vec2D(x + 1.0, y + 1.0)
 
 typealias Area2I = Area<Vec2I>
 
+val Area2I.iterable2I: Iterable<Vec2I>
+    get() {
+        return object : Iterable<Vec2I> {
+            override fun iterator(): Iterator<Vec2I> {
+                return iterator {
+                    repeat(second.y - first.y) { dy ->
+                        repeat(second.x - first.x) { dx ->
+                            yield(first + Vec2I(dx, dy))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+@Serializable
 data class Vec2D(
     val x: Double,
     val y: Double,
@@ -153,18 +171,19 @@ data class Vec2D(
     override fun allLess(other: Vec2D) = x < other.x && y < other.y
 
     override fun allLessEqual(other: Vec2D) = x <= other.x && y <= other.y
-
-    inline val asVec2I get() = Vec2I(x.int, y.int)
-
-    inline val asFloorVec2I get() = Vec2I(x.floorInt, y.floorInt)
-
-    inline val asCeilVec2I get() = Vec2I(x.ceilInt, y.ceilInt)
 }
+
+inline val Vec2D.asVec2I get() = Vec2I(x.int, y.int)
+
+inline val Vec2D.asFloorVec2I get() = Vec2I(x.floorInt, y.floorInt)
+
+inline val Vec2D.asCeilVec2I get() = Vec2I(x.ceilInt, y.ceilInt)
 
 fun unitVec(radian: Double) = Vec2D(cos(radian), sin(radian))
 
 typealias Area2D = Area<Vec2D>
 
+@Serializable
 data class Vec3I(
     val x: Int,
     val y: Int,
@@ -207,16 +226,36 @@ data class Vec3I(
     override fun allLess(other: Vec3I) = x < other.x && y < other.y && z < other.z
 
     override fun allLessEqual(other: Vec3I) = x <= other.x && y <= other.y && z <= other.z
-
-    inline val asVec3D get() = Vec3D(x.double, y.double, z.double)
-
-    inline val asCenterVec3D get() = Vec3D(x + 0.5, y + 0.5, z + 0.5)
-
-    inline val asMaxVec3D get() = Vec3D(x + 1.0, y + 1.0, z + 1.0)
 }
+
+inline val Vec3I.asVec3D get() = Vec3D(x.double, y.double, z.double)
+
+inline val Vec3I.asCenterVec3D get() = Vec3D(x + 0.5, y + 0.5, z + 0.5)
+
+inline val Vec3I.asMaxVec3D get() = Vec3D(x + 1.0, y + 1.0, z + 1.0)
 
 typealias Area3I = Area<Vec3I>
 
+val Area3I.iterable3I: Iterable<Vec3I>
+    get() {
+        return object : Iterable<Vec3I> {
+            override fun iterator(): Iterator<Vec3I> {
+                return iterator {
+                    repeat(second.y - first.y) { dy ->
+                        repeat(second.z - first.z) { dz ->
+                            repeat(second.x - first.x) { dx ->
+                                yield(first + Vec3I(dx, dy, dz))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+val Area3I.volume3I get() = (second - first).run { x * y * z }
+
+@Serializable
 data class Vec3D(
     val x: Double,
     val y: Double,
@@ -269,12 +308,12 @@ data class Vec3D(
     override fun allLess(other: Vec3D) = x < other.x && y < other.y && z < other.z
 
     override fun allLessEqual(other: Vec3D) = x <= other.x && y <= other.y && z <= other.z
-
-    inline val asVec3I get() = Vec3I(x.int, y.int, z.int)
-
-    inline val asFloorVec3I get() = Vec3I(x.floorInt, y.floorInt, z.floorInt)
-
-    inline val asCeilVec3I get() = Vec3I(x.ceilInt, y.ceilInt, z.ceilInt)
 }
+
+inline val Vec3D.asVec3I get() = Vec3I(x.int, y.int, z.int)
+
+inline val Vec3D.asFloorVec3I get() = Vec3I(x.floorInt, y.floorInt, z.floorInt)
+
+inline val Vec3D.asCeilVec3I get() = Vec3I(x.ceilInt, y.ceilInt, z.ceilInt)
 
 typealias Area3D = Area<Vec3D>

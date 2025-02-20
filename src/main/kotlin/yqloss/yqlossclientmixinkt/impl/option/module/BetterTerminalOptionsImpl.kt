@@ -36,20 +36,24 @@ import yqloss.yqlossclientmixinkt.util.math.double
 class BetterTerminalOptionsImpl :
     OptionsImpl(INFO_BETTER_TERMINAL),
     BetterTerminalOptions {
+    @Transient
     @Extract
-    var disclaimer = DisclaimerAtOwnRisk()
+    val disclaimer = DisclaimerAtOwnRisk()
 
+    @Transient
     @Extract
-    var unknownMacro = DisclaimerUnknownMacro()
+    val unknownMacro = DisclaimerUnknownMacro()
 
+    @Transient
     @Extract
-    var requireHypixelModAPI = DisclaimerRequireHypixelModAPI()
+    val requireHypixelModAPI = DisclaimerRequireHypixelModAPI()
 
+    @Transient
     @Header(
         text = "Better Terminal",
         size = 2,
     )
-    var headerModule = false
+    val headerModule = false
 
     @Extract
     var scaleOverride = ScreenScaleOption()
@@ -129,17 +133,18 @@ class BetterTerminalOptionsImpl :
             paddingYOption = 0.0F
         }
 
+    @Transient
     @Header(
         text = "Click in order!",
         size = 2,
     )
-    var headerOrder = false
+    val headerOrder = false
 
     @Switch(
         name = "Show Number",
         size = 1,
     )
-    var orderShowNumberOption = false
+    var orderShowNumberOption = true
 
     @Switch(
         name = "Show Finished Number",
@@ -177,11 +182,12 @@ class BetterTerminalOptionsImpl :
     )
     var orderOther = Colors.GRAY[8]
 
+    @Transient
     @Header(
         text = "Correct all the panes!",
         size = 2,
     )
-    var headerPanes = false
+    val headerPanes = false
 
     @Color(
         name = "ON",
@@ -195,11 +201,12 @@ class BetterTerminalOptionsImpl :
     )
     var panesOff = Colors.RED[6]
 
+    @Transient
     @Header(
         text = "What starts with: '?'?",
         size = 2,
     )
-    var headerStart = false
+    val headerStart = false
 
     @Color(
         name = "Answer",
@@ -219,11 +226,12 @@ class BetterTerminalOptionsImpl :
     )
     var startOther = Colors.NONE
 
+    @Transient
     @Header(
         text = "Select all the COLOR items!",
         size = 2,
     )
-    var headerColor = false
+    val headerColor = false
 
     @Color(
         name = "Answer",
@@ -243,11 +251,12 @@ class BetterTerminalOptionsImpl :
     )
     var colorOther = Colors.NONE
 
+    @Transient
     @Header(
         text = "Change all to same color!",
         size = 2,
     )
-    var headerRubix = false
+    val headerRubix = false
 
     @Switch(
         name = "Show Number",
@@ -256,10 +265,10 @@ class BetterTerminalOptionsImpl :
     var rubixShowNumberOption = true
 
     @Color(
-        name = "-2",
+        name = "0",
         size = 1,
     )
-    var rubixRight2 = Colors.TEAL[5]
+    var rubix0 = Colors.GRAY[8]
 
     @Color(
         name = "-1",
@@ -268,10 +277,10 @@ class BetterTerminalOptionsImpl :
     var rubixRight1 = Colors.TEAL[8]
 
     @Color(
-        name = "0",
-        size = 2,
+        name = "-2",
+        size = 1,
     )
-    var rubix0 = Colors.GRAY[8]
+    var rubixRight2 = Colors.TEAL[5]
 
     @Color(
         name = "1",
@@ -285,11 +294,12 @@ class BetterTerminalOptionsImpl :
     )
     var rubixLeft2 = Colors.INDIGO[5]
 
+    @Transient
     @Header(
         text = "Click the button on time!",
         size = 2,
     )
-    var headerAlign = false
+    val headerAlign = false
 
     @Color(
         name = "Target",
@@ -327,65 +337,72 @@ class BetterTerminalOptionsImpl :
     )
     var alignInactiveButton = Colors.GRAY[8]
 
+    @Transient
     @Header(
         text = "Notification On Correct Click",
         size = 2,
     )
-    var headerCorrect = false
+    val headerCorrect = false
 
     @Extract
     var onCorrectClickOption = NotificationOption()
 
+    @Transient
     @Header(
         text = "Notification On Canceled Click",
         size = 2,
     )
-    var headerCanceled = false
+    val headerCanceled = false
 
     @Extract
     var onCanceledClickOption = NotificationOption()
 
+    @Transient
     @Header(
         text = "Notification On Wrong Click",
         size = 2,
     )
-    var headerWrong = false
+    val headerWrong = false
 
     @Extract
     var onWrongClickOption = NotificationOption()
 
+    @Transient
     @Header(
         text = "Notification On Fail Click",
         size = 2,
     )
-    var headerFail = false
+    val headerFail = false
 
     @Extract
     var onFailClickOption = NotificationOption()
 
+    @Transient
     @Header(
         text = "Notification On Non Queued Click",
         size = 2,
     )
-    var headerNonQueued = false
+    val headerNonQueued = false
 
     @Extract
     var onNonQueuedClickOption = NotificationOption()
 
+    @Transient
     @Header(
         text = "Notification On Actual Click (Sent To Server)",
         size = 2,
     )
-    var headerActual = false
+    val headerActual = false
 
     @Extract
     var onActualClickOption = NotificationOption()
 
+    @Transient
     @Header(
         text = "Debug",
         size = 2,
     )
-    var headerDebug = false
+    val headerDebug = false
 
     @Switch(
         name = "Force Enabled",

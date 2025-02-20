@@ -16,31 +16,18 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.util.general
+package yqloss.yqlossclientmixinkt.util
 
-import kotlinx.serialization.Serializable
+import java.io.PrintWriter
+import java.io.StringWriter
 
-sealed interface BoxType<out T> {
-    val value: T
-
-    @Suppress("UNCHECKED_CAST")
-    fun <R> cast() = value as R
-}
-
-@Serializable
-data class Box<out T>(
-    override val value: T,
-) : BoxType<T>
-
-@Serializable
-data class MutableBox<T>(
-    override var value: T,
-) : BoxType<T>
-
-inline val <T> T.inBox get() = Box(this)
-
-inline val <T> T.inMutableBox get() = MutableBox(this)
-
-inline val <T> BoxType<T>.reBox get() = Box(value)
-
-inline val <T> BoxType<T>.reMutableBox get() = MutableBox(value)
+val Throwable.stackTraceMessage: String
+    get() {
+        return StringWriter()
+            .also { sw ->
+                PrintWriter(sw).use { pw ->
+                    printStackTrace(pw)
+                    pw.flush()
+                }
+            }.toString()
+    }

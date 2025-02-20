@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yqloss.yqlossclientmixinkt.impl.mixincallback.CallbackEntity;
 
 @Mixin(Entity.class)
-public class MixinEntity {
+public abstract class MixinEntity {
     @Inject(method = "setAngles", at = @At("RETURN"))
     private void yc$tweaks$setAnglesPost(float yaw, float pitch, CallbackInfo ci) {
         CallbackEntity.Tweaks.INSTANCE.setAnglesPost((Entity) (Object) this);

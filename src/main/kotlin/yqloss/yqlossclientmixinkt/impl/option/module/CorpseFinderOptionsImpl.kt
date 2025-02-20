@@ -50,20 +50,24 @@ class CorpseOptionImpl : CorpseOption {
 class CorpseFinderOptionsImpl :
     OptionsImpl(INFO_CORPSE_FINDER),
     CorpseFinderOptions {
+    @Transient
     @Extract
-    var disclaimer = DisclaimerAtOwnRisk()
+    val disclaimer = DisclaimerAtOwnRisk()
 
+    @Transient
     @Extract
-    var legit = DisclaimerLegit()
+    val legit = DisclaimerLegit()
 
+    @Transient
     @Extract
-    var requireHypixelModAPI = DisclaimerRequireHypixelModAPI()
+    val requireHypixelModAPI = DisclaimerRequireHypixelModAPI()
 
+    @Transient
     @Header(
         text = "Corpse Finder",
         size = 2,
     )
-    var headerModule = false
+    val headerModule = false
 
     @Switch(
         name = "Show Exit",
@@ -77,11 +81,12 @@ class CorpseFinderOptionsImpl :
     )
     var exitColorOption = OneColor("00FF00FF")
 
+    @Transient
     @Header(
         text = "Lapis Corpse Options",
         size = 2,
     )
-    var headerLapis = false
+    val headerLapis = false
 
     @Extract
     var lapisOption =
@@ -89,11 +94,12 @@ class CorpseFinderOptionsImpl :
             colorOption = OneColor("5555FFFF")
         }
 
+    @Transient
     @Header(
         text = "Umber Corpse Options",
         size = 2,
     )
-    var headerUmber = false
+    val headerUmber = false
 
     @Extract
     var umberOption =
@@ -101,11 +107,12 @@ class CorpseFinderOptionsImpl :
             colorOption = OneColor("FFAA00FF")
         }
 
+    @Transient
     @Header(
         text = "Tungsten Corpse Options",
         size = 2,
     )
-    var headerTungsten = false
+    val headerTungsten = false
 
     @Extract
     var tungstenOption =
@@ -113,11 +120,12 @@ class CorpseFinderOptionsImpl :
             colorOption = OneColor("AAAAAAFF")
         }
 
+    @Transient
     @Header(
         text = "Vanguard Corpse Options",
         size = 2,
     )
-    var headerVanguard = false
+    val headerVanguard = false
 
     @Extract
     var vanguardOption =
@@ -125,11 +133,12 @@ class CorpseFinderOptionsImpl :
             colorOption = OneColor("FFFF55FF")
         }
 
+    @Transient
     @Header(
         text = "Debug",
         size = 2,
     )
-    var headerDebug = false
+    val headerDebug = false
 
     @Switch(
         name = "Force Enabled",

@@ -33,38 +33,50 @@ import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenuOptions
 class YCLeapMenuOptionsImpl :
     OptionsImpl(INFO_YC_LEAP_MENU),
     YCLeapMenuOptions {
+    @Transient
     @Extract
-    var disclaimer = DisclaimerAtOwnRisk()
+    val disclaimer = DisclaimerAtOwnRisk()
 
+    @Transient
     @Extract
-    var legit = DisclaimerLegit()
+    val legit = DisclaimerLegit()
 
+    @Transient
     @Extract
-    var requireHypixelModAPI = DisclaimerRequireHypixelModAPI()
+    val requireHypixelModAPI = DisclaimerRequireHypixelModAPI()
 
+    @Transient
     @Header(
         text = "YC Leap Menu",
         size = 2,
     )
-    var headerModule = false
+    val headerModule = false
 
     @Extract
     var scaleOverride = ScreenScaleOption()
 
+    @Switch(
+        name = "Smooth GUI",
+        size = 1,
+    )
+    var smoothGUI = true
+
+    @Transient
     @Header(
         text = "Notification On Clicking Leap Button",
         size = 2,
     )
-    var headerNotification = false
+    val headerNotification = false
 
     @Extract
     var onClickLeapOption = NotificationOption()
 
+    @Transient
     @Header(
         text = "Debug",
         size = 2,
     )
-    var headerDebug = false
+    val headerDebug = false
 
     @Switch(
         name = "Force Enabled",

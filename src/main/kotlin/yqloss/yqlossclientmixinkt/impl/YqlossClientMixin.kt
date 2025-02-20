@@ -18,8 +18,12 @@
 
 package yqloss.yqlossclientmixinkt.impl
 
+import cc.polyfrost.oneconfig.gui.OneConfigGui
+import cc.polyfrost.oneconfig.gui.pages.SubModsPage
+import cc.polyfrost.oneconfig.utils.gui.GuiUtils
 import yqloss.yqlossclientmixinkt.YC_LOGGER
 import yqloss.yqlossclientmixinkt.YqlossClient
+import yqloss.yqlossclientmixinkt.event.minecraft.YCCommandEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.api.YCAPIImpl
@@ -31,6 +35,7 @@ import yqloss.yqlossclientmixinkt.impl.module.ycleapmenu.YCLeapMenuScreen
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
+import yqloss.yqlossclientmixinkt.module.mapmarker.MapMarker
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPrediction
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
@@ -83,6 +88,7 @@ class YqlossClientMixin : YqlossClient {
         MiningPrediction
         BetterTerminal
         YCLeapMenu
+        MapMarker
 
         BetterTerminalScreen
         YCLeapMenuScreen
@@ -91,6 +97,17 @@ class YqlossClientMixin : YqlossClient {
 
         eventDispatcher.register<YCMinecraftEvent.Load.Post> {
             loadHypixelModAPI
+        }
+
+        eventDispatcher.register<YCCommandEvent.Execute> { event ->
+            if (!event.canceled && !event.disableClientCommand && event.args.getOrNull(0) == "/yc") {
+                when (event.args.getOrNull(0)) {
+                    "/yc", "/yqlossclient", "/yqlossclientmixin" -> {
+                        event.canceled = true
+                        GuiUtils.displayScreen(OneConfigGui(SubModsPage(YqlossClientConfig.mod)))
+                    }
+                }
+            }
         }
     }
 }

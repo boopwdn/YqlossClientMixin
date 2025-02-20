@@ -16,31 +16,25 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.util.general
+package yqloss.yqlossclientmixinkt.impl.mixincallback
 
-import kotlinx.serialization.Serializable
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
+import yqloss.yqlossclientmixinkt.YC
+import yqloss.yqlossclientmixinkt.event.minecraft.YCCommandEvent
+import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 
-sealed interface BoxType<out T> {
-    val value: T
-
-    @Suppress("UNCHECKED_CAST")
-    fun <R> cast() = value as R
+object CallbackEntityPlayerSP {
+    object YqlossClient {
+        fun sendChatMessagePre(
+            message: String,
+            ci: CallbackInfo,
+        ) {
+            YCCommandEvent
+                .Execute(message, YqlossClientConfig.main.disableCommands)
+                .also(YC.eventDispatcher)
+                .apply {
+                    if (canceled) ci.cancel()
+                }
+        }
+    }
 }
-
-@Serializable
-data class Box<out T>(
-    override val value: T,
-) : BoxType<T>
-
-@Serializable
-data class MutableBox<T>(
-    override var value: T,
-) : BoxType<T>
-
-inline val <T> T.inBox get() = Box(this)
-
-inline val <T> T.inMutableBox get() = MutableBox(this)
-
-inline val <T> BoxType<T>.reBox get() = Box(value)
-
-inline val <T> BoxType<T>.reMutableBox get() = MutableBox(value)

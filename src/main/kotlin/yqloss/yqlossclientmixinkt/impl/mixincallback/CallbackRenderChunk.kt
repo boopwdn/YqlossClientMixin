@@ -28,6 +28,7 @@ import net.minecraft.world.IBlockAccess
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.YCCachedEventDispatcher
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
+import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.util.asVec3I
 import yqloss.yqlossclientmixinkt.util.general.inBox
 import yqloss.yqlossclientmixinkt.util.math.Vec3I
@@ -77,7 +78,7 @@ object CallbackRenderChunk {
         ) : IBlockAccess by blockAccess {
             private val cachedDispatcher = YCCachedEventDispatcher(YC.eventDispatcher)
             val cacheTileEntity = Cache<TileEntity?>(origin)
-            val cacheBlockState = Cache<IBlockState>(origin)
+            val cacheBlockState = Cache<IBlockState?>(origin)
 
             override fun getTileEntity(pos: BlockPos): TileEntity? {
                 return cacheTileEntity.getOrSet(pos.asVec3I) {
@@ -95,7 +96,7 @@ object CallbackRenderChunk {
                             .ProcessBlockState(blockAccess, pos.asVec3I)
                             .also(cachedDispatcher)
                             .mutableBlockState
-                    }
+                    } ?: blockAccess.getBlockState(pos)
             }
 
             override fun isAirBlock(pos: BlockPos) = getBlockState(pos).block.material === Material.air
@@ -146,6 +147,9 @@ object CallbackRenderChunk {
             blockAccess: IBlockAccess,
             blockPos: BlockPos,
         ): IBlockState {
+            if (YqlossClientConfig.main.disableBlockAccess) {
+                return blockAccess.getBlockState(blockPos)
+            }
             return wrapper
                 .wrap(blockAccess)
                 .apply {
@@ -158,6 +162,9 @@ object CallbackRenderChunk {
             blockAccess: IBlockAccess,
             blockPos: BlockPos,
         ): TileEntity? {
+            if (YqlossClientConfig.main.disableBlockAccess) {
+                return blockAccess.getTileEntity(blockPos)
+            }
             return wrapper
                 .wrap(blockAccess)
                 .apply {
@@ -172,6 +179,11 @@ object CallbackRenderChunk {
             blockPos: BlockPos,
             blockAccess: IBlockAccess,
             worldRenderer: WorldRenderer,
-        ) = dispatcher.renderBlock(blockState, blockPos, wrapper.wrap(blockAccess), worldRenderer)
+        ): Boolean {
+            if (YqlossClientConfig.main.disableBlockAccess) {
+                return dispatcher.renderBlock(blockState, blockPos, blockAccess, worldRenderer)
+            }
+            return dispatcher.renderBlock(blockState, blockPos, wrapper.wrap(blockAccess), worldRenderer)
+        }
     }
 }

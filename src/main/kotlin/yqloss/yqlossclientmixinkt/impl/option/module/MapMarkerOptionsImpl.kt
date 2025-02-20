@@ -19,18 +19,17 @@
 package yqloss.yqlossclientmixinkt.impl.option.module
 
 import cc.polyfrost.oneconfig.config.annotations.Header
-import cc.polyfrost.oneconfig.config.annotations.Slider
-import cc.polyfrost.oneconfig.config.annotations.Switch
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerLegit
-import yqloss.yqlossclientmixinkt.module.ssmotionblur.INFO_SS_MOTION_BLUR
-import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlurOptions
+import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerRequireHypixelModAPI
+import yqloss.yqlossclientmixinkt.module.mapmarker.INFO_MAP_MARKER
+import yqloss.yqlossclientmixinkt.module.mapmarker.MapMarkerOptions
 
-class SSMotionBlurOptionsImpl :
-    OptionsImpl(INFO_SS_MOTION_BLUR),
-    SSMotionBlurOptions {
+class MapMarkerOptionsImpl :
+    OptionsImpl(INFO_MAP_MARKER),
+    MapMarkerOptions {
     @Transient
     @Extract
     val disclaimer = DisclaimerAtOwnRisk()
@@ -40,27 +39,13 @@ class SSMotionBlurOptionsImpl :
     val legit = DisclaimerLegit()
 
     @Transient
+    @Extract
+    val requireHypixelModAPI = DisclaimerRequireHypixelModAPI()
+
+    @Transient
     @Header(
-        text = "SS Motion Blur",
+        text = "Map Marker",
         size = 2,
     )
     val headerModule = false
-
-    @Slider(
-        name = "Strength",
-        min = 0.0F,
-        max = 100.0F,
-        description = "0 means there won't be any effect. 100 means the screen will freeze.",
-    )
-    var strengthOption = 50.0F
-
-    @Switch(
-        name = "FPS Balanced",
-        description = "Make the blur on whatever FPS look as if it's 256 FPS.",
-        size = 2,
-    )
-    var balancedOption = true
-
-    override val strength get() = strengthOption / 100.0
-    override val balanced by ::balancedOption
 }

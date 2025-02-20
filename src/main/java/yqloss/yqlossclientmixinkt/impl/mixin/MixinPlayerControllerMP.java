@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yqloss.yqlossclientmixinkt.impl.mixincallback.CallbackPlayerControllerMP;
 
 @Mixin(PlayerControllerMP.class)
-public class MixinPlayerControllerMP {
+public abstract class MixinPlayerControllerMP {
     @Shadow
     private ItemStack currentItemHittingBlock;
 

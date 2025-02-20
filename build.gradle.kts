@@ -5,6 +5,7 @@ import org.polyfrost.gradle.util.noServerRunConfigs
 
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization") version "2.1.0"
     id("org.polyfrost.multi-version")
     id("org.polyfrost.defaults.repo")
     id("org.polyfrost.defaults.java")

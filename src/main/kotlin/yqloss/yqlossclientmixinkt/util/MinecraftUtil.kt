@@ -26,10 +26,14 @@ import net.minecraft.client.renderer.WorldRenderer
 import net.minecraft.client.renderer.vertex.VertexFormat
 import net.minecraft.entity.Entity
 import net.minecraft.item.Item
+import net.minecraft.scoreboard.ScoreObjective
+import net.minecraft.scoreboard.ScorePlayerTeam
 import net.minecraft.util.BlockPos
 import net.minecraft.util.ChatComponentText
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.Vec3i
 import yqloss.yqlossclientmixinkt.module.option.YCColor
+import yqloss.yqlossclientmixinkt.util.SideBar.Entry
 import yqloss.yqlossclientmixinkt.util.math.*
 import yqloss.yqlossclientmixinkt.ycLogger
 
@@ -45,7 +49,7 @@ var mousePosition = Vec2D(0.0, 0.0)
 
 var guiScale = 1.0
 
-inline val BlockPos.asVec3I get() = Vec3I(x, y, z)
+inline val Vec3i.asVec3I get() = Vec3I(x, y, z)
 
 inline val Vec3I.asBlockPos get() = BlockPos(x, y, z)
 
@@ -60,6 +64,8 @@ val REGEX_STYLE = Regex("\\u00a7.")
 inline val String.removeStyle get() = REGEX_STYLE.replace(this, "")
 
 inline val String.trimStyle get() = removeStyle.trim()
+
+inline val String.keepASCII get() = filter { it.code in 32..126 }
 
 inline val Block.item: Item get() = Item.getItemFromBlock(this)
 
@@ -90,6 +96,8 @@ fun printChat(message: String = "") {
         MC.ingameGUI.chatGUI.printChatMessage(ChatComponentText(message))
     }
 }
+
+fun printChat(throwable: Throwable) = printChat(throwable.stackTraceMessage)
 
 class CustomSound(
     private val argSoundLocation: ResourceLocation,
@@ -139,3 +147,45 @@ fun updateWorldRenderArea(area: Area3I) {
 fun updateWorldRenderBlock(pos: Vec3I) {
     MC.renderGlobal.markBlockRangeForRenderUpdate(pos.x, pos.y, pos.z, pos.x, pos.y, pos.z)
 }
+
+data class SideBar(
+    val title: String,
+    val list: List<Entry>,
+) {
+    data class Entry(
+        val name: String,
+        val value: Int,
+    )
+}
+
+inline val sideBar: SideBar?
+    get() {
+        MC.theWorld ?: return null
+        val scoreboard = MC.theWorld.scoreboard
+        var objective: ScoreObjective? = null
+        val team = scoreboard.getPlayersTeam(MC.thePlayer.name)
+        if (team !== null) {
+            val color = team.chatFormat.colorIndex
+            if (color >= 0) {
+                objective = scoreboard.getObjectiveInDisplaySlot(3 + color)
+            }
+        }
+        objective = objective ?: scoreboard.getObjectiveInDisplaySlot(1) ?: return null
+        return SideBar(
+            objective.displayName,
+            scoreboard
+                .getSortedScores(objective)
+                .reversed()
+                .filter { s -> s.playerName !== null && !s.playerName.startsWith("#") }
+                .take(15)
+                .map {
+                    Entry(
+                        ScorePlayerTeam.formatPlayerName(
+                            scoreboard.getPlayersTeam(it.playerName),
+                            it.playerName,
+                        ),
+                        it.scorePoints,
+                    )
+                },
+        )
+    }

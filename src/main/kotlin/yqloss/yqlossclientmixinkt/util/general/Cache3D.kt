@@ -22,7 +22,7 @@ import yqloss.yqlossclientmixinkt.util.math.Vec2I
 import yqloss.yqlossclientmixinkt.util.math.Vec3I
 import yqloss.yqlossclientmixinkt.util.math.contains
 
-private const val NEAR_RANGE = 4
+private const val NEAR_RANGE = 16
 private val NEAR_OFFSET = Vec2I(-NEAR_RANGE / 2, -NEAR_RANGE / 2)
 private val NEAR_AREA = Vec2I(0, 0) areaTo Vec2I(NEAR_RANGE, NEAR_RANGE)
 
@@ -62,6 +62,7 @@ class Cache3D<T> {
     }
 
     operator fun get(index: Vec3I): T? {
+        if (index.y !in 0..255) return null
         return transformPos(index).let { (chunk, pos) ->
             getChunk(chunk)?.let { chunkData ->
                 chunkData[pos]
@@ -73,6 +74,7 @@ class Cache3D<T> {
         index: Vec3I,
         value: T,
     ) {
+        if (index.y !in 0..255) return
         transformPos(index).let { (chunk, pos) ->
             getChunkOrCreate(chunk).let { chunkData ->
                 chunkData[pos] = value

@@ -32,17 +32,20 @@ import yqloss.yqlossclientmixinkt.module.tweaks.TweaksOptions
 class TweaksOptionsImpl :
     OptionsImpl(INFO_TWEAKS),
     TweaksOptions {
+    @Transient
     @Extract
-    var disclaimer = DisclaimerAtOwnRisk()
+    val disclaimer = DisclaimerAtOwnRisk()
 
+    @Transient
     @Header(
         text = "Tweaks",
         size = 2,
     )
-    var headerModule = false
+    val headerModule = false
 
+    @Transient
     @Extract
-    var qol = DisclaimerQOL()
+    val qol = DisclaimerQOL()
 
     @Switch(
         name = "Enable Instant Aim",
@@ -51,8 +54,9 @@ class TweaksOptionsImpl :
     )
     var enableInstantAimOption = false
 
+    @Transient
     @Extract
-    var safeBlatantSkyBlock = DisclaimerSafeBlatantSkyBlock()
+    val safeBlatantSkyBlock = DisclaimerSafeBlatantSkyBlock()
 
     @Switch(
         name = "Disable NBT Update Reset Digging on SkyBlock Mining Islands",
@@ -63,8 +67,9 @@ class TweaksOptionsImpl :
     )
     var disableSkyBlockToolsNBTUpdateResetDiggingOption = false
 
+    @Transient
     @Extract
-    var unknownBlatant = DisclaimerUnknownBlatant()
+    val unknownBlatant = DisclaimerUnknownBlatant()
 
     @Switch(
         name = "Disable Pearl Click-On-Block Packet",

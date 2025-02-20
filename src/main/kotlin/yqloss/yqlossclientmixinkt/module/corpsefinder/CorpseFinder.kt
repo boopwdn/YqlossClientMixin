@@ -33,6 +33,7 @@ import yqloss.yqlossclientmixinkt.util.*
 import yqloss.yqlossclientmixinkt.util.general.intervalAction
 import yqloss.yqlossclientmixinkt.util.math.Vec3D
 import yqloss.yqlossclientmixinkt.util.math.Vec3I
+import yqloss.yqlossclientmixinkt.util.math.asFloorVec3I
 import yqloss.yqlossclientmixinkt.util.scope.longrun
 
 val INFO_CORPSE_FINDER = moduleInfo<CorpseFinderOptions>("corpse_finder", "Corpse Finder")

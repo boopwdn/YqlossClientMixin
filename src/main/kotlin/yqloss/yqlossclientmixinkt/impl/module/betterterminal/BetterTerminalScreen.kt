@@ -35,9 +35,9 @@ import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
 import yqloss.yqlossclientmixinkt.module.betterterminal.SlotType
 import yqloss.yqlossclientmixinkt.module.ensure
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.general.sameNotNull
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.math.double
+import yqloss.yqlossclientmixinkt.util.sameNotNull
 import yqloss.yqlossclientmixinkt.util.scope.longrun
 
 object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, BetterTerminal>(BetterTerminal) {

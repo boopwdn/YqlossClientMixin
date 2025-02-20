@@ -18,23 +18,17 @@
 
 package yqloss.yqlossclientmixinkt.impl.mixin;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.entity.EntityPlayerSP;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import yqloss.yqlossclientmixinkt.impl.mixincallback.CallbackGuiScreen;
+import yqloss.yqlossclientmixinkt.impl.mixincallback.CallbackEntityPlayerSP;
 
-@Mixin(GuiScreen.class)
-public abstract class MixinGuiScreen {
-    @Inject(method = "drawDefaultBackground", at = @At("HEAD"), cancellable = true)
-    public void yc$drawDefaultBackgroundPre(CallbackInfo ci) {
-        CallbackGuiScreen.BetterTerminal.INSTANCE.drawDefaultBackgroundPre((GuiScreen) (Object) this, ci);
-    }
-
-    @Inject(method = "renderToolTip", at = @At("HEAD"), cancellable = true)
-    public void yc$renderTooltipPre(ItemStack stack, int x, int y, CallbackInfo ci) {
-        CallbackGuiScreen.BetterTerminal.INSTANCE.renderTooltipPre((GuiScreen) (Object) this, ci);
+@Mixin(EntityPlayerSP.class)
+public class MixinEntityPlayerSP {
+    @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
+    private void yc$sendChatMessagePre(String message, CallbackInfo ci) {
+        CallbackEntityPlayerSP.YqlossClient.INSTANCE.sendChatMessagePre(message, ci);
     }
 }
