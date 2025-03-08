@@ -1,0 +1,22 @@
+<svg width="1024.000000" height="1024.000000" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>
+			Created with Pixso.
+	</desc>
+	<defs>
+		<filter id="filter_36_66_dd" x="131.875000" y="330.500000" width="763.876953" height="370.625000" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+			<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+			<feOffset dx="64" dy="0"/>
+			<feGaussianBlur stdDeviation="0"/>
+			<feComposite in2="hardAlpha" operator="out" k2="-1" k3="1"/>
+			<feColorMatrix type="matrix" values="0 0 0 0 0.60392 0 0 0 0 0.60392 0 0 0 0 0.60392 0 0 0 0.25 0"/>
+			<feBlend mode="normal" in2="BackgroundImageFix" result="effect_dropShadow_1"/>
+			<feBlend mode="normal" in="SourceGraphic" in2="effect_dropShadow_1" result="shape"/>
+		</filter>
+	</defs>
+	<rect id="Component 1" width="1024.000000" height="1024.000000" fill="#FFFFFF" fill-opacity="0"/>
+	<rect id="Rectangle 11" rx="255.000000" width="1024.000000" height="1024.000000" fill="#1C1C1C" fill-opacity="1.000000"/>
+	<g filter="url(#filter_36_66_dd)">
+		<path id="YC" d="M598.57 684.14Q637.45 701.12 683.75 701.12Q730.37 701.12 768.25 684.75Q790.73 675.03 808.89 660.07Q821.33 649.82 831.75 637.12L778.5 588Q758.24 611.67 732.59 622.15Q712.18 630.5 688.37 630.5Q658.61 630.5 634.55 618.78Q631.74 617.4 629 615.87Q615.61 608.38 605.24 597.89Q595.38 587.92 588.25 575.25Q586.9 572.84 585.68 570.38Q573.62 546.05 573.62 515.75Q573.62 485.98 585.34 461.93Q586.71 459.11 588.25 456.37Q595.66 443.13 606.03 432.88Q616.11 422.9 629 415.75Q631.74 414.21 634.55 412.84Q658.61 401.12 688.37 401.12Q712.67 401.12 733.42 409.7Q758.57 420.11 778.5 443.12L831.75 394Q821.92 382.2 810.32 372.52Q791.69 356.96 768.5 346.87Q730.87 330.5 684.25 330.5Q636.02 330.5 596.07 348.69Q590.26 351.34 584.62 354.37Q559.55 367.83 540.53 387.23Q525.99 402.06 515 420.37Q509.4 429.72 505.04 439.61Q489.75 474.31 489.75 515.75Q489.75 556.86 504.8 591.42Q509.25 601.62 515 611.25Q525.87 629.35 540.21 644.08Q559.34 663.73 584.62 677.37Q591.47 681.04 598.57 684.14ZM353.5 695L353.5 568L492.75 336.62L411.37 336.62L315.62 495.87L219.87 336.62L131.87 336.62L270.62 567L270.62 695L353.5 695Z" fill="#EFEFEF" fill-opacity="1.000000" fill-rule="evenodd"/>
+	</g>
+</svg>
