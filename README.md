@@ -6,7 +6,7 @@
 
 <div style="display: flex; justify-content: space-between;">
   <a href="https://github.com/boopwdn/ExeClient/" style="width: 32%; margin: 0; display: block;">
-    <img src="https://raw.githubusercontent.com/boopwdn/ExeClient/refs/heads/main/pictures/banner.png" alt="ExeClient Banner" style="width: 33%;">
+    <img src="https://raw.githubusercontent.com/boopwdn/ExeClient/refs/heads/main/pictures/banner.png" alt="ExeClient Banner" style="width: 32%;">
   </a>
   <a href="https://github.com/boopwdn/YqlossClientMixin/" style="width: 32%; margin: 0; display: block;">
     <img src="https://raw.githubusercontent.com/boopwdn/YqlossClientMixin/refs/heads/master/banner.png" alt="YqlossClientMixin Banner" style="width: 32%;">
