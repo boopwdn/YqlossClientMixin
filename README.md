@@ -1,5 +1,23 @@
 # Yqloss Client (Mixin)
 
+![Yqloss Client (Mixin)](https://socialify.git.ci/boopwdn/YqlossClientMixin/image?description=1&font=Raleway&forks=1&issues=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Fboopwdn%2FYqlossClientMixin%2Frefs%2Fheads%2Fmaster%2Ficon.svg&name=1&owner=1&pulls=1&stargazers=1&theme=Auto)
+
+---
+
+<div style="display: flex; justify-content: space-between;">
+  <a href="https://github.com/boopwdn/ExeClient/" style="width: 32%; margin: 0; display: block;">
+    <img src="https://raw.githubusercontent.com/boopwdn/ExeClient/refs/heads/main/pictures/banner.png" alt="ExeClient Banner" style="width: 33%;">
+  </a>
+  <a href="https://github.com/boopwdn/YqlossClientMixin/" style="width: 32%; margin: 0; display: block;">
+    <img src="https://raw.githubusercontent.com/boopwdn/YqlossClientMixin/refs/heads/master/banner.png" alt="YqlossClientMixin Banner" style="width: 32%;">
+  </a>
+  <a href="https://github.com/boopwdn/EnchAddons/" style="width: 32%; margin: 0; display: block;">
+    <img src="https://raw.githubusercontent.com/boopwdn/EnchAddons/refs/heads/main/banner.png" alt="EnchAddons Banner" style="width: 32%;">
+  </a>
+</div>
+
+---
+
 Showcase Video: [https://www.bilibili.com/video/BV1Q4wfejEAB/](https://www.bilibili.com/video/BV1Q4wfejEAB/)
 
 Note that this mod is not registered as a Forge mod, nor do it use Forge events or API. It's all based on Mixin.
