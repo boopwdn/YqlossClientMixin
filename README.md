@@ -4,16 +4,12 @@
 
 ---
 
-<div style="display: flex; justify-content: space-between;">
-  <a href="https://github.com/boopwdn/ExeClient/" style="width: 32%; margin: 0; display: block;">
-    <img src="https://raw.githubusercontent.com/boopwdn/ExeClient/refs/heads/main/pictures/banner.png" alt="ExeClient Banner" style="width: 32%;">
-  </a>
-  <a href="https://github.com/boopwdn/YqlossClientMixin/" style="width: 32%; margin: 0; display: block;">
-    <img src="https://raw.githubusercontent.com/boopwdn/YqlossClientMixin/refs/heads/master/banner.png" alt="YqlossClientMixin Banner" style="width: 32%;">
-  </a>
-  <a href="https://github.com/boopwdn/EnchAddons/" style="width: 32%; margin: 0; display: block;">
-    <img src="https://raw.githubusercontent.com/boopwdn/EnchAddons/refs/heads/main/banner.png" alt="EnchAddons Banner" style="width: 32%;">
-  </a>
+<div>
+  <p align="center">
+    <a href="https://github.com/boopwdn/ExeClient/"><img src="https://raw.githubusercontent.com/boopwdn/ExeClient/refs/heads/main/pictures/banner.png" alt="ExeClient Banner" width="32%"></a>
+    <a href="https://github.com/boopwdn/YqlossClientMixin/"><img src="https://raw.githubusercontent.com/boopwdn/YqlossClientMixin/refs/heads/master/banner.png" alt="YqlossClientMixin Banner" width="32%"></a>
+    <a href="https://github.com/boopwdn/EnchAddons/"><img src="https://raw.githubusercontent.com/boopwdn/EnchAddons/refs/heads/main/banner.png" alt="EnchAddons Banner" width="32%"></a>
+  </p>
 </div>
 
 ---
