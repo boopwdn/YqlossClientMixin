@@ -47,6 +47,8 @@ var partialTicks = 0.0
 
 var mousePosition = Vec2D(0.0, 0.0)
 
+var windowSize = Vec2D(0.0, 0.0)
+
 var guiScale = 1.0
 
 inline val Vec3i.asVec3I get() = Vec3I(x, y, z)

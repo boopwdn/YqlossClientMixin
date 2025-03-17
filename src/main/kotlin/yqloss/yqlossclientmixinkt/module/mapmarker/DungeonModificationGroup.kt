@@ -22,6 +22,7 @@ import yqloss.yqlossclientmixinkt.util.keepASCII
 import yqloss.yqlossclientmixinkt.util.scope.noexcept
 import yqloss.yqlossclientmixinkt.util.sideBar
 import yqloss.yqlossclientmixinkt.util.trimStyle
+import yqloss.yqlossclientmixinkt.util.updateWorldRender
 
 private val ALLOWED_ROOMS = setOf("f1", "f2", "f3", "f4", "f5", "f6", "f7")
 
@@ -48,6 +49,7 @@ class DungeonModificationGroup(
         if (lastRoom != room) {
             lastRoom = room
             wrapped = FolderModificationGroup("$root/$room")
+            updateWorldRender()
         }
     }
 

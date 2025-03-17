@@ -29,13 +29,9 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPredictionEvent
 import yqloss.yqlossclientmixinkt.module.tweaks.TweaksEvent
-import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.asVec3I
-import yqloss.yqlossclientmixinkt.util.guiScale
+import yqloss.yqlossclientmixinkt.util.*
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.math.double
-import yqloss.yqlossclientmixinkt.util.mousePosition
-import yqloss.yqlossclientmixinkt.util.tickCounter
 
 object CallbackMinecraft {
     object YqlossClient {
@@ -49,6 +45,7 @@ object CallbackMinecraft {
                     Mouse.getX().double,
                     MC.displayHeight - Mouse.getY() - 1.0,
                 )
+            windowSize = Vec2D(MC.displayWidth.double, MC.displayHeight.double)
             guiScale = ScaledResolution(MC).scaleFactor.double
             YC.eventDispatcher(YCMinecraftEvent.Loop.Pre)
         }

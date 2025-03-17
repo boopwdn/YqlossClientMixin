@@ -53,10 +53,11 @@ inline fun <R> withscope(function: WithScopeContext.() -> R) {
         function(context)
     } finally {
         val exceptionList = mutableListOf<Pair<Any?, Exception>>()
-        resourceList.forEach { resource ->
+        // TODO: combine the two lists into one
+        resourceList.reversed().forEach { resource ->
             noexcept({ exceptionList.add(resource to it) }) { resource.close() }
         }
-        cleanupList.forEach { cleanup ->
+        cleanupList.reversed().forEach { cleanup ->
             noexcept({ exceptionList.add(cleanup to it) }) { cleanup() }
         }
         if (exceptionList.isNotEmpty()) {

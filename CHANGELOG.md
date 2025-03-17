@@ -31,3 +31,8 @@
 * fix: fix fade in/out elements not showing up when smooth GUI is disabled
 * fix: should have fixed crashing because of IBlockAccess wrapping in some cases, though the cause is not clear
 * fix: fix incompatibility with PolyPatcher's GUI scale override by modifying mixin priority
+
+## 0.8.0 ()
+
+* feat: add a button to load all characters, solving the lag spike issue of SmoothFont during gameplay
+* fix(MapMarker): fix not reloading world when room type changes in dungeons

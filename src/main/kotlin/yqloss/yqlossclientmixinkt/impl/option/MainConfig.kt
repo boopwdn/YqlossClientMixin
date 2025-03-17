@@ -29,6 +29,7 @@ import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
+import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.printChat
 
 class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Client #")) {
@@ -67,6 +68,27 @@ class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Cli
         size = 1,
     )
     var verboseHypixelModAPI = false
+
+    @Transient
+    @Header(
+        text = "Utilities",
+        size = 2,
+    )
+    val headerUtilities = false
+
+    @Transient
+    @Extract
+    val loadAllCharacters =
+        @Button(
+            name = "Load All Characters",
+            text = "Load",
+            size = 1,
+        )
+        {
+            repeat(65536) {
+                MC.fontRendererObj.drawString(Char(it).toString(), 0, 0, -1)
+            }
+        }
 
     @Transient
     @Header(
