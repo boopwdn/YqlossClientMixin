@@ -15,6 +15,7 @@
         "MixinGuiScreen",
         "MixinMain",
         "MixinMinecraft",
+        "MixinNetHandlerPlayClient",
         "MixinPlayerControllerMP",
         "MixinRenderChunk",
         "MixinRenderGlobal"
