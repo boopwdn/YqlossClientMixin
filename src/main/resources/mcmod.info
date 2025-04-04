@@ -1,0 +1,13 @@
+[
+    {
+        "modid": "${id}",
+        "name": "${name}",
+        "description": "Yqloss Client features rewritten in Spongepowered Mixin on Minecraft 1.8.9 (Forge)",
+        "version": "${version}",
+        "mcversion": "${mcVersionStr}",
+        "url": "https://github.com/boopwdn/YqlossClientMixin/",
+        "authorList": [
+            "Yqloss"
+        ]
+    }
+]
