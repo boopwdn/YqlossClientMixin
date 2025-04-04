@@ -57,18 +57,18 @@ data class TerminalPanes(
         state: List<Int>,
         slotID: Int,
         button: Int,
-    ): Pair<List<Int>, ClickType> {
+    ): Terminal.Prediction {
         val pos =
             when (slotID) {
                 in 11..15 -> slotID - 11
                 in 20..24 -> slotID - 15
                 in 29..33 -> slotID - 19
-                else -> return state to ClickType.NONE
+                else -> return Terminal.Prediction(state, ClickType.NONE, button)
             }
         val wrong = state[pos] != 0
         val result = state.toMutableList()
         result[pos] = if (result[pos] == 0) 1 else 0
-        return result to if (wrong) ClickType.WRONG else ClickType.CORRECT
+        return Terminal.Prediction(result, if (wrong) ClickType.WRONG else ClickType.CORRECT, button)
     }
 
     companion object : TerminalFactory<TerminalPanes> {

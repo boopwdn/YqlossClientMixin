@@ -100,19 +100,25 @@ data class TerminalRubix(
         state: List<Int>,
         slotID: Int,
         button: Int,
-    ): Pair<List<Int>, ClickType> {
+    ): Terminal.Prediction {
         val pos =
             when (slotID) {
                 in 12..14 -> slotID - 12
                 in 21..23 -> slotID - 18
                 in 30..32 -> slotID - 24
-                else -> return state to ClickType.NONE
+                else -> return Terminal.Prediction(state, ClickType.NONE, button)
             }
-        val offset = if (button == 1) -1 else 1
-        val wrong = offset * clicksTo(state[pos], solve(state)) <= 0
+        var offset = if (button == 1) -1 else 1
+        var actualButton = button
+        val clicksToSolution = clicksTo(state[pos], solve(state))
+        if (BetterTerminal.options.rubixCorrectDirection && offset * clicksToSolution < 0) {
+            offset = -offset
+            actualButton = if (button == 1) 0 else 1
+        }
+        val wrong = offset * clicksToSolution <= 0
         val result = state.toMutableList()
         result[pos] = (result[pos] + offset + 5) % 5
-        return result to if (wrong) ClickType.WRONG else ClickType.CORRECT
+        return Terminal.Prediction(result, if (wrong) ClickType.WRONG else ClickType.CORRECT, actualButton)
     }
 
     companion object : TerminalFactory<TerminalRubix> {

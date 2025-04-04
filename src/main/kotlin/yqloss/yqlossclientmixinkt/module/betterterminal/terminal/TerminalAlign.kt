@@ -84,7 +84,7 @@ data class TerminalAlign(
         state: List<Int>,
         slotID: Int,
         button: Int,
-    ) = state to ClickType.NORMAL
+    ) = Terminal.Prediction(state, ClickType.NORMAL, button)
 
     companion object : TerminalFactory<TerminalAlign> {
         override fun createIfMatch(title: String): TerminalAlign? {

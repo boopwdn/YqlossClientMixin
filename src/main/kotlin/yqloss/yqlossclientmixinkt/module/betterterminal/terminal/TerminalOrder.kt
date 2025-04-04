@@ -85,20 +85,20 @@ data class TerminalOrder(
         state: List<Int>,
         slotID: Int,
         button: Int,
-    ): Pair<List<Int>, ClickType> {
+    ): Terminal.Prediction {
         val pos =
             when (slotID) {
                 in 10..16 -> slotID - 10
                 in 19..25 -> slotID - 12
-                else -> return state to ClickType.NONE
+                else -> return Terminal.Prediction(state, ClickType.NONE, button)
             }
         val solution = solve(state)
         if (state[pos] != solution) {
-            return state to ClickType.WRONG
+            return Terminal.Prediction(state, ClickType.WRONG, button)
         }
         val result = state.toMutableList()
         result[pos] = -result[pos]
-        return result to ClickType.CORRECT
+        return Terminal.Prediction(state, ClickType.CORRECT, button)
     }
 
     companion object : TerminalFactory<TerminalOrder> {

@@ -39,5 +39,5 @@ data class TerminalLoading(
         state: List<Int>,
         slotID: Int,
         button: Int,
-    ) = state to ClickType.NONE
+    ) = Terminal.Prediction(state, ClickType.NONE, button)
 }

@@ -34,11 +34,17 @@ interface Terminal {
 
     fun draw(state: List<Int>): List<SlotRenderInfo>
 
+    data class Prediction(
+        val state: List<Int>,
+        val clickType: ClickType,
+        val button: Int,
+    )
+
     fun predict(
         state: List<Int>,
         slotID: Int,
         button: Int,
-    ): Pair<List<Int>, ClickType>
+    ): Prediction
 
     data class SlotRenderInfo(
         val type: SlotType,

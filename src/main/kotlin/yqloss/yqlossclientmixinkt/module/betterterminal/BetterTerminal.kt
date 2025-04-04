@@ -94,10 +94,10 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
         val data = data ?: return
         val button = if (data.terminal.enableRightClick) button else 0
         val result = data.terminal.predict(data.state, slotID, button)
-        if (result.second !== ClickType.NONE) {
+        if (result.clickType !== ClickType.NONE) {
             if (data.enableQueue) {
                 val (click, wrong) =
-                    when (result.second) {
+                    when (result.clickType) {
                         ClickType.CORRECT ->
                             true.also {
                                 ClickType.CORRECT.notify(logger)
@@ -119,13 +119,13 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
                     if (data.queue.isEmpty()) {
                         data.clickDelay = randomDelay
                     }
-                    data.queue.addLast(QueueData(slotID, button, wrong))
+                    data.queue.addLast(QueueData(slotID, result.button, wrong))
                     if (!wrong) {
-                        data.states.addLast(result.first)
+                        data.states.addLast(result.state)
                     }
                 }
             } else {
-                when (result.second) {
+                when (result.clickType) {
                     ClickType.WRONG -> {
                         if (options.preventMisclick) {
                             ClickType.CANCELED.notify(logger)
@@ -142,7 +142,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
 
                     else -> {}
                 }
-                clickSlot(slotID, button)
+                clickSlot(slotID, result.button)
                 ClickType.NORMAL.notify(logger)
             }
         }
