@@ -31,6 +31,7 @@ interface BetterTerminalOptions : YCModuleOptions {
     val orderShowNumber: Boolean
     val orderShowClickedNumber: Boolean
     val rubixShowNumber: Boolean
+    val rubixCorrectDirection: Boolean
     val onCorrectClick: YCNotificationOption
     val onCanceledClick: YCNotificationOption
     val onWrongClick: YCNotificationOption

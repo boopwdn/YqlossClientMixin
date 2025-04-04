@@ -83,17 +83,18 @@ data class TerminalColor(
         state: List<Int>,
         slotID: Int,
         button: Int,
-    ): Pair<List<Int>, ClickType> {
+    ): Terminal.Prediction {
         val pos =
             when (slotID) {
                 in 10..16 -> slotID - 10
                 in 19..25 -> slotID - 12
                 in 28..34 -> slotID - 14
                 in 37..43 -> slotID - 16
-                else -> return state to ClickType.NONE
+                else -> return Terminal.Prediction(state, ClickType.NONE, button)
             }
         val result = state.toMutableList()
-        return result to
+        return Terminal.Prediction(
+            result,
             when (result[pos]) {
                 1 -> {
                     result[pos] = -1
@@ -103,7 +104,9 @@ data class TerminalColor(
                 -1 -> ClickType.WRONG
 
                 else -> ClickType.FAIL
-            }
+            },
+            button,
+        )
     }
 
     companion object : TerminalFactory<TerminalColor> {

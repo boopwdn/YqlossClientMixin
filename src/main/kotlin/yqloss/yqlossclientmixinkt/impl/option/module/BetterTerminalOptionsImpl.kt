@@ -294,6 +294,12 @@ class BetterTerminalOptionsImpl :
     )
     var rubixLeft2 = Colors.INDIGO[5]
 
+    @Switch(
+        name = "Correct Direction",
+        size = 1,
+    )
+    var rubixCorrectDirectionOption = false
+
     @Transient
     @Header(
         text = "Click the button on time!",
@@ -419,6 +425,7 @@ class BetterTerminalOptionsImpl :
     override val orderShowNumber by ::orderShowNumberOption
     override val orderShowClickedNumber by ::orderShowClickedNumberOption
     override val rubixShowNumber by ::rubixShowNumberOption
+    override val rubixCorrectDirection by ::rubixCorrectDirectionOption
     override val onCorrectClick by ::onCorrectClickOption
     override val onCanceledClick by ::onCanceledClickOption
     override val onWrongClick by ::onWrongClickOption
