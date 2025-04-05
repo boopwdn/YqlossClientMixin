@@ -77,6 +77,7 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
         Display.setResizable(false)
         if (!borderless) Display.setResizable(true)
         val grabbed = Mouse.isGrabbed()
+        Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2)
         Mouse.setGrabbed(!grabbed)
         Mouse.setGrabbed(grabbed)
     }
@@ -112,6 +113,7 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
         }
         Display.setVSyncEnabled(MC.gameSettings.enableVsync)
         val grabbed = Mouse.isGrabbed()
+        Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2)
         Mouse.setGrabbed(!grabbed)
         Mouse.setGrabbed(grabbed)
         MC.updateDisplay()

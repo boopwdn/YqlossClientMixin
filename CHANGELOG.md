@@ -42,3 +42,4 @@
 * feat(BetterTerminal): add option rubixCorrectDirection
 * feat(BetterTerminal): add separate enable and smooth GUI option for each type of terminal
 * fix(BetterTerminal): fix being unable to queue Order
+* fix(WindowProperties, RawInput): fix mouse not centered when opening GUI
