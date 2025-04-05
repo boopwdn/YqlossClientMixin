@@ -123,6 +123,7 @@ data class TerminalRubix(
 
     companion object : TerminalFactory<TerminalRubix> {
         override fun createIfMatch(title: String): TerminalRubix? {
+            if (!BetterTerminal.options.rubixEnabled) return null
             return if (title == "Change all to same color!") TerminalRubix() else null
         }
     }

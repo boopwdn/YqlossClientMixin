@@ -118,6 +118,7 @@ data class TerminalColor(
         }
 
         override fun createIfMatch(title: String): TerminalColor? {
+            if (!BetterTerminal.options.colorEnabled) return null
             return REGEX.matchEntire(title)?.let { result ->
                 getMeta(result.groupValues[1])?.let { meta ->
                     TerminalColor(meta)

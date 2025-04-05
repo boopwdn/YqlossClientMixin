@@ -88,6 +88,7 @@ data class TerminalAlign(
 
     companion object : TerminalFactory<TerminalAlign> {
         override fun createIfMatch(title: String): TerminalAlign? {
+            if (!BetterTerminal.options.alignEnabled) return null
             return if (title == "Click the button on time!") TerminalAlign() else null
         }
     }

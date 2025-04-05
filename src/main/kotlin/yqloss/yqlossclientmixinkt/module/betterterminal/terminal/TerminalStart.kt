@@ -100,6 +100,7 @@ data class TerminalStart(
 
     companion object : TerminalFactory<TerminalStart> {
         override fun createIfMatch(title: String): TerminalStart? {
+            if (!BetterTerminal.options.startEnabled) return null
             return REGEX.matchEntire(title)?.let { result ->
                 TerminalStart(result.groupValues[1].uppercase())
             }

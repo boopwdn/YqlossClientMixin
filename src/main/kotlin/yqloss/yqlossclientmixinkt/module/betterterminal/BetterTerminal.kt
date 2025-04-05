@@ -63,6 +63,8 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
 
     var data: TerminalData? = null
 
+    private val clickQueue = mutableListOf<Pair<Int, Int>>()
+
     private fun validateData() {
         val data = data ?: return
         if (data.queue.count { !it.wrong } != data.states.size - 1) {
@@ -203,7 +205,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
                             data.queue.removeFirst()
                             data.clickDelay = randomDelay + 1
                         }
-                        clickSlot(click.slotID, click.button)
+                        clickQueue.add(click.slotID to click.button)
                     }
                 }
                 --data.clickDelay
@@ -375,6 +377,10 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
             BetterTerminal.data = null
             val chest = MC.currentScreen as? GuiChest ?: return
             updateChest(chest, data)
+            clickQueue.forEach {
+                clickSlot(it.first, it.second)
+            }
+            clickQueue.clear()
         }
     }
 }

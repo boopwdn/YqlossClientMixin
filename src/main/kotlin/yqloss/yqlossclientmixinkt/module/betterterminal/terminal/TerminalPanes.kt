@@ -73,6 +73,7 @@ data class TerminalPanes(
 
     companion object : TerminalFactory<TerminalPanes> {
         override fun createIfMatch(title: String): TerminalPanes? {
+            if (!BetterTerminal.options.panesEnabled) return null
             return if (title == "Correct all the panes!") TerminalPanes() else null
         }
     }
