@@ -32,7 +32,12 @@
 * fix: should have fixed crashing because of IBlockAccess wrapping in some cases, though the cause is not clear
 * fix: fix incompatibility with PolyPatcher's GUI scale override by modifying mixin priority
 
-## 0.8.0 ()
+## 0.8.0 (UTC+8 2025/04/05 23:10)
 
 * feat: add a button to load all characters, solving the lag spike issue of SmoothFont during gameplay
 * fix(MapMarker): fix not reloading world when room type changes in dungeons
+* feat: add mcmod.info to be recognized in launchers
+* feat(WindowProperties): init (Windowed Fullscreen, Borderless Window, Custom Window Title)
+* feat(RawInput): implement native raw input for Windows AMD64
+* feat(BetterTerminal): add option rubixCorrectDirection
+* feat(BetterTerminal): add separate enable and smooth GUI option for each type of terminal
