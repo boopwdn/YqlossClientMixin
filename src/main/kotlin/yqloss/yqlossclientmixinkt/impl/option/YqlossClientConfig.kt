@@ -66,6 +66,9 @@ object YqlossClientConfig : Config(Mod("# Yqloss Client $MOD_VERSION #", ModType
     @SubConfig
     var mapMarker = MapMarkerOptionsImpl()
 
+    @SubConfig
+    var windowProperties = WindowPropertiesOptionsImpl()
+
     init {
         initialize()
 

@@ -24,11 +24,13 @@ import net.minecraft.client.multiplayer.WorldClient
 import net.minecraft.util.BlockPos
 import org.lwjgl.input.Keyboard
 import org.lwjgl.input.Mouse
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPredictionEvent
 import yqloss.yqlossclientmixinkt.module.tweaks.TweaksEvent
+import yqloss.yqlossclientmixinkt.module.windowproperties.WindowPropertiesEvent
 import yqloss.yqlossclientmixinkt.util.*
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.math.double
@@ -120,6 +122,19 @@ object CallbackMinecraft {
 
         fun sendClickBlockToControllerNotMining() {
             YC.eventDispatcher(MiningPredictionEvent.NotMining)
+        }
+    }
+
+    object WindowProperties {
+        fun toggleFullscreenPre(ci: CallbackInfo) {
+            WindowPropertiesEvent
+                .Fullscreen()
+                .also(YC.eventDispatcher)
+                .apply {
+                    if (canceled) {
+                        ci.cancel()
+                    }
+                }
         }
     }
 }
