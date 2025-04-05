@@ -24,6 +24,7 @@
         "MixinChunkCacheOF",
         "MixinEntity",
         "MixinForgeHooksClient",
-        "MixinLwjglManagerImpl"
+        "MixinLwjglManagerImpl",
+        "MixinWindowsDisplay"
     ]
 }

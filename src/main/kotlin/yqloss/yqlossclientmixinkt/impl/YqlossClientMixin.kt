@@ -43,6 +43,7 @@ import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlur
 import yqloss.yqlossclientmixinkt.module.tweaks.Tweaks
 import yqloss.yqlossclientmixinkt.module.windowproperties.WindowProperties
 import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
+import yqloss.yqlossclientmixinkt.nativeapi.loadWindowsX64NativeAPI
 import yqloss.yqlossclientmixinkt.theYC
 import yqloss.yqlossclientmixinkt.util.property.latelet
 import kotlin.reflect.KClass
@@ -81,6 +82,8 @@ class YqlossClientMixin : YqlossClient {
 
     init {
         YqlossClientConfig
+
+        loadWindowsX64NativeAPI()
 
         RawInput
         SSMotionBlur

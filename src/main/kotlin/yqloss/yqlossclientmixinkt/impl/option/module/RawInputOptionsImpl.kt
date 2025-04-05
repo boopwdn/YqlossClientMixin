@@ -19,6 +19,7 @@
 package yqloss.yqlossclientmixinkt.impl.option.module
 
 import cc.polyfrost.oneconfig.config.annotations.Header
+import cc.polyfrost.oneconfig.config.annotations.Switch
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
@@ -43,4 +44,12 @@ class RawInputOptionsImpl :
         size = 2,
     )
     val headerModule = false
+
+    @Switch(
+        name = "Native Raw Input (Only Supported on Windows AMD64)",
+        size = 2,
+    )
+    var nativeRawInputOption = false
+
+    override var nativeRawInput by ::nativeRawInputOption
 }
