@@ -90,4 +90,9 @@ public abstract class MixinMinecraft {
     private void yc$miningprediction$sendClickBlockToControllerNotMining(boolean leftClick, CallbackInfo ci) {
         CallbackMinecraft.MiningPrediction.INSTANCE.sendClickBlockToControllerNotMining();
     }
+
+    @Inject(method = "toggleFullscreen", at = @At(value = "HEAD"), cancellable = true)
+    private void yc$windowproperties$toggleFullscreenPre(CallbackInfo ci) {
+        CallbackMinecraft.WindowProperties.INSTANCE.toggleFullscreenPre(ci);
+    }
 }

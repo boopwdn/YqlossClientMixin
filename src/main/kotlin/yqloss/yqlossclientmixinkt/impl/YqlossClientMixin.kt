@@ -41,6 +41,7 @@ import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlur
 import yqloss.yqlossclientmixinkt.module.tweaks.Tweaks
+import yqloss.yqlossclientmixinkt.module.windowproperties.WindowProperties
 import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
 import yqloss.yqlossclientmixinkt.theYC
 import yqloss.yqlossclientmixinkt.util.property.latelet
@@ -89,6 +90,7 @@ class YqlossClientMixin : YqlossClient {
         BetterTerminal
         YCLeapMenu
         MapMarker
+        WindowProperties
 
         BetterTerminalScreen
         YCLeapMenuScreen
