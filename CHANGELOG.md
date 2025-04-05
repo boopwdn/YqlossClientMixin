@@ -41,3 +41,4 @@
 * feat(RawInput): implement native raw input for Windows AMD64
 * feat(BetterTerminal): add option rubixCorrectDirection
 * feat(BetterTerminal): add separate enable and smooth GUI option for each type of terminal
+* fix(BetterTerminal): fix being unable to queue Order

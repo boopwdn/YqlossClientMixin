@@ -98,7 +98,7 @@ data class TerminalOrder(
         }
         val result = state.toMutableList()
         result[pos] = -result[pos]
-        return Terminal.Prediction(state, ClickType.CORRECT, button)
+        return Terminal.Prediction(result, ClickType.CORRECT, button)
     }
 
     companion object : TerminalFactory<TerminalOrder> {
