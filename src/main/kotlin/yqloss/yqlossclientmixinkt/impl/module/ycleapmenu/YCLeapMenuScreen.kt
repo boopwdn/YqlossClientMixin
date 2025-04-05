@@ -40,7 +40,7 @@ import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.general.Box
 import yqloss.yqlossclientmixinkt.util.general.inBox
-import yqloss.yqlossclientmixinkt.util.general.inMutableBox
+import yqloss.yqlossclientmixinkt.util.general.inRef
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.math.blendColor
 import yqloss.yqlossclientmixinkt.util.math.unitVec
@@ -68,7 +68,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
 
     private var preferredButton: PreferredLeapButton? = null
 
-    private val hidden by versionedLazy({ MC.currentScreen }) { false.inMutableBox }
+    private val hidden by versionedLazy({ MC.currentScreen }) { false.inRef }
 
     override fun ensureShow() {
         ensure { YCLeapMenu.Screen.proxiedScreen sameNotNull MC.currentScreen }

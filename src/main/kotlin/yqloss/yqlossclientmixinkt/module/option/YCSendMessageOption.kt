@@ -27,8 +27,8 @@ import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.general.MutableBox
-import yqloss.yqlossclientmixinkt.util.general.inMutableBox
+import yqloss.yqlossclientmixinkt.util.general.Ref
+import yqloss.yqlossclientmixinkt.util.general.inRef
 
 interface YCSendMessageOption {
     val enabled: Boolean
@@ -41,7 +41,7 @@ interface YCSendMessageOption {
 
 object SendMessagePool :
     YCModuleBase<YCModuleOptions>(moduleInfo("send_message_pool", "Send Message Pool")) {
-    val poolMap = mutableMapOf<String, ArrayDeque<Pair<String, MutableBox<Int>>>>()
+    val poolMap = mutableMapOf<String, ArrayDeque<Pair<String, Ref<Int>>>>()
 
     fun add(
         pool: String,
@@ -51,7 +51,7 @@ object SendMessagePool :
     ) {
         synchronized(this) {
             if (poolMap.size < max) {
-                poolMap.getOrPut(pool) { ArrayDeque() }.addLast(message to (-interval).inMutableBox)
+                poolMap.getOrPut(pool) { ArrayDeque() }.addLast(message to (-interval).inRef)
             }
         }
     }

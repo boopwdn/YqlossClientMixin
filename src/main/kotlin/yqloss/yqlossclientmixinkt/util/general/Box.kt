@@ -19,6 +19,7 @@
 package yqloss.yqlossclientmixinkt.util.general
 
 import kotlinx.serialization.Serializable
+import kotlin.reflect.KMutableProperty0
 
 sealed interface BoxType<out T> {
     val value: T
@@ -27,20 +28,41 @@ sealed interface BoxType<out T> {
     fun <R> cast() = value as R
 }
 
+sealed interface Ref<T> : BoxType<T> {
+    override var value: T
+}
+
+@JvmInline
 @Serializable
-data class Box<out T>(
+value class Box<out T>(
     override val value: T,
-) : BoxType<T>
+) : BoxType<T> {
+    @Suppress("UNCHECKED_CAST")
+    override fun <R> cast() = value as R
+}
 
 @Serializable
-data class MutableBox<T>(
+data class RefImpl<T>(
     override var value: T,
-) : BoxType<T>
+) : Ref<T>
+
+@Serializable
+data class RefProperty<T>(
+    private val property: KMutableProperty0<T>,
+) : Ref<T> {
+    override var value: T
+        get() = property()
+        set(value) {
+            property.set(value)
+        }
+}
 
 inline val <T> T.inBox get() = Box(this)
 
-inline val <T> T.inMutableBox get() = MutableBox(this)
+inline val <T> T.inRef get(): Ref<T> = RefImpl(this)
+
+inline val <T> KMutableProperty0<T>.asRef get(): Ref<T> = RefProperty(this)
 
 inline val <T> BoxType<T>.reBox get() = Box(value)
 
-inline val <T> BoxType<T>.reMutableBox get() = MutableBox(value)
+inline val <T> BoxType<T>.reRef get(): Ref<T> = RefImpl(value)
