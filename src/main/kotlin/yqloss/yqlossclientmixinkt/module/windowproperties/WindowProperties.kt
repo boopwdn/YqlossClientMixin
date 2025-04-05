@@ -18,6 +18,7 @@
 
 package yqloss.yqlossclientmixinkt.module.windowproperties
 
+import org.lwjgl.input.Mouse
 import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.DisplayMode
 import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
@@ -75,6 +76,9 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
         Display.setLocation(x, y)
         Display.setResizable(false)
         if (!borderless) Display.setResizable(true)
+        val grabbed = Mouse.isGrabbed()
+        Mouse.setGrabbed(!grabbed)
+        Mouse.setGrabbed(grabbed)
     }
 
     private val onFullscreenStateChange: Unit by versionedLazy(::windowedFullscreen) {
@@ -107,6 +111,9 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
             MC.resize(originalWindowWidth, originalWindowHeight)
         }
         Display.setVSyncEnabled(MC.gameSettings.enableVsync)
+        val grabbed = Mouse.isGrabbed()
+        Mouse.setGrabbed(!grabbed)
+        Mouse.setGrabbed(grabbed)
         MC.updateDisplay()
     }
 
