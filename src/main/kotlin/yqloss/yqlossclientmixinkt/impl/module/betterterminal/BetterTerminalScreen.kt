@@ -33,6 +33,7 @@ import yqloss.yqlossclientmixinkt.impl.option.module.BetterTerminalOptionsImpl
 import yqloss.yqlossclientmixinkt.impl.util.Colors
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
 import yqloss.yqlossclientmixinkt.module.betterterminal.SlotType
+import yqloss.yqlossclientmixinkt.module.betterterminal.terminal.*
 import yqloss.yqlossclientmixinkt.module.ensure
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
@@ -95,6 +96,19 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
                         Vec2D(0.5, 0.0),
                     ).alphaScale(progress),
                 )
+            }
+        }
+
+    private val smoothGUI: Boolean
+        get() {
+            return when (module.data?.terminal) {
+                is TerminalOrder -> options.orderSmoothGUI
+                is TerminalPanes -> options.panesSmoothGUI
+                is TerminalStart -> options.startSmoothGUI
+                is TerminalColor -> options.colorSmoothGUI
+                is TerminalRubix -> options.rubixSmoothGUI
+                is TerminalAlign -> options.alignSmoothGUI
+                else -> true
             }
         }
 
@@ -254,13 +268,13 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
     abstract class TerminalFade<T>(
         initial: T,
     ) : Fade<T>(initial) {
-        override val smooth get() = options.smoothGUI
+        override val smooth by ::smoothGUI
     }
 
     abstract class TerminalButton<T>(
         info: T,
     ) : Button<T>(info) {
-        override val smooth get() = options.smoothGUI
+        override val smooth by ::smoothGUI
 
         override val cornerRadius get() = options.cornerRadius.double
 

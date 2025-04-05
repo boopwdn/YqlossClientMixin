@@ -28,10 +28,16 @@ interface BetterTerminalOptions : YCModuleOptions {
     val reloadOnMismatch: Boolean
     val clickDelayFrom: Int
     val clickDelayUntil: Int
+    val orderEnabled: Boolean
     val orderShowNumber: Boolean
     val orderShowClickedNumber: Boolean
+    val panesEnabled: Boolean
+    val startEnabled: Boolean
+    val colorEnabled: Boolean
+    val rubixEnabled: Boolean
     val rubixShowNumber: Boolean
     val rubixCorrectDirection: Boolean
+    val alignEnabled: Boolean
     val onCorrectClick: YCNotificationOption
     val onCanceledClick: YCNotificationOption
     val onWrongClick: YCNotificationOption

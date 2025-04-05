@@ -103,6 +103,7 @@ data class TerminalOrder(
 
     companion object : TerminalFactory<TerminalOrder> {
         override fun createIfMatch(title: String): TerminalOrder? {
+            if (!BetterTerminal.options.orderEnabled) return null
             return if (title == "Click in order!") TerminalOrder() else null
         }
     }

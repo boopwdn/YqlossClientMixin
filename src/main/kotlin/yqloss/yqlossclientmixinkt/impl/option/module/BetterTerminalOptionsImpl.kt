@@ -107,12 +107,6 @@ class BetterTerminalOptionsImpl :
     var cornerRadius = 4.0F
 
     @Switch(
-        name = "Smooth GUI",
-        size = 1,
-    )
-    var smoothGUI = true
-
-    @Switch(
         name = "Show Vanilla Chest GUI",
         size = 1,
     )
@@ -139,6 +133,18 @@ class BetterTerminalOptionsImpl :
         size = 2,
     )
     val headerOrder = false
+
+    @Switch(
+        name = "Enabled",
+        size = 1,
+    )
+    var orderEnabledOption = true
+
+    @Switch(
+        name = "Smooth GUI",
+        size = 1,
+    )
+    var orderSmoothGUI = true
 
     @Switch(
         name = "Show Number",
@@ -189,6 +195,18 @@ class BetterTerminalOptionsImpl :
     )
     val headerPanes = false
 
+    @Switch(
+        name = "Enabled",
+        size = 1,
+    )
+    var panesEnabledOption = true
+
+    @Switch(
+        name = "Smooth GUI",
+        size = 1,
+    )
+    var panesSmoothGUI = true
+
     @Color(
         name = "ON",
         size = 1,
@@ -207,6 +225,18 @@ class BetterTerminalOptionsImpl :
         size = 2,
     )
     val headerStart = false
+
+    @Switch(
+        name = "Enabled",
+        size = 1,
+    )
+    var startEnabledOption = true
+
+    @Switch(
+        name = "Smooth GUI",
+        size = 1,
+    )
+    var startSmoothGUI = true
 
     @Color(
         name = "Answer",
@@ -233,6 +263,18 @@ class BetterTerminalOptionsImpl :
     )
     val headerColor = false
 
+    @Switch(
+        name = "Enabled",
+        size = 1,
+    )
+    var colorEnabledOption = true
+
+    @Switch(
+        name = "Smooth GUI",
+        size = 1,
+    )
+    var colorSmoothGUI = true
+
     @Color(
         name = "Answer",
         size = 1,
@@ -257,6 +299,18 @@ class BetterTerminalOptionsImpl :
         size = 2,
     )
     val headerRubix = false
+
+    @Switch(
+        name = "Enabled",
+        size = 1,
+    )
+    var rubixEnabledOption = true
+
+    @Switch(
+        name = "Smooth GUI",
+        size = 1,
+    )
+    var rubixSmoothGUI = true
 
     @Switch(
         name = "Show Number",
@@ -306,6 +360,18 @@ class BetterTerminalOptionsImpl :
         size = 2,
     )
     val headerAlign = false
+
+    @Switch(
+        name = "Enabled",
+        size = 1,
+    )
+    var alignEnabledOption = true
+
+    @Switch(
+        name = "Smooth GUI",
+        size = 1,
+    )
+    var alignSmoothGUI = true
 
     @Color(
         name = "Target",
@@ -422,10 +488,16 @@ class BetterTerminalOptionsImpl :
     override val reloadOnMismatch by ::reloadOnMismatchOption
     override val clickDelayFrom by ::clickDelayFromOption
     override val clickDelayUntil by ::clickDelayUntilOption
+    override val orderEnabled by ::orderEnabledOption
     override val orderShowNumber by ::orderShowNumberOption
     override val orderShowClickedNumber by ::orderShowClickedNumberOption
+    override val panesEnabled by ::panesEnabledOption
+    override val startEnabled by ::startEnabledOption
+    override val colorEnabled by ::colorEnabledOption
+    override val rubixEnabled by ::rubixEnabledOption
     override val rubixShowNumber by ::rubixShowNumberOption
     override val rubixCorrectDirection by ::rubixCorrectDirectionOption
+    override val alignEnabled by ::alignEnabledOption
     override val onCorrectClick by ::onCorrectClickOption
     override val onCanceledClick by ::onCanceledClickOption
     override val onWrongClick by ::onWrongClickOption
