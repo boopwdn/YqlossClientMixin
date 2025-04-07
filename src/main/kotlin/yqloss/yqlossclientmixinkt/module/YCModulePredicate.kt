@@ -96,6 +96,18 @@ fun ensureWindowTitle(
     }
 }
 
+fun ensureWindowTitles(
+    chest: GuiChest,
+    titles: Collection<String>,
+    frame: Int = 0,
+) {
+    ensure(frame) {
+        YC.api
+            .get_GuiChest_lowerChestInventory(chest)
+            .name.trimStyle in titles
+    }
+}
+
 val SKYBLOCK_MINING_ISLANDS =
     setOf(
         "mining_1",

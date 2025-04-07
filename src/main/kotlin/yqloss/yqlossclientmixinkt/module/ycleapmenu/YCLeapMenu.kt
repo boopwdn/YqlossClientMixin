@@ -104,7 +104,10 @@ object YCLeapMenu : YCModuleBase<YCLeapMenuOptions>(INFO_YC_LEAP_MENU) {
             if (slotID >= inventory.sizeInventory) return@forEach
             val itemStack = inventory.getStackInSlot(slotID) ?: return@forEach
             if (itemStack.item !== Items.skull) return@forEach
-            val name = itemStack.displayName.trimStyle
+            var name = itemStack.displayName.trimStyle
+            if (' ' in name) {
+                name = name.split(' ').run { get(size - 1) }
+            }
             if (!name.matches(REGEX_NAME)) return@forEach
             playerSet.add(name)
             playerDeadMap[name] =
@@ -132,11 +135,15 @@ object YCLeapMenu : YCModuleBase<YCLeapMenuOptions>(INFO_YC_LEAP_MENU) {
             ).map { (it ?: playerList.removeFirstOrNull())?.first }
     }
 
-    fun leapTo(name: String) {
+    fun leapTo(target: String) {
         val chest = MC.currentScreen as? GuiChest ?: return
         val inventory = YC.api.get_GuiChest_lowerChestInventory(chest)
         (9..17).firstOrNull {
-            if (it < inventory.sizeInventory && name == inventory.getStackInSlot(it)?.displayName?.trimStyle) {
+            var name = inventory.getStackInSlot(it)?.displayName?.trimStyle ?: ""
+            if (' ' in name) {
+                name = name.split(' ').run { get(size - 1) }
+            }
+            if (it < inventory.sizeInventory && target == name) {
                 MC.playerController.windowClick(
                     chest.inventorySlots.windowId,
                     it,
@@ -170,7 +177,7 @@ object YCLeapMenu : YCModuleBase<YCLeapMenuOptions>(INFO_YC_LEAP_MENU) {
 
                     val chest = event.screen as? GuiChest ?: return@register
 
-                    ensureWindowTitle(chest, "Spirit Leap")
+                    ensureWindowTitles(chest, setOf("Spirit Leap", "Teleport to Player"))
 
                     loadLeapInfo
 
