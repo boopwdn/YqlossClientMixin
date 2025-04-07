@@ -24,10 +24,11 @@ Note that this mod is not registered as a Forge mod, nor do it use Forge events 
 * Corpse Finder (mineshaft)
 * Map Marker (purely visual block replacement)
 * Mining Prediction (shows when you should aim at the next block)
-* Raw Input
+* Raw Input (JInput / Native Win32 implementations)
 * SS Motion Blur (based on screenshot instead of shader; can be used with Fast Render; little performance impact)
 * YC Leap Menu (5-grid ring-shaped menu; differs from most leap menus)
 * Tweaks (features that modify vanilla slightly)
+* Window Properties (borderless window; windowed fullscreen; custom window title)
 
 ## Dependency
 

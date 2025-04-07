@@ -39,6 +39,10 @@ external fun getRawInputData(
     result: LongArray = LongArray(64),
 ): LongArray
 
+external fun clipCursorAtCenter(hwnd: Long)
+
+external fun cancelClipCursor()
+
 fun handleWindowMessage(
     hwnd: Long,
     msg: Int,
@@ -50,6 +54,9 @@ fun handleWindowMessage(
             val data = getRawInputData(lParam)
             if (data[0] == 0L) {
                 NativeRawInputProvider.handleMouseMove(data[21].double, data[22].double)
+                if (NativeRawInputProvider.rawInputMode) {
+                    clipCursorAtCenter(hwnd)
+                }
             }
         }
 

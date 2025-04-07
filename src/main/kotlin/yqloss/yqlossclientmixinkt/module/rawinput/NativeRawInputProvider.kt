@@ -20,22 +20,30 @@ package yqloss.yqlossclientmixinkt.module.rawinput
 
 import org.lwjgl.input.Mouse
 import org.lwjgl.opengl.Display
+import yqloss.yqlossclientmixinkt.nativeapi.cancelClipCursor
 import yqloss.yqlossclientmixinkt.nativeapi.registerRawInputDevices
 import yqloss.yqlossclientmixinkt.nativeapi.unregisterRawInputDevices
 import yqloss.yqlossclientmixinkt.util.property.versionedLazy
 import yqloss.yqlossclientmixinkt.util.scope.nothrow
 
 object NativeRawInputProvider : RawInputProvider {
+    var rawInputMode = false
+        private set
+
     private val onGrabStateChange: Unit by versionedLazy({ RawInput.provider === this && Mouse.isGrabbed() }) {
         nothrow {
             val grabbed = Mouse.isGrabbed()
-            Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2)
             Mouse.setGrabbed(!grabbed)
+            Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2)
             Mouse.setGrabbed(grabbed)
+            Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2)
             if (RawInput.provider === this && Mouse.isGrabbed()) {
                 registerRawInputDevices()
+                rawInputMode = true
             } else {
                 unregisterRawInputDevices()
+                rawInputMode = false
+                cancelClipCursor()
             }
         }
         Unit

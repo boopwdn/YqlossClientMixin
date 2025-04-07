@@ -16,7 +16,6 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -100,4 +99,26 @@ void getRawInputData(int64_t *result, LPARAM lParam) {
     result[34] = rawData->data.keyboard.VKey;
     result[35] = rawData->data.keyboard.Message;
     result[36] = rawData->data.keyboard.ExtraInformation;
+}
+
+void clipCursorAtCenter(HWND hwnd) {
+    RECT rect;
+    GetClientRect(hwnd, &rect);
+    POINT nw = { rect.left, rect.top };
+    POINT se = { rect.right, rect.bottom };
+    ClientToScreen(hwnd, &nw);
+    ClientToScreen(hwnd, &se);
+    int paddingX = (se.x - nw.x) / 2 - 1;
+    int paddingY = (se.y - nw.y) / 2 - 1;
+    RECT clip = {
+        .left = nw.x + paddingX,
+        .top = nw.y + paddingY,
+        .right = se.x - paddingX,
+        .bottom = se.y - paddingY
+    };
+    ClipCursor(&clip);
+}
+
+void cancelClipCursor() {
+    ClipCursor(NULL);
 }
