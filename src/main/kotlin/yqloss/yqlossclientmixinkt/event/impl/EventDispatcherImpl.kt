@@ -16,7 +16,7 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.impl.event
+package yqloss.yqlossclientmixinkt.event.impl
 
 import yqloss.yqlossclientmixinkt.event.YCEvent
 import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
@@ -32,6 +32,7 @@ import kotlin.concurrent.write
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSuperclasses
 import kotlin.reflect.full.isSubclassOf
+import kotlin.reflect.full.isSuperclassOf
 
 class EventDispatcherImpl : YCEventDispatcher {
     private val lock = ReentrantReadWriteLock()
@@ -70,9 +71,14 @@ class EventDispatcherImpl : YCEventDispatcher {
 
     private val onlyHandlerCache = mutableMapOf<KClass<*>, YCEventHandler<*>>()
 
-    private fun clearCache() {
+    private fun clearAllCache() {
         parentHandlerCache.clear()
         onlyHandlerCache.clear()
+    }
+
+    private fun clearCache(type: KClass<*>) {
+        parentHandlerCache.entries.removeIf { type.isSuperclassOf(it.key) }
+        onlyHandlerCache.entries.removeIf { type.isSuperclassOf(it.key) }
     }
 
     override fun <T : YCEvent> register(
@@ -81,9 +87,9 @@ class EventDispatcherImpl : YCEventDispatcher {
         handler: YCEventHandler<T>,
     ) {
         lock.write {
-            clearCache()
+            clearCache(type)
             unregister(type, handler)
-            parentTypeHandlerMap.getOrPut(type) { TreeSet() }.add(RegistryEntry(priority, handler))
+            parentTypeHandlerMap.getOrPut(type, ::TreeSet).add(RegistryEntry(priority, handler))
         }
     }
 
@@ -93,9 +99,9 @@ class EventDispatcherImpl : YCEventDispatcher {
         handler: YCEventHandler<T>,
     ) {
         lock.write {
-            clearCache()
+            clearCache(type)
             unregisterOnly(type, handler)
-            onlyTypeHandlerMap.getOrPut(type) { TreeSet() }.add(RegistryEntry(priority, handler))
+            onlyTypeHandlerMap.getOrPut(type, ::TreeSet).add(RegistryEntry(priority, handler))
         }
     }
 
@@ -104,7 +110,7 @@ class EventDispatcherImpl : YCEventDispatcher {
         handler: YCEventHandler<T>,
     ) {
         lock.write {
-            clearCache()
+            clearCache(type)
             val entry = RegistryEntry(0, handler)
             parentTypeHandlerMap.values.forEach {
                 it.remove(entry)
@@ -117,7 +123,7 @@ class EventDispatcherImpl : YCEventDispatcher {
         handler: YCEventHandler<T>,
     ) {
         lock.write {
-            clearCache()
+            clearCache(type)
             val entry = RegistryEntry(0, handler)
             onlyTypeHandlerMap.values.forEach {
                 it.remove(entry)
@@ -127,7 +133,7 @@ class EventDispatcherImpl : YCEventDispatcher {
 
     override fun unregisterAll(handler: YCEventHandler<*>) {
         lock.write {
-            clearCache()
+            clearAllCache()
             val entry = RegistryEntry(0, handler)
             (parentTypeHandlerMap.values + onlyTypeHandlerMap.values).forEach {
                 it.remove(entry)
@@ -137,9 +143,9 @@ class EventDispatcherImpl : YCEventDispatcher {
 
     override fun clear() {
         lock.write {
+            clearAllCache()
             parentTypeHandlerMap.clear()
             onlyTypeHandlerMap.clear()
-            clearCache()
         }
     }
 
@@ -147,13 +153,15 @@ class EventDispatcherImpl : YCEventDispatcher {
         lock.read {
             return parentHandlerCache
                 .getOrPut(type) {
-                    val set = TreeSet<RegistryEntry>()
-                    type.allSuperclasses
-                        .prepend(type)
-                        .filter { it.isSubclassOf(YCEvent::class) }
-                        .forEach { parentTypeHandlerMap[it]?.let(set::addAll) }
-                    onlyTypeHandlerMap[type]?.let(set::addAll)
-                    EventHandlerHolder(set.toList().map { it.handler })
+                    lock.write {
+                        val set = TreeSet<RegistryEntry>()
+                        type.allSuperclasses
+                            .prepend(type)
+                            .filter { it.isSubclassOf(YCEvent::class) }
+                            .forEach { parentTypeHandlerMap[it]?.let(set::addAll) }
+                        onlyTypeHandlerMap[type]?.let(set::addAll)
+                        EventHandlerHolder(set.toList().map { it.handler })
+                    }
                 }.inBox
                 .cast()
         }
@@ -163,10 +171,12 @@ class EventDispatcherImpl : YCEventDispatcher {
         lock.read {
             return onlyHandlerCache
                 .getOrPut(type) {
-                    val set = TreeSet<RegistryEntry>()
-                    parentTypeHandlerMap[type]?.let(set::addAll)
-                    onlyTypeHandlerMap[type]?.let(set::addAll)
-                    EventHandlerHolder(set.toList().map { it.handler })
+                    lock.write {
+                        val set = TreeSet<RegistryEntry>()
+                        parentTypeHandlerMap[type]?.let(set::addAll)
+                        onlyTypeHandlerMap[type]?.let(set::addAll)
+                        EventHandlerHolder(set.toList().map { it.handler })
+                    }
                 }.inBox
                 .cast()
         }

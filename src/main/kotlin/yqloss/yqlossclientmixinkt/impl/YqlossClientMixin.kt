@@ -23,11 +23,11 @@ import cc.polyfrost.oneconfig.gui.pages.SubModsPage
 import cc.polyfrost.oneconfig.utils.gui.GuiUtils
 import yqloss.yqlossclientmixinkt.YC_LOGGER
 import yqloss.yqlossclientmixinkt.YqlossClient
+import yqloss.yqlossclientmixinkt.event.impl.EventDispatcherImpl
 import yqloss.yqlossclientmixinkt.event.minecraft.YCCommandEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.api.YCAPIImpl
-import yqloss.yqlossclientmixinkt.impl.event.EventDispatcherImpl
 import yqloss.yqlossclientmixinkt.impl.hypixel.loadHypixelModAPI
 import yqloss.yqlossclientmixinkt.impl.module.betterterminal.BetterTerminalScreen
 import yqloss.yqlossclientmixinkt.impl.module.miningprediction.MiningPredictionHUD
