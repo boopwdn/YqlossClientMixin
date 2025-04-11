@@ -60,6 +60,10 @@ abstract class YCModuleHUDBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
     override fun registerEvents(registry: RegistryEventDispatcher) {
         super.registerEvents(registry)
         registry.run {
+            register<YCHUD.GetWidthEvent> { if (it.hud === hud) it.width = scaledWidth }
+
+            register<YCHUD.GetHeightEvent> { if (it.hud === hud) it.height = scaledHeight }
+
             register<GUIEvent.HUD> { onRender(it.widgets) }
         }
     }

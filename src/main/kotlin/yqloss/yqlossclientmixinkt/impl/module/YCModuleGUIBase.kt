@@ -19,11 +19,9 @@
 package yqloss.yqlossclientmixinkt.impl.module
 
 import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.nanovgui.WindowAnimation
-import yqloss.yqlossclientmixinkt.impl.option.YCHUD
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
@@ -88,10 +86,5 @@ abstract class YCModuleGUIBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
     }
 
     override fun registerEvents(registry: RegistryEventDispatcher) {
-        registry.run {
-            register<YCHUD.GetWidthEvent> { it.width = scaledWidth }
-
-            register<YCHUD.GetHeightEvent> { it.height = scaledHeight }
-        }
     }
 }
