@@ -32,37 +32,52 @@ sealed interface Ref<T> : BoxType<T> {
     override var value: T
 }
 
+data class GetterBox<T>(
+    private val getter: () -> T,
+) : BoxType<T> {
+    override val value get() = getter()
+}
+
 @JvmInline
 @Serializable
 value class Box<out T>(
     override val value: T,
 ) : BoxType<T> {
-    @Suppress("UNCHECKED_CAST")
-    override fun <R> cast() = value as R
+    @Suppress("UNCHECKED_CAST", "OVERRIDE_BY_INLINE", "NOTHING_TO_INLINE")
+    override inline fun <R> cast() = value as R
 }
 
-@Serializable
-data class RefImpl<T>(
-    override var value: T,
-) : Ref<T>
-
-@Serializable
-data class RefProperty<T>(
-    private val property: KMutableProperty0<T>,
+data class AccessorRef<T>(
+    private val getter: () -> T,
+    private val setter: (T) -> Unit,
 ) : Ref<T> {
     override var value: T
-        get() = property()
+        get() = getter()
         set(value) {
-            property.set(value)
+            setter(value)
         }
 }
 
+@Serializable
+data class FieldRef<T>(
+    override var value: T,
+) : Ref<T>
+
 inline val <T> T.inBox get() = Box(this)
 
-inline val <T> T.inRef get(): Ref<T> = RefImpl(this)
-
-inline val <T> KMutableProperty0<T>.asRef get(): Ref<T> = RefProperty(this)
+inline val <T> T.inRef get(): Ref<T> = FieldRef(this)
 
 inline val <T> BoxType<T>.reBox get() = Box(value)
 
-inline val <T> BoxType<T>.reRef get(): Ref<T> = RefImpl(value)
+inline val <T> BoxType<T>.reRef get(): Ref<T> = FieldRef(value)
+
+fun <T> makeBox(getter: () -> T): BoxType<T> = GetterBox(getter)
+
+fun <T> makeRef(
+    getter: () -> T,
+    setter: (T) -> Unit,
+): Ref<T> = AccessorRef(getter, setter)
+
+inline val <T> (() -> T).asBox get(): BoxType<T> = makeBox(this)
+
+inline val <T> KMutableProperty0<T>.asRef get(): Ref<T> = makeRef(this, this::set)
