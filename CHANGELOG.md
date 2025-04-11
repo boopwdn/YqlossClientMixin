@@ -48,3 +48,7 @@
 
 * fix(WindowProperties, RawInput): fix mouse not centered when opening GUI
 * feat(YCLeapMenu): add support for Haunt
+
+## 0.8.2 ()
+
+* fix(WindowProperties): fix window being resized to 1920x1080 at startup

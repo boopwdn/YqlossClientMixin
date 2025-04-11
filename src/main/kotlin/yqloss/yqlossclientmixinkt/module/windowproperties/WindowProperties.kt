@@ -68,6 +68,11 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
 
     private val borderless get() = options.enabled && (options.borderlessWindow || windowedFullscreen)
 
+    private val getInitialWindowSize by lazy {
+        originalWindowWidth = Display.getWidth()
+        originalWindowHeight = Display.getHeight()
+    }
+
     private val onBorderlessStateChange: Unit by versionedLazy(::borderless) {
         val x = Display.getX()
         val y = Display.getY()
@@ -83,6 +88,7 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
     }
 
     private val onFullscreenStateChange: Unit by versionedLazy(::windowedFullscreen) {
+        getInitialWindowSize
         Display.setFullscreen(false)
         if (windowedFullscreen) {
             originalWindowX = Display.getX()
