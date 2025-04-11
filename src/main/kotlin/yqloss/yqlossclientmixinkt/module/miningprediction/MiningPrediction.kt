@@ -171,8 +171,6 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
                         ensureSkyBlockModes(SKYBLOCK_MINING_ISLANDS)
                     }
 
-                    isAvailable = true
-
                     MC.thePlayer.sendQueue.playerInfoMap.firstOrNull {
                         noexcept(logger::catching) {
                             val rawName = MC.ingameGUI.tabList.getPlayerName(it)
@@ -186,6 +184,10 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
                         }
                         false
                     }
+
+                    ensure { miningSpeed > 0 }
+
+                    isAvailable = true
 
                     check(true)
                     removeOutdatedBlocks()
