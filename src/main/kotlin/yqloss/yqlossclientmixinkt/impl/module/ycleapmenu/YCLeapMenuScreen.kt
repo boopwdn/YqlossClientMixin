@@ -44,7 +44,7 @@ import yqloss.yqlossclientmixinkt.util.general.inRef
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.math.blendColor
 import yqloss.yqlossclientmixinkt.util.math.unitVec
-import yqloss.yqlossclientmixinkt.util.property.versionedLazy
+import yqloss.yqlossclientmixinkt.util.property.trigger
 import yqloss.yqlossclientmixinkt.util.sameNotNull
 import yqloss.yqlossclientmixinkt.util.scope.longrun
 import kotlin.math.PI
@@ -68,7 +68,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
 
     private var preferredButton: PreferredLeapButton? = null
 
-    private val hidden by versionedLazy({ MC.currentScreen }) { false.inRef }
+    private val hidden by trigger({ MC.currentScreen }) { false.inRef }
 
     override fun ensureShow() {
         ensure { YCLeapMenu.Screen.proxiedScreen sameNotNull MC.currentScreen }

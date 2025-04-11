@@ -23,14 +23,14 @@ import net.minecraft.client.gui.ScaledResolution
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCInputEvent
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.property.versionedLazy
+import yqloss.yqlossclientmixinkt.util.property.trigger
 
 abstract class YCProxyScreen<T : GuiScreen> : GuiScreen() {
     var proxiedScreen: T? = null
 
     private var screenVersion: Any = Unit
 
-    private val setupScreen by versionedLazy(::screenVersion) {
+    private val setupScreen by trigger(::screenVersion) {
         val sr = ScaledResolution(MC)
         mc = MC
         itemRender = MC.renderItem

@@ -35,7 +35,7 @@ import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.printChat
-import yqloss.yqlossclientmixinkt.util.property.versionedLazy
+import yqloss.yqlossclientmixinkt.util.property.trigger
 import kotlin.jvm.optionals.getOrNull
 
 class HypixelModAPIWrapper(
@@ -64,7 +64,7 @@ class HypixelModAPIWrapper(
         }
     }
 
-    private val resetLocation by versionedLazy({ MC.isIntegratedServerRunning to MC.currentServerData }) {
+    private val resetLocation by trigger({ MC.isIntegratedServerRunning to MC.currentServerData }) {
         if (YqlossClientConfig.main.verboseHypixelModAPI) {
             printChat("YCMixin.api.hypixelLocation = null")
         }

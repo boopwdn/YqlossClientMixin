@@ -29,7 +29,7 @@ import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.property.versionedLazy
+import yqloss.yqlossclientmixinkt.util.property.trigger
 import yqloss.yqlossclientmixinkt.util.scope.longrun
 import yqloss.yqlossclientmixinkt.util.tickCounter
 import yqloss.yqlossclientmixinkt.util.trimStyle
@@ -72,8 +72,8 @@ object YCLeapMenu : YCModuleBase<YCLeapMenuOptions>(INFO_YC_LEAP_MENU) {
         return (if (index == -1) preferredLeap else leapOrder[index])?.let(::getPlayerInfo)
     }
 
-    private val loadLeapInfo by versionedLazy(::tickCounter) {
-        val chest = MC.currentScreen as? GuiChest ?: return@versionedLazy
+    private val loadLeapInfo by trigger(::tickCounter) {
+        val chest = MC.currentScreen as? GuiChest ?: return@trigger
         val inventory = YC.api.get_GuiChest_lowerChestInventory(chest)
 
         MC.thePlayer.sendQueue.playerInfoMap

@@ -29,20 +29,20 @@ import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.general.inBox
-import yqloss.yqlossclientmixinkt.util.property.versionedLazy
+import yqloss.yqlossclientmixinkt.util.property.trigger
 import yqloss.yqlossclientmixinkt.util.scope.longrun
 
 val INFO_WINDOW_PROPERTIES = moduleInfo<WindowPropertiesOptions>("window_properties", "Window Properties")
 
 object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROPERTIES) {
-    private val onWindowTitleChange: Unit by versionedLazy(Display::getTitle) {
+    private val onWindowTitleChange: Unit by trigger(Display::getTitle) {
         val title = Display.getTitle()
         if (title != options.customTitle) {
             originalWindowTitle = title
         }
     }
 
-    private val onWindowTitleOptionChange: Unit by versionedLazy({
+    private val onWindowTitleOptionChange: Unit by trigger({
         (options.customTitle.takeIf { options.enabled && options.enableCustomTitle }).inBox
     }) {
         if (options.enabled && options.enableCustomTitle) {
@@ -73,7 +73,7 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
         originalWindowHeight = Display.getHeight()
     }
 
-    private val onBorderlessStateChange: Unit by versionedLazy(::borderless) {
+    private val onBorderlessStateChange: Unit by trigger(::borderless) {
         val x = Display.getX()
         val y = Display.getY()
         System.setProperty("org.lwjgl.opengl.Window.undecorated", "$borderless")
@@ -87,7 +87,7 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
         Mouse.setGrabbed(grabbed)
     }
 
-    private val onFullscreenStateChange: Unit by versionedLazy(::windowedFullscreen) {
+    private val onFullscreenStateChange: Unit by trigger(::windowedFullscreen) {
         getInitialWindowSize
         Display.setFullscreen(false)
         if (windowedFullscreen) {

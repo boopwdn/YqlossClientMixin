@@ -21,6 +21,7 @@ package yqloss.yqlossclientmixinkt.util.scope
 import yqloss.yqlossclientmixinkt.util.LONG_RETURN_STACKTRACE
 import yqloss.yqlossclientmixinkt.util.general.Box
 import yqloss.yqlossclientmixinkt.util.general.inBox
+import yqloss.yqlossclientmixinkt.util.loop
 import yqloss.yqlossclientmixinkt.util.property.threadlocal
 
 var frameCounter by threadlocal { 0 }
@@ -78,7 +79,7 @@ class LongReturnContext3(
     }
 }
 
-inline fun <T> longreturn(getter: () -> T) = LongReturnContext1(getter())
+inline fun <T> longret(getter: () -> T) = LongReturnContext1(getter())
 
 inline fun <T> longreturn(
     scope: Int = 0,
@@ -106,3 +107,11 @@ inline fun <R> longrun(function: (Int) -> R): R {
 }
 
 inline val Int.longreturnTimes get() = 1 - this
+
+inline fun <R> longloop(function: (Int) -> Unit): R {
+    return longrun<R> {
+        loop {
+            function(it)
+        }
+    }
+}

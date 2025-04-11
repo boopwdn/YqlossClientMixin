@@ -24,7 +24,7 @@ import yqloss.yqlossclientmixinkt.event.YCEventRegistration
 import yqloss.yqlossclientmixinkt.event.YCEventRegistration.Entry
 import yqloss.yqlossclientmixinkt.event.registerEventEntries
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.property.versionedLazy
+import yqloss.yqlossclientmixinkt.util.property.trigger
 
 interface YCModule<T : YCModuleOptions> {
     val id: String
@@ -43,7 +43,7 @@ inline fun <reified T : YCModuleOptions> moduleInfo(
     return object : YCModuleInfo<T>() {
         override val id = id
         override val name = name
-        override val options by versionedLazy(YC::configVersion) { YC.getOptionsImpl(T::class) }
+        override val options by trigger(YC::configVersion) { YC.getOptionsImpl(T::class) }
     }
 }
 

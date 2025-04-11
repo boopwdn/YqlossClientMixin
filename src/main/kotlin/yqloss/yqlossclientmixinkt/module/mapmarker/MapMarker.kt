@@ -26,9 +26,8 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.general.inBox
 import yqloss.yqlossclientmixinkt.util.printChat
-import yqloss.yqlossclientmixinkt.util.property.versionedLazy
+import yqloss.yqlossclientmixinkt.util.property.trigger
 import yqloss.yqlossclientmixinkt.util.scope.longrun
 import yqloss.yqlossclientmixinkt.util.scope.noexcept
 import yqloss.yqlossclientmixinkt.util.updateWorldRender
@@ -50,22 +49,22 @@ object MapMarker : YCModuleBase<MapMarkerOptions>(INFO_MAP_MARKER) {
         }
     }
 
-    private val reloadChunksOnSwitch by versionedLazy(options::enabled) {
-        MC.theWorld ?: return@versionedLazy
+    private val reloadChunksOnSwitch by trigger(options::enabled) {
+        MC.theWorld ?: return@trigger
         updateWorldRender()
     }
 
-    private val loadModificationOnLocationChange by versionedLazy({ YC.api.hypixelLocation.inBox }) {
+    private val loadModificationOnLocationChange by trigger({ YC.api.hypixelLocation }) {
         modificationGroup = null
         val serverType =
             YC.api.hypixelLocation
                 ?.serverType
-                ?.name ?: return@versionedLazy
-        val map = YC.api.hypixelLocation?.map ?: return@versionedLazy
+                ?.name ?: return@trigger
+        val map = YC.api.hypixelLocation?.map ?: return@trigger
         modificationGroup = loadModificationGroup("/hypixel/$serverType/$map")
     }
 
-    private val reloadChunksOnModificationChange by versionedLazy({ modificationGroup.inBox }) {
+    private val reloadChunksOnModificationChange by trigger({ modificationGroup }) {
         updateWorldRender()
     }
 

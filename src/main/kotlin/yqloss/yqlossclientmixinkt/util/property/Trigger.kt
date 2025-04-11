@@ -18,16 +18,19 @@
 
 package yqloss.yqlossclientmixinkt.util.property
 
+import yqloss.yqlossclientmixinkt.util.general.Box
+import yqloss.yqlossclientmixinkt.util.general.inBox
+import yqloss.yqlossclientmixinkt.util.once
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-class VersionedLazy<T, TV : Any>(
-    private val function: () -> T,
+class Trigger<T, TV>(
+    private val function: (TV) -> T,
     private val versionGetter: () -> TV,
     private var initialized: Boolean,
     private var value: T?,
 ) : ReadOnlyProperty<Any?, T> {
-    private var version: TV? = null
+    private var version: Box<TV>? = null
 
     fun reset() {
         initialized = false
@@ -39,11 +42,11 @@ class VersionedLazy<T, TV : Any>(
         thisRef: Any?,
         property: KProperty<*>,
     ): T {
-        val currentVersion = versionGetter()
+        val currentVersion = versionGetter().inBox
         return if (initialized && version == currentVersion) {
             value!!
         } else {
-            val newValue = function()
+            val newValue = function(currentVersion.value)
             initialized = true
             version = currentVersion
             value = newValue
@@ -52,13 +55,23 @@ class VersionedLazy<T, TV : Any>(
     }
 }
 
-fun <T, TV : Any> versionedLazy(
+fun <T, TV> trigger(
     versionGetter: () -> TV,
-    function: () -> T,
-) = VersionedLazy(function, versionGetter, false, null)
+    function: (TV) -> T,
+) = Trigger(function, versionGetter, false, null)
 
-fun <T, TV : Any> versionedLazy(
+fun <T, TV> trigger(
     initial: T,
     versionGetter: () -> TV,
+    function: (TV) -> T,
+) = Trigger(function, versionGetter, true, initial)
+
+fun <T, TV> triggerOnce(
+    versionGetter: () -> TV,
     function: () -> T,
-) = VersionedLazy(function, versionGetter, true, initial)
+) = Trigger({ once(function) }, versionGetter, false, null)
+
+fun <TA, T, TV> triggerOnce(
+    versionGetter: () -> TV,
+    function: (TA) -> T,
+) = Trigger({ once(function) }, versionGetter, false, null)

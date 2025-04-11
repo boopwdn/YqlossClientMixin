@@ -18,6 +18,8 @@
 
 package yqloss.yqlossclientmixinkt.util
 
+import yqloss.yqlossclientmixinkt.util.general.Box
+import yqloss.yqlossclientmixinkt.util.general.BoxType
 import yqloss.yqlossclientmixinkt.util.general.inBox
 
 private data class SequentialFunctionHolder(
@@ -86,17 +88,17 @@ private data class ChainedFunctionHolder(
     }
 }
 
-operator fun <R> (() -> R).plus(other: () -> R): () -> R {
+operator fun <R> (() -> R)?.plus(other: () -> R): () -> R {
     return (
         this as? SequentialFunctionHolder
-            ?: SequentialFunctionHolder(listOf { this() })
+            ?: SequentialFunctionHolder(listOfNotNull(this?.let { { this() } }))
     ).append(other).inBox.cast()
 }
 
-operator fun <T, R1, R2> ((T) -> R1).plus(other: (T) -> R2): (T) -> R2 {
+operator fun <T, R1, R2> ((T) -> R1)?.plus(other: (T) -> R2): (T) -> R2 {
     return (
         this as? SequentialFunctionHolder
-            ?: SequentialFunctionHolder(listOf(this).inBox.cast())
+            ?: SequentialFunctionHolder(listOfNotNull(this).inBox.cast())
     ).append(other.inBox.cast<(Any?) -> Any?>()).inBox.cast()
 }
 
@@ -112,4 +114,50 @@ operator fun <T, R1, R2> ((T) -> R1).div(other: (R1) -> R2): (T) -> R2 {
         this as? ChainedFunctionHolder
             ?: ChainedFunctionHolder(listOf(this).inBox.cast())
     ).append(other.inBox.cast<(Any?) -> Any?>()).inBox.cast()
+}
+
+inline fun <R> limit(
+    count: Int,
+    crossinline function: () -> R,
+): () -> R {
+    var remaining = count
+    lateinit var result: BoxType<R>
+    return {
+        if (remaining > 0) {
+            --remaining
+            result = function().inBox
+        }
+        result.value
+    }
+}
+
+inline fun <R> once(crossinline function: () -> R) = limit(1, function)
+
+inline fun <T, R> limit(
+    count: Int,
+    crossinline function: (T) -> R,
+): (T) -> R {
+    var remaining = count
+    lateinit var result: BoxType<R>
+    return {
+        if (remaining > 0) {
+            --remaining
+            result = function(it).inBox
+        }
+        result.value
+    }
+}
+
+inline fun <T, R> once(crossinline function: (T) -> R) = limit(1, function)
+
+inline fun loop(function: () -> Unit): Nothing {
+    while (true) {
+        function()
+    }
+}
+
+inline fun <R> loop(function: () -> Box<R>?): R {
+    while (true) {
+        function()?.let { return it.value }
+    }
 }
