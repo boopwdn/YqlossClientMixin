@@ -49,6 +49,7 @@
 * fix(WindowProperties, RawInput): fix mouse not centered when opening GUI
 * feat(YCLeapMenu): add support for Haunt
 
-## 0.8.2 ()
+## 0.8.2 (UTC+8 2025/04/11 21:30)
 
 * fix(WindowProperties): fix window being resized to 1920x1080 at startup
+* feat(MiningPrediction): make the feature unavailable when Mining Speed is not present in tab
