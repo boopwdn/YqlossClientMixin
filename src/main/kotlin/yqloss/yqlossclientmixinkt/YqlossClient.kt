@@ -22,6 +22,8 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import yqloss.yqlossclientmixinkt.api.YCAPI
 import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
+import yqloss.yqlossclientmixinkt.event.YCManagerEventRegistry
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.property.latelet
 import java.io.File
@@ -59,6 +61,8 @@ interface YqlossClient {
     val workingDirectory: String
 
     val api: YCAPI
+    val managerEventManager: YCManagerEventRegistry<Any?>
+    val eventRegistry: YCEventRegistry
     val eventDispatcher: YCEventDispatcher
 
     val configVersion: Int

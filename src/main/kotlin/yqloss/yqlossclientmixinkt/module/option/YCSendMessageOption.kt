@@ -21,7 +21,7 @@ package yqloss.yqlossclientmixinkt.module.option
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCTemplate
 import yqloss.yqlossclientmixinkt.api.format
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
@@ -62,7 +62,7 @@ object SendMessagePool :
         }
     }
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<YCMinecraftEvent.LoadWorld.Pre> {
                 synchronized(this) {

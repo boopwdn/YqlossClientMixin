@@ -19,7 +19,7 @@
 package yqloss.yqlossclientmixinkt.module.mapmarker
 
 import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCCommandEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
@@ -68,7 +68,7 @@ object MapMarker : YCModuleBase<MapMarkerOptions>(INFO_MAP_MARKER) {
         updateWorldRender()
     }
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<YCMinecraftEvent.Tick.Pre> {
                 longrun {

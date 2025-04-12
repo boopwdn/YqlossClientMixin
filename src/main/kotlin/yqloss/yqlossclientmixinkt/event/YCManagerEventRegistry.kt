@@ -18,23 +18,34 @@
 
 package yqloss.yqlossclientmixinkt.event
 
-import yqloss.yqlossclientmixinkt.util.general.inBox
 import kotlin.reflect.KClass
 
-interface YCEventDispatcher : (YCEvent) -> Unit {
-    fun <T : YCEvent> getHandler(type: KClass<T>): YCEventHandler<T>
+interface YCManagerEventRegistry<in TK> {
+    /*
+     * registering the same handler for two classes with direct inheritance is undefined
+     * only the first call would take effect if the method is called more than one time with the same arguments
+     */
+    fun <T : YCEvent> register(
+        key: TK,
+        type: KClass<T>,
+        priority: Int = 0,
+        handler: YCEventHandler<T>,
+    )
 
-    fun <T : YCEvent> getHandler(event: T) = getHandler(event::class.inBox.cast<KClass<T>>())
+    fun <T : YCEvent> registerOnly(
+        key: TK,
+        type: KClass<T>,
+        priority: Int = 0,
+        handler: YCEventHandler<T>,
+    )
 
-    fun <T : YCEvent> getHandlerOnly(type: KClass<T>): YCEventHandler<T>
+    fun unregister(handler: YCEventHandler<*>)
 
-    fun <T : YCEvent> getHandlerOnly(event: T) = getHandlerOnly(event::class.inBox.cast<KClass<T>>())
+    fun unregisterOnly(handler: YCEventHandler<*>)
 
-    override fun invoke(event: YCEvent) {
-        getHandler(event)(event)
-    }
+    fun unregisterAll(handler: YCEventHandler<*>)
+
+    fun unregisterKey(key: TK)
+
+    fun clear()
 }
-
-inline fun <reified T : YCEvent> YCEventDispatcher.getHandler() = getHandler(T::class)
-
-inline fun <reified T : YCEvent> YCEventDispatcher.getHandlerOnly() = getHandlerOnly(T::class)

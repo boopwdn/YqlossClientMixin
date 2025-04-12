@@ -18,7 +18,7 @@
 
 package yqloss.yqlossclientmixinkt.impl.module.ycleapmenu
 
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCInputEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.module.YCModuleScreenBase
@@ -127,7 +127,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
         preferredButton.render(widgets, tr + OFFSET_PREFERRED)
     }
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         super.registerEvents(registry)
         registry.run {
             register<YCInputEvent.Mouse.Click> { event ->

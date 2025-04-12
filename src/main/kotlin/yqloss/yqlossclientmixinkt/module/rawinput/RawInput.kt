@@ -18,7 +18,7 @@
 
 package yqloss.yqlossclientmixinkt.module.rawinput
 
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
@@ -35,7 +35,7 @@ object RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
 
     val provider get() = if (options.nativeRawInput) NativeRawInputProvider else JInputRawInputProvider
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<YCMinecraftEvent.Load.Post> {
                 mouseHelper = RawMouseHelper(MC.mouseHelper)

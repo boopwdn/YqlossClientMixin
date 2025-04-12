@@ -20,7 +20,7 @@ package yqloss.yqlossclientmixinkt.module.tweaks
 
 import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.init.Items
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.util.MC
@@ -31,7 +31,7 @@ import yqloss.yqlossclientmixinkt.util.skyBlockUUID
 val INFO_TWEAKS = moduleInfo<TweaksOptions>("tweaks", "Tweaks")
 
 object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<TweaksEvent.SetAnglesPost> { event ->
                 longrun {

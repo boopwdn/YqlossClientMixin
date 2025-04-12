@@ -26,7 +26,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockPos
 import net.minecraft.world.IBlockAccess
 import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.event.YCCachedEventDispatcher
+import yqloss.yqlossclientmixinkt.event.impl.CachedEventDispatcher
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.util.asVec3I
@@ -76,7 +76,7 @@ object CallbackRenderChunk {
             private val blockAccess: IBlockAccess,
             origin: Vec3I,
         ) : IBlockAccess by blockAccess {
-            private val cachedDispatcher = YCCachedEventDispatcher(YC.eventDispatcher)
+            private val cachedDispatcher = CachedEventDispatcher(YC.eventDispatcher)
             val cacheTileEntity = Cache<TileEntity?>(origin)
             val cacheBlockState = Cache<IBlockState?>(origin)
 

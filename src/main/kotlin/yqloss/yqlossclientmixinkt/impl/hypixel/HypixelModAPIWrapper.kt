@@ -24,7 +24,7 @@ import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacke
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCHypixelLocation
 import yqloss.yqlossclientmixinkt.api.YCHypixelServerType
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.hypixel.YCHypixelAPIEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
@@ -72,7 +72,7 @@ class HypixelModAPIWrapper(
         YC.eventDispatcher(YCHypixelAPIEvent.Location(null))
     }
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<YCMinecraftEvent.Tick.Pre> {
                 resetLocation

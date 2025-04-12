@@ -21,7 +21,7 @@ package yqloss.yqlossclientmixinkt.module.betterterminal
 import net.minecraft.client.gui.inventory.GuiChest
 import org.lwjgl.opengl.GL11.glScaled
 import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.*
@@ -316,7 +316,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
         }
     }
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<YCRenderEvent.Screen.Proxy> { event ->
                 longrun {

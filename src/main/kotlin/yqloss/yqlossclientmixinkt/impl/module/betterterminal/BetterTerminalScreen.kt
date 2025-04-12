@@ -18,7 +18,7 @@
 
 package yqloss.yqlossclientmixinkt.impl.module.betterterminal
 
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCInputEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.module.YCModuleScreenBase
@@ -233,7 +233,7 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
         buttonReload.render(widgets, ttr + Vec2D(170.0, -2.0))
     }
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         super.registerEvents(registry)
         registry.run {
             register<YCInputEvent.Mouse.Click> { event ->
