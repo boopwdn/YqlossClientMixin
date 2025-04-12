@@ -19,7 +19,7 @@
 package yqloss.yqlossclientmixinkt.impl.module
 
 import net.minecraft.client.gui.ScaledResolution
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
@@ -44,7 +44,7 @@ abstract class YCModuleScreenBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
             }
         }
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         super.registerEvents(registry)
         registry.run {
             register<GUIEvent.Screen> { onRender(it.widgets) }

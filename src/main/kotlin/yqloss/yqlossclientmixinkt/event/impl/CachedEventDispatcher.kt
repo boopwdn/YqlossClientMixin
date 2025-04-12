@@ -16,13 +16,16 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.event
+package yqloss.yqlossclientmixinkt.event.impl
 
+import yqloss.yqlossclientmixinkt.event.YCEvent
+import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventHandler
 import yqloss.yqlossclientmixinkt.util.general.inBox
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 
-class YCCachedEventDispatcher(
+class CachedEventDispatcher(
     private val dispatcher: YCEventDispatcher,
 ) : YCEventDispatcher by dispatcher {
     private val handlerCache = ConcurrentHashMap<KClass<*>, YCEventHandler<*>>()

@@ -18,7 +18,7 @@
 
 package yqloss.yqlossclientmixinkt.impl.module
 
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
@@ -57,7 +57,7 @@ abstract class YCModuleHUDBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
         }
     }
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         super.registerEvents(registry)
         registry.run {
             register<YCHUD.GetWidthEvent> { if (it.hud === hud) it.width = scaledWidth }

@@ -23,7 +23,8 @@ import cc.polyfrost.oneconfig.gui.pages.SubModsPage
 import cc.polyfrost.oneconfig.utils.gui.GuiUtils
 import yqloss.yqlossclientmixinkt.YC_LOGGER
 import yqloss.yqlossclientmixinkt.YqlossClient
-import yqloss.yqlossclientmixinkt.event.impl.EventDispatcherImpl
+import yqloss.yqlossclientmixinkt.event.impl.ManagerEventManager
+import yqloss.yqlossclientmixinkt.event.impl.SubEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCCommandEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
@@ -74,7 +75,10 @@ class YqlossClientMixin : YqlossClient {
     override val workingDirectory = "."
 
     override val api = YCAPIImpl()
-    override val eventDispatcher = EventDispatcherImpl()
+
+    override val managerEventManager = ManagerEventManager<Any?>()
+    override val eventRegistry = SubEventRegistry(managerEventManager, null)
+    override val eventDispatcher = managerEventManager
 
     override var configVersion = 0
 
@@ -100,11 +104,11 @@ class YqlossClientMixin : YqlossClient {
 
         MiningPredictionHUD
 
-        eventDispatcher.register<YCMinecraftEvent.Load.Post> {
+        eventRegistry.register<YCMinecraftEvent.Load.Post> {
             loadHypixelModAPI
         }
 
-        eventDispatcher.register<YCCommandEvent.Execute> { event ->
+        eventRegistry.register<YCCommandEvent.Execute> { event ->
             if (!event.canceled && !event.disableClientCommand && event.args.getOrNull(0) == "/yc") {
                 when (event.args.getOrNull(0)) {
                     "/yc", "/yqlossclient", "/yqlossclientmixin" -> {

@@ -18,7 +18,7 @@
 
 package yqloss.yqlossclientmixinkt.impl.module
 
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.nanovgui.WindowAnimation
@@ -85,6 +85,6 @@ abstract class YCModuleGUIBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
         }
     }
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
     }
 }

@@ -20,7 +20,7 @@ package yqloss.yqlossclientmixinkt.impl.module.miningprediction
 
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.format
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.module.YCModuleHUDBase
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
@@ -127,7 +127,7 @@ object MiningPredictionHUD :
         )
     }
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         super.registerEvents(registry)
         registry.run {
             register<MiningPredictionEvent.BreakBlock> {

@@ -22,7 +22,7 @@ import net.minecraft.client.gui.inventory.GuiChest
 import net.minecraft.client.network.NetworkPlayerInfo
 import net.minecraft.init.Items
 import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.event.RegistryEventDispatcher
+import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
@@ -162,7 +162,7 @@ object YCLeapMenu : YCModuleBase<YCLeapMenuOptions>(INFO_YC_LEAP_MENU) {
         }
     }
 
-    override fun registerEvents(registry: RegistryEventDispatcher) {
+    override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<YCRenderEvent.Screen.Proxy> { event ->
                 longrun {

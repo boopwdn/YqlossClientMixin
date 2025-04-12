@@ -22,23 +22,23 @@ import yqloss.yqlossclientmixinkt.event.YCEventRegistration.Entry
 import kotlin.reflect.KClass
 
 interface YCEventRegistration {
-    sealed interface Entry : (YCEventDispatcher) -> Unit {
+    sealed interface Entry : (YCEventRegistry) -> Unit {
         val handler: YCEventHandler<*>
     }
 
     val eventEntries: List<Entry>
 }
 
-class RegistryEventDispatcher(
+class OperationEventRegistry(
     private val list: MutableList<Entry>,
-) : YCEventDispatcher {
+) : YCEventRegistry {
     private data class Register<T : YCEvent>(
         val type: KClass<T>,
         val priority: Int,
         override val handler: YCEventHandler<T>,
     ) : Entry {
-        override fun invoke(dispatcher: YCEventDispatcher) {
-            dispatcher.register(type, priority, handler)
+        override fun invoke(registry: YCEventRegistry) {
+            registry.register(type, priority, handler)
         }
     }
 
@@ -47,8 +47,8 @@ class RegistryEventDispatcher(
         val priority: Int,
         override val handler: YCEventHandler<T>,
     ) : Entry {
-        override fun invoke(dispatcher: YCEventDispatcher) {
-            dispatcher.registerOnly(type, priority, handler)
+        override fun invoke(registry: YCEventRegistry) {
+            registry.registerOnly(type, priority, handler)
         }
     }
 
@@ -68,52 +68,42 @@ class RegistryEventDispatcher(
         list.add(RegisterOnly(type, priority, handler))
     }
 
-    override fun <T : YCEvent> unregister(
-        type: KClass<T>,
-        handler: YCEventHandler<T>,
-    ) = throw NotImplementedError()
+    override fun unregister(handler: YCEventHandler<*>) = throw NotImplementedError()
 
-    override fun <T : YCEvent> unregisterOnly(
-        type: KClass<T>,
-        handler: YCEventHandler<T>,
-    ) = throw NotImplementedError()
-
-    override fun clear() = throw NotImplementedError()
+    override fun unregisterOnly(handler: YCEventHandler<*>) = throw NotImplementedError()
 
     override fun unregisterAll(handler: YCEventHandler<*>) = throw NotImplementedError()
 
-    override fun <T : YCEvent> getHandler(type: KClass<T>) = throw NotImplementedError()
-
-    override fun <T : YCEvent> getHandlerOnly(type: KClass<T>) = throw NotImplementedError()
+    override fun clear() = throw NotImplementedError()
 }
 
-fun buildEventEntries(function: RegistryEventDispatcher.() -> Unit): List<Entry> {
-    return mutableListOf<Entry>().also { function(RegistryEventDispatcher(it)) }
+inline fun buildEventEntries(function: OperationEventRegistry.() -> Unit): List<Entry> {
+    return mutableListOf<Entry>().also { function(OperationEventRegistry(it)) }
 }
 
-fun YCEventRegistration.buildRegisterEventEntries(
-    dispatcher: YCEventDispatcher,
-    function: RegistryEventDispatcher.() -> Unit,
+inline fun YCEventRegistration.buildRegisterEventEntries(
+    registry: YCEventRegistry,
+    function: OperationEventRegistry.() -> Unit,
 ): List<Entry> {
     return mutableListOf<Entry>()
-        .also { function(RegistryEventDispatcher(it)) }
-        .also { registerEventEntries(dispatcher) }
+        .also { function(OperationEventRegistry(it)) }
+        .also { registerEventEntries(registry) }
 }
 
-fun YCEventRegistration.registerEventEntries(dispatcher: YCEventDispatcher) {
-    eventEntries.registerEventEntries(dispatcher)
+fun YCEventRegistration.registerEventEntries(registry: YCEventRegistry) {
+    eventEntries.registerEventEntries(registry)
 }
 
-fun YCEventRegistration.unregisterEventEntries(dispatcher: YCEventDispatcher) {
-    eventEntries.unregisterEventEntries(dispatcher)
+fun YCEventRegistration.unregisterEventEntries(registry: YCEventRegistry) {
+    eventEntries.unregisterEventEntries(registry)
 }
 
-fun List<Entry>.registerEventEntries(dispatcher: YCEventDispatcher) {
-    forEach { it(dispatcher) }
+fun List<Entry>.registerEventEntries(registry: YCEventRegistry) {
+    forEach { it(registry) }
 }
 
-fun List<Entry>.unregisterEventEntries(dispatcher: YCEventDispatcher) {
+fun List<Entry>.unregisterEventEntries(registry: YCEventRegistry) {
     val set = mutableSetOf<YCEventHandler<*>>()
     forEach { set.add(it.handler) }
-    set.forEach(dispatcher::unregisterAll)
+    set.forEach(registry::unregisterAll)
 }
