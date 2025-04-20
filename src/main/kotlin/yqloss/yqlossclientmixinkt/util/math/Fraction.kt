@@ -16,6 +16,8 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util.math
 
 import java.math.BigInteger
@@ -56,12 +58,12 @@ sealed interface Fraction {
     }
 }
 
-private data class FractionImpl(
+data class FractionImpl(
     override val num: BigInteger,
     override val den: BigInteger,
 ) : Fraction
 
-infix fun BigInteger.over(den: BigInteger): Fraction {
+inline infix fun BigInteger.over(den: BigInteger): Fraction {
     val gcd = gcd(den)
     return when {
         den > BigInteger.ZERO -> FractionImpl(this / gcd, den / gcd)
@@ -70,14 +72,14 @@ infix fun BigInteger.over(den: BigInteger): Fraction {
     }
 }
 
-infix fun Long.over(den: Long) = bigInt over den.bigInt
+inline infix fun Long.over(den: Long) = bigInt over den.bigInt
 
-infix fun Int.over(den: Int) = bigInt over den.bigInt
+inline infix fun Int.over(den: Int) = bigInt over den.bigInt
 
-infix fun String.over(den: String) = BigInteger(this) over BigInteger(den)
+inline infix fun String.over(den: String) = BigInteger(this) over BigInteger(den)
 
-val BigInteger.frac: Fraction get() = FractionImpl(this, BigInteger.ONE)
+inline val BigInteger.frac: Fraction get() = FractionImpl(this, BigInteger.ONE)
 
-val Long.frac: Fraction get() = FractionImpl(this.bigInt, BigInteger.ONE)
+inline val Long.frac: Fraction get() = FractionImpl(this.bigInt, BigInteger.ONE)
 
-val Int.frac: Fraction get() = FractionImpl(this.bigInt, BigInteger.ONE)
+inline val Int.frac: Fraction get() = FractionImpl(this.bigInt, BigInteger.ONE)

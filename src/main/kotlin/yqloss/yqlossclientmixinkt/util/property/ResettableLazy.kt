@@ -16,6 +16,8 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util.property
 
 import kotlin.properties.ReadOnlyProperty
@@ -46,9 +48,9 @@ class ResettableLazy<T>(
     }
 }
 
-fun <T> resettableLazy(function: () -> T) = ResettableLazy(function, false, null)
+inline fun <T> resettableLazy(noinline function: () -> T) = ResettableLazy(function, false, null)
 
-fun <T> resettableLazy(
+inline fun <T> resettableLazy(
     initial: T,
-    function: () -> T,
+    noinline function: () -> T,
 ) = ResettableLazy(function, true, initial)

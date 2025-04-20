@@ -16,24 +16,26 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util
 
-infix fun <T> Collection<T>.prepend(element: T): List<T> {
+inline infix fun <T> Collection<T>.prepend(element: T): List<T> {
     return buildList(this.size + 1) {
         add(element)
         addAll(this@prepend)
     }
 }
 
-infix fun <T> T.prependTo(collection: Collection<T>): List<T> {
+inline infix fun <T> T.prependTo(collection: Collection<T>): List<T> {
     return buildList(collection.size + 1) {
         add(this@prependTo)
         addAll(collection)
     }
 }
 
-infix fun <T> List<T>.equalTo(list: List<T>): Boolean {
+inline infix fun <T> List<T>.equalTo(list: List<T>): Boolean {
     return this === list || (size == list.size && indices.all { this[it] == list[it] })
 }
 
-infix fun <T> List<T>.notEqualTo(list: List<T>) = !(this equalTo list)
+inline infix fun <T> List<T>.notEqualTo(list: List<T>) = !(this equalTo list)

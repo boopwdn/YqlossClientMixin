@@ -16,6 +16,8 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util.property
 
 import yqloss.yqlossclientmixinkt.util.general.Box
@@ -43,4 +45,4 @@ class LateLet<T> : ReadWriteProperty<Any?, T> {
     }
 }
 
-fun <T> latelet() = LateLet<T>()
+inline fun <T> latelet() = LateLet<T>()

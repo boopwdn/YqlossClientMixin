@@ -16,29 +16,37 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util.scope
 
-class WithScopeContext(
-    private val resourceList: MutableList<AutoCloseable>,
-    private val cleanupList: MutableList<() -> Unit>,
+import java.lang.AutoCloseable
+import kotlin.Any
+import kotlin.Exception
+import kotlin.Pair
+import kotlin.Suppress
+import kotlin.Unit
+import kotlin.also
+import kotlin.collections.plusAssign
+import kotlin.to
+
+@JvmInline
+value class WithScopeContext(
+    val resourceList: MutableList<AutoCloseable>,
 ) {
-    fun <T : AutoCloseable> use(resource: T): T {
+    inline fun <T : AutoCloseable> use(resource: T): T {
         return resource.also {
-            if (resource !in resourceList) {
-                resourceList.add(it)
-            }
+            resourceList += it
         }
     }
 
-    fun use(cleanup: () -> Unit) {
-        if (cleanup !in cleanupList) {
-            cleanupList.add(cleanup)
-        }
+    inline fun use(crossinline cleanup: () -> Unit) {
+        resourceList += AutoCloseable { cleanup() }
     }
 
-    fun <T : AutoCloseable> T.using() = use(this)
+    inline fun <T : AutoCloseable> T.using() = use(this)
 
-    fun <T> T.using(cleanup: () -> Unit) = this@using.also { use(cleanup) }
+    inline fun <T> T.using(crossinline cleanup: (T) -> Unit) = also { use { cleanup(this) } }
 }
 
 data class ResourceClosureException(
@@ -47,18 +55,13 @@ data class ResourceClosureException(
 
 inline fun <R> withscope(function: WithScopeContext.() -> R) {
     val resourceList = mutableListOf<AutoCloseable>()
-    val cleanupList = mutableListOf<() -> Unit>()
-    val context = WithScopeContext(resourceList, cleanupList)
+    val context = WithScopeContext(resourceList)
     try {
         function(context)
     } finally {
         val exceptionList = mutableListOf<Pair<Any?, Exception>>()
-        // TODO: combine the two lists into one
         resourceList.reversed().forEach { resource ->
             noexcept({ exceptionList.add(resource to it) }) { resource.close() }
-        }
-        cleanupList.reversed().forEach { cleanup ->
-            noexcept({ exceptionList.add(cleanup to it) }) { cleanup() }
         }
         if (exceptionList.isNotEmpty()) {
             throw ResourceClosureException(exceptionList)
