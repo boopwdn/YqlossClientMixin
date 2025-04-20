@@ -16,6 +16,8 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util.math
 
 import java.math.BigInteger
@@ -33,7 +35,7 @@ inline val Number.ceilInt get() = ceil(toDouble()).toInt()
 inline val Long.bigInt: BigInteger get() = BigInteger.valueOf(this)
 inline val Int.bigInt: BigInteger get() = BigInteger.valueOf(this.long)
 
-fun lerp(
+inline fun lerp(
     from: Double,
     to: Double,
     progress: Double,

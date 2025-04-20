@@ -16,6 +16,8 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util
 
-infix fun <T1, T2> T1.sameNotNull(other: T2) = this !== null && this === other
+inline infix fun <T1, T2> T1.sameNotNull(other: T2) = this !== null && this === other

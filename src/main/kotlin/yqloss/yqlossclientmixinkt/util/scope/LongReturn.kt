@@ -42,25 +42,31 @@ data class LongReturn(
     }
 }
 
-class LongReturnContext1(
-    private val value: Any?,
+@JvmInline
+value class LongReturnContext1(
+    val value: Any?,
 ) {
-    infix fun scope(frame: Int) {
+    @Suppress("NOTHING_TO_INLINE")
+    inline infix fun scope(frame: Int): Nothing {
         throw LongReturn(frame, value)
     }
 
-    infix fun times(count: Int) {
+    @Suppress("NOTHING_TO_INLINE")
+    inline infix fun times(count: Int): Nothing {
         throw LongReturn(1 - count, value)
     }
 }
 
-class LongReturnContext2(
-    private val box: Box<*>,
+@JvmInline
+value class LongReturnContext2(
+    val box: Box<*>,
 ) {
-    fun <T> v() = box.cast<T>()
+    @Suppress("NOTHING_TO_INLINE")
+    inline fun <T> v() = box.cast<T>()
 }
 
-class LongReturnContext3(
+@JvmInline
+value class LongReturnContext3(
     val function: (Int) -> Unit,
 ) {
     inline infix fun onreturn(returnValue: LongReturnContext2.() -> Unit) {
@@ -84,7 +90,7 @@ inline fun <T> longret(getter: () -> T) = LongReturnContext1(getter())
 inline fun <T> longreturn(
     scope: Int = 0,
     getter: () -> T,
-) {
+): Nothing {
     val value = getter()
     throw LongReturn(scope, value)
 }

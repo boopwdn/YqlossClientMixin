@@ -21,6 +21,7 @@ package yqloss.yqlossclientmixinkt.util.property
 import yqloss.yqlossclientmixinkt.util.general.Box
 import yqloss.yqlossclientmixinkt.util.general.inBox
 import yqloss.yqlossclientmixinkt.util.once
+import yqloss.yqlossclientmixinkt.util.onceUnary
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -71,7 +72,7 @@ fun <T, TV> triggerOnce(
     function: () -> T,
 ) = Trigger({ once(function) }, versionGetter, false, null)
 
-fun <TA, T, TV> triggerOnce(
+fun <TA, T, TV> triggerOnceUnary(
     versionGetter: () -> TV,
     function: (TA) -> T,
-) = Trigger({ once(function) }, versionGetter, false, null)
+) = Trigger({ onceUnary(function) }, versionGetter, false, null)

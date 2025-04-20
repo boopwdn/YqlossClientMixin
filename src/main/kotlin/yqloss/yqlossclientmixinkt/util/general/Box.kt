@@ -16,6 +16,8 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util.general
 
 import kotlinx.serialization.Serializable
@@ -43,7 +45,7 @@ data class GetterBox<T>(
 value class Box<out T>(
     override val value: T,
 ) : BoxType<T> {
-    @Suppress("UNCHECKED_CAST", "OVERRIDE_BY_INLINE", "NOTHING_TO_INLINE")
+    @Suppress("UNCHECKED_CAST", "OVERRIDE_BY_INLINE")
     override inline fun <R> cast() = value as R
 }
 
@@ -71,11 +73,11 @@ inline val <T> BoxType<T>.reBox get() = Box(value)
 
 inline val <T> BoxType<T>.reRef get(): Ref<T> = FieldRef(value)
 
-fun <T> makeBox(getter: () -> T): BoxType<T> = GetterBox(getter)
+inline fun <T> makeBox(noinline getter: () -> T): BoxType<T> = GetterBox(getter)
 
-fun <T> makeRef(
-    getter: () -> T,
-    setter: (T) -> Unit,
+inline fun <T> makeRef(
+    noinline getter: () -> T,
+    noinline setter: (T) -> Unit,
 ): Ref<T> = AccessorRef(getter, setter)
 
 inline val <T> (() -> T).asBox get(): BoxType<T> = makeBox(this)

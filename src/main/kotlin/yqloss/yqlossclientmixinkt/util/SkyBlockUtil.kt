@@ -16,6 +16,8 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util
 
 import net.minecraft.init.Items
@@ -23,7 +25,7 @@ import net.minecraft.item.ItemStack
 import yqloss.yqlossclientmixinkt.util.scope.noexcept
 import java.util.*
 
-val ItemStack?.skyBlockID: String?
+inline val ItemStack?.skyBlockID: String?
     get() {
         return this?.run {
             noexcept {
@@ -32,7 +34,7 @@ val ItemStack?.skyBlockID: String?
         }
     }
 
-val ItemStack?.skyBlockUUID: UUID?
+inline val ItemStack?.skyBlockUUID: UUID?
     get() {
         return this?.run {
             noexcept {

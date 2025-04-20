@@ -16,11 +16,14 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util
 
 import net.minecraft.block.Block
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.ISound
+import net.minecraft.client.gui.inventory.GuiChest
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.WorldRenderer
 import net.minecraft.client.renderer.vertex.VertexFormat
@@ -32,12 +35,13 @@ import net.minecraft.util.BlockPos
 import net.minecraft.util.ChatComponentText
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.Vec3i
+import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.module.option.YCColor
 import yqloss.yqlossclientmixinkt.util.SideBar.Entry
 import yqloss.yqlossclientmixinkt.util.math.*
 import yqloss.yqlossclientmixinkt.ycLogger
 
-private val logger = ycLogger("Minecraft Util")
+val mcUtilLogger = ycLogger("Minecraft Util")
 
 val MC: Minecraft by lazy { Minecraft.getMinecraft() }
 
@@ -86,20 +90,20 @@ inline fun mcRenderScope(
     }
 }
 
-fun WorldRenderer.pos(vec: Vec3D): WorldRenderer = pos(vec.x, vec.y, vec.z)
+inline fun WorldRenderer.pos(vec: Vec3D): WorldRenderer = pos(vec.x, vec.y, vec.z)
 
-fun WorldRenderer.tex(vec: Vec2D): WorldRenderer = tex(vec.x, vec.y)
+inline fun WorldRenderer.tex(vec: Vec2D): WorldRenderer = tex(vec.x, vec.y)
 
-fun WorldRenderer.color(color: YCColor): WorldRenderer = color(color.r.float, color.g.float, color.b.float, color.a.float)
+inline fun WorldRenderer.color(color: YCColor): WorldRenderer = color(color.r.float, color.g.float, color.b.float, color.a.float)
 
-fun printChat(message: String = "") {
-    logger.info("[PRINT CHAT] $message")
+inline fun printChat(message: String = "") {
+    mcUtilLogger.info("[PRINT CHAT] $message")
     MC.theWorld?.let {
         MC.ingameGUI.chatGUI.printChatMessage(ChatComponentText(message))
     }
 }
 
-fun printChat(throwable: Throwable) = printChat(throwable.stackTraceMessage)
+inline fun printChat(throwable: Throwable) = printChat(throwable.stackTraceMessage)
 
 class CustomSound(
     private val argSoundLocation: ResourceLocation,
@@ -131,11 +135,11 @@ class CustomSound(
     override fun getAttenuationType() = argAttenuationType
 }
 
-fun updateWorldRender() {
+inline fun updateWorldRender() {
     MC.renderGlobal.loadRenderers()
 }
 
-fun updateWorldRenderArea(area: Area3I) {
+inline fun updateWorldRenderArea(area: Area3I) {
     MC.renderGlobal.markBlockRangeForRenderUpdate(
         area.first.x,
         area.first.y,
@@ -146,7 +150,7 @@ fun updateWorldRenderArea(area: Area3I) {
     )
 }
 
-fun updateWorldRenderBlock(pos: Vec3I) {
+inline fun updateWorldRenderBlock(pos: Vec3I) {
     MC.renderGlobal.markBlockRangeForRenderUpdate(pos.x, pos.y, pos.z, pos.x, pos.y, pos.z)
 }
 
@@ -191,3 +195,9 @@ inline val sideBar: SideBar?
                 },
         )
     }
+
+inline val GuiChest.title: String
+    get() =
+        YC.api
+            .get_GuiChest_lowerChestInventory(this)
+            .displayName.formattedText

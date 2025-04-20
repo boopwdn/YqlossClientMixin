@@ -16,6 +16,8 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util
 
 import org.lwjgl.opengl.GL11.*
@@ -51,10 +53,10 @@ inline fun <R> glStateScope(function: () -> R) {
     }
 }
 
-fun Vec3D.glTranslate() {
+inline fun Vec3D.glTranslate() {
     glTranslated(x, y, z)
 }
 
-fun YCColor.glColor() {
+inline fun YCColor.glColor() {
     glColor4d(r, g, b, a)
 }

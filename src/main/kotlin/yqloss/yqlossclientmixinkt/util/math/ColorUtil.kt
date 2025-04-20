@@ -16,12 +16,14 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util.math
 
 import kotlin.math.abs
 import kotlin.math.min
 
-fun convertRGBToHSL(vararg rgb: Double): DoubleArray {
+inline fun convertRGBToHSL(vararg rgb: Double): DoubleArray {
     val hsl = DoubleArray(if (rgb.size >= 4) 4 else 3)
     val maxRGB = maxOf(0.0, *rgb)
     val minRGB = minOf(1.0, *rgb)
@@ -44,14 +46,14 @@ fun convertRGBToHSL(vararg rgb: Double): DoubleArray {
     return hsl.normalizeColor
 }
 
-private const val V06 = 0.0 / 6.0
-private const val V16 = 1.0 / 6.0
-private const val V26 = 2.0 / 6.0
-private const val V36 = 3.0 / 6.0
-private const val V46 = 4.0 / 6.0
-private const val V56 = 5.0 / 6.0
+const val V06 = 0.0 / 6.0
+const val V16 = 1.0 / 6.0
+const val V26 = 2.0 / 6.0
+const val V36 = 3.0 / 6.0
+const val V46 = 4.0 / 6.0
+const val V56 = 5.0 / 6.0
 
-fun convertHSLToRGB(vararg hsl: Double): DoubleArray {
+inline fun convertHSLToRGB(vararg hsl: Double): DoubleArray {
     val (h, s, l) = hsl
     val c = (1.0 - abs(2.0 * l - 1.0)) * s
     val x = c * (1.0 - abs(h * 6.0 % 2.0 - 1.0))
@@ -74,7 +76,7 @@ fun convertHSLToRGB(vararg hsl: Double): DoubleArray {
     }.normalizeColor
 }
 
-fun convertARGBToDoubleArray(argb: Int): DoubleArray {
+inline fun convertARGBToDoubleArray(argb: Int): DoubleArray {
     return doubleArrayOf(
         (argb ushr 16 and 0xFF) / 255.0,
         (argb ushr 8 and 0xFF) / 255.0,
@@ -83,9 +85,9 @@ fun convertARGBToDoubleArray(argb: Int): DoubleArray {
     ).normalizeColor
 }
 
-fun convertRGBToDoubleArray(argb: Int) = convertARGBToDoubleArray(argb or 0xFF000000.int)
+inline fun convertRGBToDoubleArray(argb: Int) = convertARGBToDoubleArray(argb or 0xFF000000.int)
 
-fun convertDoubleArrayToARGB(vararg rgb: Double): Int {
+inline fun convertDoubleArrayToARGB(vararg rgb: Double): Int {
     val norm = rgb.normalizeColor
     return ((norm[0] * 255.0).int shl 16) or
         ((norm[1] * 255.0).int shl 8) or
@@ -93,13 +95,13 @@ fun convertDoubleArrayToARGB(vararg rgb: Double): Int {
         if (rgb.size >= 4) (norm[3] * 255.0).int shl 24 else 0xFF
 }
 
-fun convertDoubleArrayToRGB(vararg rgb: Double) = convertDoubleArrayToARGB(rgb[0], rgb[1], rgb[2], 0.0)
+inline fun convertDoubleArrayToRGB(vararg rgb: Double) = convertDoubleArrayToARGB(rgb[0], rgb[1], rgb[2], 0.0)
 
-fun convertDoubleArrayToFFRGB(vararg rgb: Double) = convertDoubleArrayToARGB(rgb[0], rgb[1], rgb[2], 1.0)
+inline fun convertDoubleArrayToFFRGB(vararg rgb: Double) = convertDoubleArrayToARGB(rgb[0], rgb[1], rgb[2], 1.0)
 
 inline val DoubleArray.normalizeColor get() = DoubleArray(size) { maxOf(0.0, minOf(1.0, this[it])) }
 
-infix fun DoubleArray.blendColor(rgbaSrc: DoubleArray): DoubleArray {
+inline infix fun DoubleArray.blendColor(rgbaSrc: DoubleArray): DoubleArray {
     val (srcR, srcG, srcB, srcA) = rgbaSrc
     val (dstR, dstG, dstB) = this
     val dstA = if (this.size >= 4) this[3] else 1.0
@@ -114,7 +116,7 @@ infix fun DoubleArray.blendColor(rgbaSrc: DoubleArray): DoubleArray {
     ).normalizeColor
 }
 
-infix fun Int.blendColor(argbSrc: Int): Int {
+inline infix fun Int.blendColor(argbSrc: Int): Int {
     return convertDoubleArrayToARGB(
         *convertARGBToDoubleArray(this) blendColor convertARGBToDoubleArray(argbSrc),
     )

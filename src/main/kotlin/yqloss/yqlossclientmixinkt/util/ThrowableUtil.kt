@@ -16,12 +16,14 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util
 
 import java.io.PrintWriter
 import java.io.StringWriter
 
-val Throwable.stackTraceMessage: String
+inline val Throwable.stackTraceMessage: String
     get() {
         return StringWriter()
             .also { sw ->

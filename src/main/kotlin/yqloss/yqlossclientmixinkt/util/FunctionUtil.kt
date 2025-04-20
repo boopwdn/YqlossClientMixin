@@ -133,7 +133,7 @@ inline fun <R> limit(
 
 inline fun <R> once(crossinline function: () -> R) = limit(1, function)
 
-inline fun <T, R> limit(
+inline fun <T, R> limitUnary(
     count: Int,
     crossinline function: (T) -> R,
 ): (T) -> R {
@@ -148,7 +148,7 @@ inline fun <T, R> limit(
     }
 }
 
-inline fun <T, R> once(crossinline function: (T) -> R) = limit(1, function)
+inline fun <T, R> onceUnary(crossinline function: (T) -> R) = limitUnary(1, function)
 
 inline fun loop(function: () -> Unit): Nothing {
     while (true) {
