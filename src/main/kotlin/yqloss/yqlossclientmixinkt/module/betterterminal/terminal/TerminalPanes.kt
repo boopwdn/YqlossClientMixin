@@ -68,7 +68,11 @@ data class TerminalPanes(
         val wrong = state[pos] != 0
         val result = state.toMutableList()
         result[pos] = if (result[pos] == 0) 1 else 0
-        return Terminal.Prediction(result, if (wrong) ClickType.WRONG else ClickType.CORRECT, button)
+        return Terminal.Prediction(
+            result,
+            if (wrong) ClickType.WRONG_WITH_WINDOW_ID_UPDATE else ClickType.CORRECT,
+            button,
+        )
     }
 
     companion object : TerminalFactory<TerminalPanes> {

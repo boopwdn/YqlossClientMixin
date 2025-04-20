@@ -19,6 +19,8 @@
 package yqloss.yqlossclientmixinkt.module.betterterminal
 
 import net.minecraft.client.gui.inventory.GuiChest
+import net.minecraft.inventory.IInventory
+import net.minecraft.item.ItemStack
 import org.lwjgl.opengl.GL11.glScaled
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.YCEventRegistry
@@ -28,6 +30,8 @@ import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.module.betterterminal.terminal.*
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.*
+import yqloss.yqlossclientmixinkt.util.math.floorInt
+import yqloss.yqlossclientmixinkt.util.property.triggerOnceUnary
 import yqloss.yqlossclientmixinkt.util.scope.longrun
 import kotlin.random.Random
 
@@ -47,46 +51,214 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
     data class QueueData(
         val slotID: Int,
         val button: Int,
-        val wrong: Boolean,
+        val noWindowIDUpdate: Boolean,
     )
 
-    data class TerminalData(
+    class TerminalData private constructor(
         val terminal: Terminal,
         val enableQueue: Boolean,
         var windowID: Int,
-        val states: ArrayDeque<List<Int>>,
-        val queue: ArrayDeque<QueueData>,
+        // states always have one more element than queue
+        // the first element is the actual state in vanilla chest GUI
+        // the last element is the prediction being rendered
+        // queue[i] operation: states[i] -> states[i + 1]
+        private val states: ArrayDeque<List<Int>>,
+        private val queue: ArrayDeque<QueueData>,
         var clickDelay: Int,
     ) {
+        constructor(
+            terminal: Terminal,
+            enableQueue: Boolean,
+            windowID: Int,
+            state: List<Int>,
+            clickDelay: Int,
+        ) : this(
+            terminal,
+            enableQueue,
+            windowID,
+            ArrayDeque(listOf(state)),
+            ArrayDeque(),
+            clickDelay,
+        )
+
         val state get() = states[states.size - 1]
+
+        fun add(
+            state: List<Int>,
+            queueData: QueueData,
+        ) {
+            states += state
+            queue += queueData
+        }
+
+        fun pop() {
+            states.removeFirst()
+            queue.removeFirst()
+        }
+
+        val isQueueEmpty get() = queue.isEmpty()
+
+        val actualState get() = states[0]
+
+        val nextOperation get() = queue[0]
+
+        val queueSize get() = queue.size
     }
+
+    data class ParsedState(
+        val chest: GuiChest,
+        val inventory: IInventory,
+        val windowID: Int,
+        val title: String,
+        val items: List<ItemStack?>,
+        val terminal: Terminal,
+        val state: List<Int>?,
+    )
+
+    val parsedState: ParsedState?
+        get() {
+            val chest = MC.currentScreen as? GuiChest ?: return null
+            val title = chest.title.trimStyle
+            val terminal = TERMINAL_FACTORIES.firstNotNullOfOrNull { it.createIfMatch(title) } ?: return null
+            val inventory = YC.api.get_GuiChest_lowerChestInventory(chest)
+            val items = (0..<inventory.sizeInventory).map(inventory::getStackInSlot)
+            return ParsedState(
+                chest,
+                inventory,
+                chest.inventorySlots.windowId,
+                title,
+                items,
+                terminal,
+                terminal.parse(items),
+            )
+        }
 
     var data: TerminalData? = null
 
-    private val clickQueue = mutableListOf<Pair<Int, Int>>()
-
-    private fun validateData() {
-        val data = data ?: return
-        if (data.queue.count { !it.wrong } != data.states.size - 1) {
-            this.data = null
-        }
-    }
+    private var onHandleInput: (() -> Unit)? = null
 
     fun reloadTerminal() {
         data = null
     }
 
-    fun forceNonQueue() {
-        val data = data ?: return
-        this.data =
+    fun switchToQueue(
+        terminal: Terminal,
+        windowID: Int,
+        state: List<Int>,
+    ) {
+        this@BetterTerminal.data =
             TerminalData(
-                data.terminal,
-                false,
-                data.windowID,
-                ArrayDeque(listOf(data.state)),
-                ArrayDeque(),
+                terminal,
+                options.enableQueue && terminal.enableQueue,
+                windowID,
+                state,
                 -1,
             )
+    }
+
+    fun switchToNonQueue(
+        terminal: Terminal,
+        state: List<Int>,
+    ) {
+        this@BetterTerminal.data =
+            TerminalData(
+                terminal,
+                false,
+                -1,
+                state,
+                -1,
+            )
+    }
+
+    fun switchLoading(terminal: Terminal) {
+        this@BetterTerminal.data =
+            TerminalData(
+                TerminalLoading(terminal.lines, terminal.beginLine, terminal.chestLines, terminal.title),
+                options.enableQueue && terminal.enableQueue,
+                -1,
+                listOf(),
+                1,
+            )
+    }
+
+    fun forceNonQueue() {
+        val data = data ?: return
+        switchToNonQueue(data.terminal, data.state)
+    }
+
+    private val randomDelay
+        get(): Int {
+            var from = options.clickDelayFrom
+            val until = options.clickDelayUntil
+            if (from < 0) from = 0.0
+            return if (until <= from) from.floorInt else Random.nextDouble(from, until).floorInt
+        }
+
+    fun onQueueClick(
+        data: TerminalData,
+        slotID: Int,
+        result: Terminal.Prediction,
+    ) {
+        val (click, noWindowIDUpdate) =
+            when (result.clickType) {
+                ClickType.CORRECT ->
+                    true.also {
+                        ClickType.CORRECT.notify(logger)
+                    } to false
+
+                ClickType.WRONG_WITH_WINDOW_ID_UPDATE ->
+                    (!options.preventMisclick).also {
+                        (if (it) ClickType.WRONG_WITH_WINDOW_ID_UPDATE else ClickType.CANCELED).notify(logger)
+                    } to false
+
+                ClickType.WRONG_WITHOUT_WINDOW_ID_UPDATE ->
+                    (!options.preventMisclick).also {
+                        (if (it) ClickType.WRONG_WITHOUT_WINDOW_ID_UPDATE else ClickType.CANCELED).notify(logger)
+                    } to true
+
+                ClickType.FAIL ->
+                    (!options.preventMisclick && !options.preventFail).also {
+                        (if (it) ClickType.FAIL else ClickType.CANCELED).notify(logger)
+                    } to true
+
+                else -> false to false
+            }
+
+        if (click) {
+            if (data.isQueueEmpty) {
+                data.clickDelay = randomDelay
+            }
+            data.add(
+                result.state,
+                QueueData(slotID, result.button, noWindowIDUpdate),
+            )
+        }
+    }
+
+    fun onNonQueueClick(
+        slotID: Int,
+        result: Terminal.Prediction,
+    ) {
+        when (result.clickType) {
+            ClickType.WRONG_WITH_WINDOW_ID_UPDATE, ClickType.WRONG_WITHOUT_WINDOW_ID_UPDATE -> {
+                if (options.preventMisclick) {
+                    ClickType.CANCELED.notify(logger)
+                    return
+                }
+            }
+
+            ClickType.FAIL -> {
+                if (options.preventMisclick || options.preventFail) {
+                    ClickType.CANCELED.notify(logger)
+                    return
+                }
+            }
+
+            else -> {}
+        }
+
+        clickSlot(slotID, result.button)
+        ClickType.NORMAL.notify(logger)
     }
 
     fun onClick(
@@ -96,196 +268,116 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
         val data = data ?: return
         val button = if (data.terminal.enableRightClick) button else 0
         val result = data.terminal.predict(data.state, slotID, button)
-        if (result.clickType !== ClickType.NONE) {
-            if (data.enableQueue) {
-                val (click, wrong) =
-                    when (result.clickType) {
-                        ClickType.CORRECT ->
-                            true.also {
-                                ClickType.CORRECT.notify(logger)
-                            } to false
-
-                        ClickType.WRONG ->
-                            (!options.preventMisclick).also {
-                                (if (it) ClickType.WRONG else ClickType.CANCELED).notify(logger)
-                            } to true
-
-                        ClickType.FAIL ->
-                            (!options.preventMisclick && !options.preventFail).also {
-                                (if (it) ClickType.FAIL else ClickType.CANCELED).notify(logger)
-                            } to true
-
-                        else -> false to false
-                    }
-                if (click) {
-                    if (data.queue.isEmpty()) {
-                        data.clickDelay = randomDelay
-                    }
-                    data.queue.addLast(QueueData(slotID, result.button, wrong))
-                    if (!wrong) {
-                        data.states.addLast(result.state)
-                    }
-                }
-            } else {
-                when (result.clickType) {
-                    ClickType.WRONG -> {
-                        if (options.preventMisclick) {
-                            ClickType.CANCELED.notify(logger)
-                            return
-                        }
-                    }
-
-                    ClickType.FAIL -> {
-                        if (options.preventMisclick || options.preventFail) {
-                            ClickType.CANCELED.notify(logger)
-                            return
-                        }
-                    }
-
-                    else -> {}
-                }
-                clickSlot(slotID, result.button)
-                ClickType.NORMAL.notify(logger)
-            }
+        if (result.clickType === ClickType.NONE) return
+        if (data.enableQueue) {
+            onQueueClick(data, slotID, result)
+        } else {
+            onNonQueueClick(slotID, result)
         }
     }
 
-    private val randomDelay
-        get(): Int {
-            var from = options.clickDelayFrom
-            var until = options.clickDelayUntil
-            if (from < 0) from = 0
-            if (until <= from) until = from + 1
-            return Random.nextInt(from, until)
-        }
+    private val onTick by triggerOnceUnary(::tickCounter) { (data, parsedState): Pair<TerminalData?, ParsedState> ->
+        parsedState.tickAndPerformQueuedClicks(data)
+    }
 
-    private var lastTick = -1L
+    // inplace operation on the parameter
+    // will not do anything in non queue mode
+    // will change this@BetterTerminal.data only if state mismatch
+    private fun ParsedState.tickAndPerformQueuedClicks(data: TerminalData?) {
+        val data = data ?: return
+        // queue mode
+        if (data.clickDelay >= 0) {
+            // state mismatch
+            // resets this@BetterTerminal.data
+            if (state !== null && state notEqualTo data.actualState) {
+                if (options.reloadOnMismatch) {
+                    reloadTerminal()
+                } else {
+                    switchToNonQueue(terminal, state)
+                }
+                return
+            }
+
+            // time to click
+            // does not change data.queue or data.states
+            if (data.clickDelay == 0) {
+                if (state === null) {
+                    // the server has not updated the window
+                    // check next tick
+                    ++data.clickDelay
+                } else if (!data.isQueueEmpty) {
+                    val click = data.nextOperation
+                    onHandleInput += {
+                        clickSlot(click.slotID, click.button)
+                    }
+                    // if the click is wrong in some terminals, window id and state do not change
+                    // so we need to skip the click, or it will freeze
+                    // + 1 because --data.clickDelay later
+                    if (click.noWindowIDUpdate) {
+                        data.pop()
+                        data.clickDelay = randomDelay + 1
+                    }
+                    // clickDelay goes to -1 later so it will not be clicked twice
+                }
+            }
+
+            --data.clickDelay
+        }
+    }
+
+    // update this@BetterTerminal.data by the parameter and this@ParsedState
+    // will not modify the parameter
+    private fun ParsedState.updateStoredData(data: TerminalData?) {
+        if (data?.terminal == terminal) {
+            if (state !== null) {
+                if (!data.enableQueue) {
+                    // update the state
+                    switchToNonQueue(terminal, state)
+                } else if (data.isQueueEmpty) {
+                    // update the state
+                    switchToQueue(terminal, windowID, state)
+                } else {
+                    val equalID = windowID == data.windowID
+                    val equalState = state equalTo data.actualState
+
+                    when {
+                        // next click
+                        !equalID && !equalState -> {
+                            data.pop()
+                            data.clickDelay = randomDelay
+                            this@BetterTerminal.data = data
+                        }
+
+                        // got checked
+                        equalID && !equalState -> switchToNonQueue(terminal, state)
+
+                        // waiting for server to update the window
+                        else -> this@BetterTerminal.data = data
+                    }
+                }
+            } else {
+                // wait for a complete window
+                this@BetterTerminal.data = data
+            }
+        } else {
+            if (state !== null) {
+                switchToQueue(terminal, windowID, state)
+            } else {
+                // has not received a complete window
+                switchLoading(terminal)
+            }
+        }
+    }
 
     private fun updateChest(
         chest: GuiChest,
         data: TerminalData?,
     ) {
-        validateData()
-        val tick = lastTick != tickCounter
-        lastTick = tickCounter
-        val windowID = chest.inventorySlots.windowId
-        val title =
-            YC.api
-                .get_GuiChest_lowerChestInventory(chest)
-                .name.trimStyle
-        val terminal = TERMINAL_FACTORIES.firstNotNullOfOrNull { it.createIfMatch(title) } ?: return
-        Screen.setScreen(chest)
-        val inventory = YC.api.get_GuiChest_lowerChestInventory(chest)
-        val items = (0..<inventory.sizeInventory).map { inventory.getStackInSlot(it) }
-        val state = terminal.parse(items)
-        data?.takeIf { it.terminal == terminal }?.let {
-            if (tick && data.clickDelay >= 0) {
-                if (state !== null && state notEqualTo data.states[0]) {
-                    if (options.reloadOnMismatch) {
-                        this.data = null
-                    } else {
-                        this.data =
-                            TerminalData(
-                                terminal,
-                                false,
-                                windowID,
-                                ArrayDeque(listOf(state)),
-                                ArrayDeque(),
-                                -1,
-                            )
-                    }
-                    return@let
-                }
-                if (data.clickDelay == 0) {
-                    if (state === null) {
-                        ++data.clickDelay
-                    } else if (data.queue.isNotEmpty()) {
-                        val click = data.queue[0]
-                        if (click.wrong) {
-                            data.queue.removeFirst()
-                            data.clickDelay = randomDelay + 1
-                        }
-                        clickQueue.add(click.slotID to click.button)
-                    }
-                }
-                --data.clickDelay
-            }
-
-            state?.let {
-                if (!data.enableQueue) {
-                    this.data =
-                        TerminalData(
-                            terminal,
-                            false,
-                            windowID,
-                            ArrayDeque(listOf(state)),
-                            ArrayDeque(),
-                            -1,
-                        )
-                } else if (data.queue.isEmpty()) {
-                    this.data =
-                        TerminalData(
-                            terminal,
-                            true,
-                            windowID,
-                            ArrayDeque(listOf(state)),
-                            ArrayDeque(),
-                            -1,
-                        )
-                } else {
-                    val equalID = windowID == data.windowID
-                    val equalState = state equalTo data.states[0]
-
-                    when {
-                        !equalID && !equalState -> {
-                            data.states.removeFirst()
-                            data.queue.removeFirst()
-                            data.clickDelay = randomDelay
-                            this.data = data
-                        }
-
-                        equalID && !equalState -> {
-                            this.data =
-                                TerminalData(
-                                    terminal,
-                                    false,
-                                    windowID,
-                                    ArrayDeque(listOf(state)),
-                                    ArrayDeque(),
-                                    -1,
-                                )
-                        }
-
-                        else -> this.data = data
-                    }
-                }
-            } ?: run {
-                this.data = data
-            }
-        } ?: run {
-            state?.let {
-                this.data =
-                    TerminalData(
-                        terminal,
-                        options.enableQueue && terminal.enableQueue,
-                        windowID,
-                        ArrayDeque(listOf(state)),
-                        ArrayDeque(),
-                        -1,
-                    )
-            } ?: run {
-                this.data =
-                    TerminalData(
-                        TerminalLoading(terminal.lines, terminal.beginLine, terminal.chestLines, terminal.title),
-                        options.enableQueue && terminal.enableQueue,
-                        windowID,
-                        ArrayDeque(listOf(listOf())),
-                        ArrayDeque(),
-                        -1,
-                    )
-            }
+        parsedState?.run {
+            Screen.setScreen(chest)
+            updateStoredData(data)
+            onTick { this@BetterTerminal.data to this }
         }
-        validateData()
     }
 
     private fun clickSlot(
@@ -293,23 +385,13 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
         button: Int,
     ) {
         val chest = MC.currentScreen as? GuiChest ?: return
-        if (button == 1) {
-            MC.playerController.windowClick(
-                chest.inventorySlots.windowId,
-                slotID,
-                1,
-                0,
-                MC.thePlayer,
-            )
-        } else {
-            MC.playerController.windowClick(
-                chest.inventorySlots.windowId,
-                slotID,
-                2,
-                3,
-                MC.thePlayer,
-            )
-        }
+        MC.playerController.windowClick(
+            chest.inventorySlots.windowId,
+            slotID,
+            if (button == 1) 1 else 2,
+            if (button == 1) 0 else 3,
+            MC.thePlayer,
+        )
         options.onActualClick(logger) {
             this["slot"] = slotID
             this["button"] = button
@@ -325,16 +407,12 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
                     this@BetterTerminal.data = null
 
                     ensureEnabled()
-
                     if (!options.forceEnabled) {
                         ensureSkyBlock()
                     }
 
-                    val chest = event.screen as? GuiChest ?: return@register
-                    updateChest(chest, data)
-
+                    updateChest(event.screen as? GuiChest ?: return@register, data)
                     this@BetterTerminal.data ?: return@register
-
                     event.mutableScreen = Screen
                 }
             }
@@ -375,12 +453,8 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
             val data = data
             proxiedScreen = null
             BetterTerminal.data = null
-            val chest = MC.currentScreen as? GuiChest ?: return
-            updateChest(chest, data)
-            clickQueue.forEach {
-                clickSlot(it.first, it.second)
-            }
-            clickQueue.clear()
+            updateChest(MC.currentScreen as? GuiChest ?: return, data)
+            onHandleInput.also { onHandleInput = null }?.invoke()
         }
     }
 }

@@ -118,7 +118,11 @@ data class TerminalRubix(
         val wrong = offset * clicksToSolution <= 0
         val result = state.toMutableList()
         result[pos] = (result[pos] + offset + 5) % 5
-        return Terminal.Prediction(result, if (wrong) ClickType.WRONG else ClickType.CORRECT, actualButton)
+        return Terminal.Prediction(
+            result,
+            if (wrong) ClickType.WRONG_WITH_WINDOW_ID_UPDATE else ClickType.CORRECT,
+            actualButton,
+        )
     }
 
     companion object : TerminalFactory<TerminalRubix> {

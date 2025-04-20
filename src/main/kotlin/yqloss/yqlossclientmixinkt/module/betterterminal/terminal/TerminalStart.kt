@@ -90,7 +90,7 @@ data class TerminalStart(
                     ClickType.CORRECT
                 }
 
-                -1 -> ClickType.WRONG
+                -1 -> ClickType.WRONG_WITHOUT_WINDOW_ID_UPDATE
 
                 else -> ClickType.FAIL
             },
