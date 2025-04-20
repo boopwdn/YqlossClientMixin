@@ -227,7 +227,7 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
             }
 
         buttonNonQueue.info = !data.enableQueue
-        buttonReload.info = data.queue.size
+        buttonReload.info = data.queueSize
 
         buttonNonQueue.render(widgets, ttr + Vec2D(-10.0, -2.0))
         buttonReload.render(widgets, ttr + Vec2D(170.0, -2.0))

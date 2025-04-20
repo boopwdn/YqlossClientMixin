@@ -26,8 +26,8 @@ interface BetterTerminalOptions : YCModuleOptions {
     val preventFail: Boolean
     val preventMisclick: Boolean
     val reloadOnMismatch: Boolean
-    val clickDelayFrom: Int
-    val clickDelayUntil: Int
+    val clickDelayFrom: Double
+    val clickDelayUntil: Double
     val orderEnabled: Boolean
     val orderShowNumber: Boolean
     val orderShowClickedNumber: Boolean

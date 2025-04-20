@@ -53,3 +53,9 @@
 
 * fix(WindowProperties): fix window being resized to 1920x1080 at startup
 * feat(MiningPrediction): make the feature unavailable when Mining Speed is not present in tab
+
+## 0.9.0 ()
+
+* refactor(BetterTerminal): rewrite some of BetterTerminal for myself to better understand what I was doing
+* fix(BetterTerminal): fix clicks being delayed 1-2 more ticks than expected
+* fix(BetterTerminal): fix terminal being reset in rubix and panes when misclick

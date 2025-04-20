@@ -28,7 +28,8 @@ enum class ClickType(
     NONE({ null }),
     CORRECT({ BetterTerminal.options.onCorrectClick }),
     CANCELED({ BetterTerminal.options.onCanceledClick }),
-    WRONG({ BetterTerminal.options.onWrongClick }),
+    WRONG_WITH_WINDOW_ID_UPDATE({ BetterTerminal.options.onWrongClick }),
+    WRONG_WITHOUT_WINDOW_ID_UPDATE({ BetterTerminal.options.onWrongClick }),
     FAIL({ BetterTerminal.options.onFailClick }),
     NORMAL({ BetterTerminal.options.onNonQueuedClick }),
     ;

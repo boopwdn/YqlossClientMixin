@@ -94,7 +94,7 @@ data class TerminalOrder(
             }
         val solution = solve(state)
         if (state[pos] != solution) {
-            return Terminal.Prediction(state, ClickType.WRONG, button)
+            return Terminal.Prediction(state, ClickType.WRONG_WITHOUT_WINDOW_ID_UPDATE, button)
         }
         val result = state.toMutableList()
         result[pos] = -result[pos]

@@ -83,20 +83,20 @@ class BetterTerminalOptionsImpl :
     var preventMisclickOption = false
 
     @Number(
-        name = "Click Delay From",
+        name = "Click Delay From (in ticks)",
         min = 0.0F,
         max = Float.MAX_VALUE,
         size = 1,
     )
-    var clickDelayFromOption = 2
+    var clickDelayFromOption = 2.0F
 
     @Number(
-        name = "Click Delay Until",
+        name = "Click Delay Until (in ticks)",
         min = 0.0F,
         max = Float.MAX_VALUE,
         size = 1,
     )
-    var clickDelayUntilOption = 4
+    var clickDelayUntilOption = 4.0F
 
     @Number(
         name = "Slot Rounded Corner Radius",
@@ -486,8 +486,8 @@ class BetterTerminalOptionsImpl :
     override val preventFail by ::preventFailOption
     override val preventMisclick by ::preventMisclickOption
     override val reloadOnMismatch by ::reloadOnMismatchOption
-    override val clickDelayFrom by ::clickDelayFromOption
-    override val clickDelayUntil by ::clickDelayUntilOption
+    override val clickDelayFrom get() = clickDelayFromOption.double
+    override val clickDelayUntil get() = clickDelayUntilOption.double
     override val orderEnabled by ::orderEnabledOption
     override val orderShowNumber by ::orderShowNumberOption
     override val orderShowClickedNumber by ::orderShowClickedNumberOption
