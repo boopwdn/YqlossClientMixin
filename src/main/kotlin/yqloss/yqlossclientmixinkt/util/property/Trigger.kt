@@ -75,4 +75,4 @@ fun <T, TV> triggerOnce(
 fun <TA, T, TV> triggerOnceUnary(
     versionGetter: () -> TV,
     function: (TA) -> T,
-) = Trigger({ onceUnary(function) }, versionGetter, false, null)
+) = Trigger({ onceUnary<() -> TA, T> { function(it()) } }, versionGetter, false, null)
