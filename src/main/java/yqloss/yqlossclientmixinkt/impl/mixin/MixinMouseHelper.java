@@ -18,23 +18,27 @@
 
 package yqloss.yqlossclientmixinkt.impl.mixin;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.client.ForgeHooksClient;
+import kotlin.Pair;
+import net.minecraft.util.MouseHelper;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import yqloss.yqlossclientmixinkt.impl.mixincallback.CallbackForgeHooksClient;
+import yqloss.yqlossclientmixinkt.impl.mixincallback.CallbackMouseHelper;
 
-@Mixin(value = ForgeHooksClient.class, remap = false, priority = 900)
-public abstract class MixinForgeHooksClient {
-    @Inject(method = "drawScreen", at = @At("HEAD"), cancellable = true, remap = false)
-    private static void yc$drawScreenPre(GuiScreen screen, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
-        CallbackForgeHooksClient.YqlossClient.INSTANCE.drawScreenPre(screen, mouseX, mouseY, partialTicks, ci);
-    }
+@Mixin(value = MouseHelper.class, priority = 900)
+public abstract class MixinMouseHelper {
+    @Shadow
+    public int deltaX;
 
-    @Inject(method = "drawScreen", at = @At("RETURN"), remap = false)
-    private static void yc$drawScreenPost(GuiScreen screen, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
-        CallbackForgeHooksClient.YqlossClient.INSTANCE.drawScreenPost();
+    @Shadow
+    public int deltaY;
+
+    @Inject(method = "mouseXYChange", at = @At("RETURN"))
+    private void yc$rawInput$mouseXYChangePre(CallbackInfo ci) {
+        Pair<Integer, Integer> result = CallbackMouseHelper.RawInput.INSTANCE.mouseXYChangePre(deltaX, deltaY);
+        deltaX = result.getFirst();
+        deltaY = result.getSecond();
     }
 }
