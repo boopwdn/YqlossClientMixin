@@ -21,3 +21,15 @@
 package yqloss.yqlossclientmixinkt.util
 
 inline infix fun <T1, T2> T1.sameNotNull(other: T2) = this !== null && this === other
+
+inline infix fun <R> Boolean.ifTake(supplier: () -> R): R? = if (this) supplier() else null
+
+inline infix fun <R> Boolean.unlessTake(supplier: () -> R): R? = if (this) null else supplier()
+
+inline val Boolean.takeTrue get() = if (this) true else null
+
+inline val Boolean.takeFalse get() = if (this) null else false
+
+inline val Boolean.unitTrue get() = if (this) Unit else null
+
+inline val Boolean.unitFalse get() = if (this) null else Unit

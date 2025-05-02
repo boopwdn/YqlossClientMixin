@@ -63,3 +63,4 @@
 ## 0.10.0 ()
 
 * fix(RawInput): fix incompatibility with mods that inject MouseHelper
+* fix(RawInput): fix mouse being locked with native enabled but the feature disabled
