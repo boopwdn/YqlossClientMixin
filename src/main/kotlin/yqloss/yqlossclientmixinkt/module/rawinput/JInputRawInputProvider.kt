@@ -60,8 +60,8 @@ object JInputRawInputProvider : RawInputProvider {
         savedMouse?.let { mouse ->
             mouse.poll()
             MC.currentScreen ?: run {
-                RawInput.mouseHelper.x += mouse.x.pollData
-                RawInput.mouseHelper.y += mouse.y.pollData
+                RawInput.x += mouse.x.pollData
+                RawInput.y += mouse.y.pollData
             }
         }
     }

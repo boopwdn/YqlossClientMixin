@@ -59,7 +59,7 @@ object NativeRawInputProvider : RawInputProvider {
     ) {
         if (RawInput.provider !== this) return
 
-        RawInput.mouseHelper.x += x
-        RawInput.mouseHelper.y += y
+        RawInput.x += x
+        RawInput.y += y
     }
 }

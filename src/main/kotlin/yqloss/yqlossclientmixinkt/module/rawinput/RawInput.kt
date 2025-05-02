@@ -24,24 +24,19 @@ import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
-import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.property.latelet
+import yqloss.yqlossclientmixinkt.util.math.int
 import yqloss.yqlossclientmixinkt.util.scope.longrun
 
 val INFO_RAW_INPUT = moduleInfo<RawInputOptions>("raw_input", "Raw Input")
 
 object RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
-    var mouseHelper: RawMouseHelper by latelet()
+    var x = 0.0
+    var y = 0.0
 
     val provider get() = if (options.nativeRawInput) NativeRawInputProvider else JInputRawInputProvider
 
     override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
-            register<YCMinecraftEvent.Load.Post> {
-                mouseHelper = RawMouseHelper(MC.mouseHelper)
-                MC.mouseHelper = mouseHelper
-            }
-
             register<YCMinecraftEvent.Loop.Pre> {
                 longrun {
                     ensureEnabled()
@@ -50,6 +45,20 @@ object RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
                     NativeRawInputProvider.update()
 
                     provider.poll()
+                }
+            }
+
+            register<RawInputEvent.ModifyDeltaEvent> { event ->
+                if (options.enabled) {
+                    val xInt = x.int
+                    val yInt = y.int
+                    event.mutableDeltaX = xInt
+                    event.mutableDeltaY = -yInt
+                    x -= xInt
+                    y -= yInt
+                } else {
+                    x = 0.0
+                    y = 0.0
                 }
             }
         }

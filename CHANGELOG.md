@@ -59,3 +59,7 @@
 * refactor(BetterTerminal): rewrite some of BetterTerminal for myself to better understand what I was doing
 * fix(BetterTerminal): fix clicks being delayed 1-2 more ticks than expected
 * fix(BetterTerminal): fix terminal being reset in rubix and panes when misclick
+
+## 0.10.0 ()
+
+* fix(RawInput): fix incompatibility with mods that inject MouseHelper
