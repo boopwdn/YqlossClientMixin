@@ -20,10 +20,8 @@
 
 package yqloss.yqlossclientmixinkt.nativeapi
 
-import org.lwjgl.input.Mouse
 import yqloss.yqlossclientmixinkt.YqlossClient
 import yqloss.yqlossclientmixinkt.module.rawinput.NativeRawInputProvider
-import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
 import yqloss.yqlossclientmixinkt.util.math.double
 import yqloss.yqlossclientmixinkt.util.scope.nothrow
 import yqloss.yqlossclientmixinkt.util.scope.withscope
@@ -54,14 +52,16 @@ fun handleWindowMessage(
             val data = getRawInputData(lParam)
             if (data[0] == 0L) {
                 NativeRawInputProvider.handleMouseMove(data[21].double, data[22].double)
-                if (NativeRawInputProvider.rawInputMode) {
-                    clipCursorAtCenter(hwnd)
+                synchronized(NativeRawInputProvider.lockClipCursor) {
+                    if (NativeRawInputProvider.rawInputMode) {
+                        clipCursorAtCenter(hwnd)
+                    }
                 }
             }
         }
 
         512 -> {
-            if (RawInput.provider === NativeRawInputProvider && Mouse.isGrabbed()) return 0
+            if (NativeRawInputProvider.enabledAndGrabbed) return 0
         }
     }
     return null

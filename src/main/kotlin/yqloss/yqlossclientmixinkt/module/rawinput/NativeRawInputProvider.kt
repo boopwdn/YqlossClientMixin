@@ -27,23 +27,33 @@ import yqloss.yqlossclientmixinkt.util.property.trigger
 import yqloss.yqlossclientmixinkt.util.scope.nothrow
 
 object NativeRawInputProvider : RawInputProvider {
+    val lockClipCursor = Any()
+
     var rawInputMode = false
         private set
 
-    private val onGrabStateChange: Unit by trigger({ RawInput.provider === this && Mouse.isGrabbed() }) {
+    val enabledAndGrabbed get() = RawInput.options.enabled && RawInput.provider === this && Mouse.isGrabbed()
+
+    private val onGrabStateChange: Unit by trigger(::enabledAndGrabbed) {
         nothrow {
             val grabbed = Mouse.isGrabbed()
             Mouse.setGrabbed(!grabbed)
             Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2)
             Mouse.setGrabbed(grabbed)
             Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2)
-            if (RawInput.provider === this && Mouse.isGrabbed()) {
+            if (enabledAndGrabbed) {
+                RawInput.logger.info("registering raw input")
                 registerRawInputDevices()
-                rawInputMode = true
+                synchronized(lockClipCursor) {
+                    rawInputMode = true
+                }
             } else {
+                RawInput.logger.info("unregistering raw input")
                 unregisterRawInputDevices()
-                rawInputMode = false
-                cancelClipCursor()
+                synchronized(lockClipCursor) {
+                    rawInputMode = false
+                    cancelClipCursor()
+                }
             }
         }
         Unit
@@ -57,7 +67,7 @@ object NativeRawInputProvider : RawInputProvider {
         x: Double,
         y: Double,
     ) {
-        if (RawInput.provider !== this) return
+        if (RawInput.options.enabled && RawInput.provider !== this) return
 
         RawInput.x += x
         RawInput.y += y

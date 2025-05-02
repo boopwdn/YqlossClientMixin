@@ -24,6 +24,7 @@ import net.java.games.input.Mouse
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.general.intervalAction
 import yqloss.yqlossclientmixinkt.util.scope.noexcept
+import yqloss.yqlossclientmixinkt.util.takeTrue
 import yqloss.yqlossclientmixinkt.ycLogger
 
 object JInputRawInputProvider : RawInputProvider {
@@ -55,6 +56,8 @@ object JInputRawInputProvider : RawInputProvider {
         }
 
     override fun poll() {
+        RawInput.options.enabled.takeTrue ?: return
+
         savedMouse ?: findMouse()
 
         savedMouse?.let { mouse ->

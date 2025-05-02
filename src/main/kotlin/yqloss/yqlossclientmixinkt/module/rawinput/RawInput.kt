@@ -22,10 +22,8 @@ import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
-import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.math.int
-import yqloss.yqlossclientmixinkt.util.scope.longrun
 
 val INFO_RAW_INPUT = moduleInfo<RawInputOptions>("raw_input", "Raw Input")
 
@@ -38,14 +36,10 @@ object RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
     override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<YCMinecraftEvent.Loop.Pre> {
-                longrun {
-                    ensureEnabled()
+                NativeRawInputProvider.update()
+                JInputRawInputProvider.update()
 
-                    JInputRawInputProvider.update()
-                    NativeRawInputProvider.update()
-
-                    provider.poll()
-                }
+                provider.poll()
             }
 
             register<RawInputEvent.ModifyDeltaEvent> { event ->
