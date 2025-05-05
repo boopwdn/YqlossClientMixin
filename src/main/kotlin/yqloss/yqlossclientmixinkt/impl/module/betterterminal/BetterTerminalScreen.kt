@@ -18,6 +18,7 @@
 
 package yqloss.yqlossclientmixinkt.impl.module.betterterminal
 
+import org.lwjgl.input.Mouse
 import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCInputEvent
 import yqloss.yqlossclientmixinkt.event.register
@@ -38,6 +39,7 @@ import yqloss.yqlossclientmixinkt.module.ensure
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.extension.double
 import yqloss.yqlossclientmixinkt.util.extension.sameNotNull
+import yqloss.yqlossclientmixinkt.util.extension.type.ifTake
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.scope.longRun
 
@@ -135,6 +137,10 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
         fade.reset()
     }
 
+    private val dragClick get() = options.dragClick && module.data?.enableQueue == true
+
+    private var holdingMouseButton: Int? = null
+
     override fun draw(
         widgets: MutableList<Widget<*>>,
         box: Vec2D,
@@ -205,13 +211,45 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
 
                     override val text get() = info.second
 
+                    private var lastHovered: Int? = null
+
                     override fun onMouseDown(button: Int) {
-                        BetterTerminal.onClick(it, button)
+                        if (!dragClick) {
+                            BetterTerminal.onClick(it, button)
+                        }
+                    }
+
+                    override fun render(
+                        widgets: MutableList<Widget<*>>,
+                        tr: Transformation,
+                    ) {
+                        if (dragClick) {
+                            val button = holdingMouseButton
+                            if (button === null) {
+                                lastHovered = null
+                            } else {
+                                val hovered = isHovered(tr).ifTake { button }
+                                if (hovered !== null && hovered != lastHovered) {
+                                    BetterTerminal.onClick(it, hovered)
+                                }
+                                lastHovered = hovered
+                            }
+                        }
+                        super.render(widgets, tr)
                     }
                 }
             }
 
         this.buttons = buttons
+
+        if (dragClick) {
+            holdingMouseButton =
+                when {
+                    Mouse.isButtonDown(1) -> 1
+                    Mouse.isButtonDown(0) -> 0
+                    else -> null
+                }
+        }
 
         data.terminal
             .draw(data.state)
