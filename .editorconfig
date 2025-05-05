@@ -13,3 +13,4 @@ trim_trailing_whitespace = true
 ij_kotlin_code_style_defaults = KOTLIN_OFFICIAL
 ktlint_standard_no-wildcard-imports = disabled
 ktlint_standard_function-expression-body = disabled
+ktlint_standard_filename = disabled

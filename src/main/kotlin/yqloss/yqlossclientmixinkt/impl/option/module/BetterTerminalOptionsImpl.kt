@@ -31,7 +31,7 @@ import yqloss.yqlossclientmixinkt.impl.option.impl.ScreenScaleOption
 import yqloss.yqlossclientmixinkt.impl.util.Colors
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminalOptions
 import yqloss.yqlossclientmixinkt.module.betterterminal.INFO_BETTER_TERMINAL
-import yqloss.yqlossclientmixinkt.util.math.double
+import yqloss.yqlossclientmixinkt.util.extension.double
 
 class BetterTerminalOptionsImpl :
     OptionsImpl(INFO_BETTER_TERMINAL),

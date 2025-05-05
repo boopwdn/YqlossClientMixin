@@ -26,12 +26,12 @@ import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.general.inBox
+import yqloss.yqlossclientmixinkt.util.extension.castTo
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 
 abstract class YCModuleScreenBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
     module: TM,
-) : YCModuleGUIBase<TO, TM>(module.inBox.cast()) {
+) : YCModuleGUIBase<TO, TM>(module.castTo()) {
     open val scaleOverride: Double? = null
 
     override val transformation: Transformation

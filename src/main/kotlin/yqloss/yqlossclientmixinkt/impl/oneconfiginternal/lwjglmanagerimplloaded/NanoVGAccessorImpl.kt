@@ -27,9 +27,9 @@ import org.lwjgl.nanovg.NanoVGGL3.nvglCreateImageFromHandle
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.NanoVGAccessor
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.NanoVGImageCacheEntry
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
+import yqloss.yqlossclientmixinkt.util.extension.float
 import yqloss.yqlossclientmixinkt.util.math.convertARGBToDoubleArray
-import yqloss.yqlossclientmixinkt.util.math.float
-import yqloss.yqlossclientmixinkt.util.scope.withscope
+import yqloss.yqlossclientmixinkt.util.scope.usingScope
 import java.nio.ByteBuffer
 import java.util.*
 import kotlin.math.asin
@@ -86,8 +86,8 @@ object NanoVGAccessorImpl : NanoVGAccessor {
         arcPaddingTo: Double,
         color: Int,
     ) {
-        withscope {
-            val nvgColor = NVGColor.calloc().using().fill(color)
+        usingScope {
+            val nvgColor = NVGColor.calloc().using.fill(color)
 
             val lpo = asin(arcPaddingFrom / outerRadius)
             val lpi = asin(arcPaddingFrom / innerRadius)
@@ -133,8 +133,8 @@ object NanoVGAccessorImpl : NanoVGAccessor {
         alpha: Double,
         radius: Double,
     ) {
-        withscope {
-            val nvgPaint = NVGPaint.calloc().using()
+        usingScope {
+            val nvgPaint = NVGPaint.calloc().using
             val imageW = width / imageWRel
             val imageH = height / imageHRel
             val imageX = x - imageW * imageXRel

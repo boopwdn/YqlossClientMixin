@@ -30,11 +30,11 @@ import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.module.option.YCColor
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.*
-import yqloss.yqlossclientmixinkt.util.general.intervalAction
+import yqloss.yqlossclientmixinkt.util.functional.intervalAction
 import yqloss.yqlossclientmixinkt.util.math.Vec3D
 import yqloss.yqlossclientmixinkt.util.math.Vec3I
 import yqloss.yqlossclientmixinkt.util.math.asFloorVec3I
-import yqloss.yqlossclientmixinkt.util.scope.longrun
+import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 val INFO_CORPSE_FINDER = moduleInfo<CorpseFinderOptions>("corpse_finder", "Corpse Finder")
 
@@ -44,7 +44,7 @@ object CorpseFinder : YCModuleBase<CorpseFinderOptions>(INFO_CORPSE_FINDER) {
 
     private val scanCorpses =
         intervalAction(1000000000) {
-            longrun {
+            longRun {
                 ensureEnabled()
                 ensureInWorld()
 
@@ -116,7 +116,7 @@ object CorpseFinder : YCModuleBase<CorpseFinderOptions>(INFO_CORPSE_FINDER) {
             }
 
             register<YCRenderEvent.Entity.Post> {
-                longrun {
+                longRun {
                     ensureEnabled()
                     ensureInWorld()
 

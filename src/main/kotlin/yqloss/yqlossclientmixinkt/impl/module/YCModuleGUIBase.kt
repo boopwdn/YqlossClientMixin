@@ -25,13 +25,13 @@ import yqloss.yqlossclientmixinkt.impl.nanovgui.WindowAnimation
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.general.inBox
+import yqloss.yqlossclientmixinkt.util.extension.castTo
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.scope.longrun
+import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 abstract class YCModuleGUIBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
     protected val module: TM,
-) : YCModuleBase<TO>(module.inBox.cast()) {
+) : YCModuleBase<TO>(module.castTo()) {
     protected abstract val width: Double
     protected abstract val height: Double
     protected open val fadeOut = 0L
@@ -46,7 +46,7 @@ abstract class YCModuleGUIBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
 
     protected open fun doesShow(): Boolean {
         var show = false
-        longrun {
+        longRun {
             ensureShow()
             show = true
         }

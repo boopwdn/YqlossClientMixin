@@ -19,23 +19,22 @@
 package yqloss.yqlossclientmixinkt.impl.oneconfiginternal
 
 import cc.polyfrost.oneconfig.renderer.font.Font
-import yqloss.yqlossclientmixinkt.util.property.latelet
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.lateVal
+import yqloss.yqlossclientmixinkt.util.accessor.value
 
-var nvg: NanoVGAccessor by latelet()
+var nvg: NanoVGAccessor by lateVal()
 
 private var fontLoaded = false
 
-var fontMediumInstance: Font by latelet()
-var fontSemiBoldInstance: Font by latelet()
-
-val fontMedium = { fontMediumInstance }
-val fontSemiBold = { fontSemiBoldInstance }
+val fontMedium = lateVal<Font>()
+val fontSemiBold = lateVal<Font>()
 
 fun NanoVGAccessor.loadFonts(vg: Long) {
     if (!fontLoaded) {
-        fontMediumInstance = loadFont(vg, "montserrat/medium.ttf")
-        fontSemiBoldInstance = loadFont(vg, "montserrat/semibold.ttf")
         fontLoaded = true
+        fontMedium.value = loadFont(vg, "montserrat/medium.ttf")
+        fontSemiBold.value = loadFont(vg, "montserrat/semibold.ttf")
     }
 }
 

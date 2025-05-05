@@ -20,6 +20,8 @@
 
 package yqloss.yqlossclientmixinkt.util.math
 
+import yqloss.yqlossclientmixinkt.util.extension.bigInt
+import yqloss.yqlossclientmixinkt.util.extension.double
 import java.math.BigInteger
 
 sealed interface Fraction {

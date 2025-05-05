@@ -19,7 +19,7 @@
 package yqloss.yqlossclientmixinkt.module.mapmarker
 
 import yqloss.yqlossclientmixinkt.util.keepASCII
-import yqloss.yqlossclientmixinkt.util.scope.noexcept
+import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import yqloss.yqlossclientmixinkt.util.sideBar
 import yqloss.yqlossclientmixinkt.util.trimStyle
 import yqloss.yqlossclientmixinkt.util.updateWorldRender
@@ -35,7 +35,7 @@ class DungeonModificationGroup(
 
     override fun onTick() {
         var room = ""
-        noexcept {
+        noExcept {
             sideBar?.let { sideBar ->
                 if (sideBar.list.isEmpty()) return@let
                 sideBar.list[0]

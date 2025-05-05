@@ -21,7 +21,7 @@ package yqloss.yqlossclientmixinkt.event.impl
 import yqloss.yqlossclientmixinkt.event.YCEvent
 import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
 import yqloss.yqlossclientmixinkt.event.YCEventHandler
-import yqloss.yqlossclientmixinkt.util.general.inBox
+import yqloss.yqlossclientmixinkt.util.extension.castTo
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 
@@ -37,10 +37,10 @@ class CachedEventDispatcher(
     }
 
     override fun <T : YCEvent> getHandler(type: KClass<T>): YCEventHandler<T> {
-        return handlerCache.getOrPut(type) { dispatcher.getHandler(type) }.inBox.cast()
+        return handlerCache.getOrPut(type) { dispatcher.getHandler(type) }.castTo()
     }
 
     override fun <T : YCEvent> getHandlerOnly(type: KClass<T>): YCEventHandler<T> {
-        return handlerOnlyCache.getOrPut(type) { dispatcher.getHandlerOnly(type) }.inBox.cast()
+        return handlerOnlyCache.getOrPut(type) { dispatcher.getHandlerOnly(type) }.castTo()
     }
 }

@@ -22,10 +22,10 @@ import yqloss.yqlossclientmixinkt.event.YCEvent
 import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
 import yqloss.yqlossclientmixinkt.event.YCEventHandler
 import yqloss.yqlossclientmixinkt.event.YCManagerEventRegistry
-import yqloss.yqlossclientmixinkt.util.general.AnyComparator
-import yqloss.yqlossclientmixinkt.util.general.UniqueHash
-import yqloss.yqlossclientmixinkt.util.general.inBox
-import yqloss.yqlossclientmixinkt.util.prepend
+import yqloss.yqlossclientmixinkt.util.HashComparator
+import yqloss.yqlossclientmixinkt.util.UniqueHash
+import yqloss.yqlossclientmixinkt.util.extension.castTo
+import yqloss.yqlossclientmixinkt.util.extension.type.prepend
 import java.util.*
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
@@ -40,12 +40,13 @@ class ManagerEventManager<in TK> :
     YCManagerEventRegistry<TK> {
     private val lock = ReentrantReadWriteLock()
 
-    private val anyComparator = AnyComparator(UniqueHash())
+    private val hashComparator = HashComparator<YCEventHandler<*>>(UniqueHash())
 
-    private inner class RegistryEntry(
+    private class RegistryEntry(
+        val hashComparator: HashComparator<YCEventHandler<*>>,
         val priority: Int,
         val handler: YCEventHandler<*>,
-        val key: @UnsafeVariance TK,
+        val key: Any?,
     ) : Comparable<RegistryEntry> {
         override fun compareTo(other: RegistryEntry): Int {
             return if (handler === other.handler) {
@@ -54,14 +55,14 @@ class ManagerEventManager<in TK> :
                 priority
                     .compareTo(other.priority)
                     .takeIf { it != 0 }
-                    ?: anyComparator.compare(handler, other.handler)
+                    ?: hashComparator.compare(handler, other.handler)
             }
         }
 
         override fun equals(other: Any?): Boolean {
-            return (other as? ManagerEventManager<*>.RegistryEntry)?.let {
-                return handler === other.handler
-            } ?: false
+            return (other as? RegistryEntry)?.let {
+                handler === other.handler
+            } == true
         }
 
         override fun hashCode() = handler.hashCode()
@@ -96,7 +97,7 @@ class ManagerEventManager<in TK> :
             unregister(handler)
             parentTypeHandlerMap
                 .getOrPut(type, ::TreeSet)
-                .add(RegistryEntry(priority, handler, key))
+                .add(RegistryEntry(hashComparator, priority, handler, key))
         }
     }
 
@@ -111,7 +112,7 @@ class ManagerEventManager<in TK> :
             unregisterOnly(handler)
             onlyTypeHandlerMap
                 .getOrPut(type, ::TreeSet)
-                .add(RegistryEntry(priority, handler, key))
+                .add(RegistryEntry(hashComparator, priority, handler, key))
         }
     }
 
@@ -172,8 +173,7 @@ class ManagerEventManager<in TK> :
                         onlyTypeHandlerMap[type]?.let(set::addAll)
                         EventHandlerHolder(set.toList().map { it.handler })
                     }
-                }.inBox
-                .cast()
+                }.castTo()
         }
     }
 
@@ -187,8 +187,7 @@ class ManagerEventManager<in TK> :
                         onlyTypeHandlerMap[type]?.let(set::addAll)
                         EventHandlerHolder(set.toList().map { it.handler })
                     }
-                }.inBox
-                .cast()
+                }.castTo()
         }
     }
 }

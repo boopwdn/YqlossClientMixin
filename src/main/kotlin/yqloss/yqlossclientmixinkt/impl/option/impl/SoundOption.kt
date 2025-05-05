@@ -22,7 +22,7 @@ import cc.polyfrost.oneconfig.config.annotations.Number
 import cc.polyfrost.oneconfig.config.annotations.Switch
 import cc.polyfrost.oneconfig.config.annotations.Text
 import yqloss.yqlossclientmixinkt.module.option.YCSoundOption
-import yqloss.yqlossclientmixinkt.util.math.double
+import yqloss.yqlossclientmixinkt.util.extension.double
 
 class SoundOption : YCSoundOption {
     @Switch(

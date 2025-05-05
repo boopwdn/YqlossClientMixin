@@ -23,8 +23,9 @@ import org.lwjgl.opengl.Display
 import yqloss.yqlossclientmixinkt.nativeapi.cancelClipCursor
 import yqloss.yqlossclientmixinkt.nativeapi.registerRawInputDevices
 import yqloss.yqlossclientmixinkt.nativeapi.unregisterRawInputDevices
-import yqloss.yqlossclientmixinkt.util.property.trigger
-import yqloss.yqlossclientmixinkt.util.scope.nothrow
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
+import yqloss.yqlossclientmixinkt.util.scope.noThrow
 
 object NativeRawInputProvider : RawInputProvider {
     val lockClipCursor = Any()
@@ -34,14 +35,14 @@ object NativeRawInputProvider : RawInputProvider {
 
     val enabledAndGrabbed get() = RawInput.options.enabled && RawInput.provider === this && Mouse.isGrabbed()
 
-    private val onGrabStateChange: Unit by trigger(::enabledAndGrabbed) {
-        nothrow {
+    private val onGrabStateChange: Unit by trigger(::enabledAndGrabbed) { ver ->
+        noThrow {
             val grabbed = Mouse.isGrabbed()
             Mouse.setGrabbed(!grabbed)
             Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2)
             Mouse.setGrabbed(grabbed)
             Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2)
-            if (enabledAndGrabbed) {
+            if (ver) {
                 RawInput.logger.info("registering raw input")
                 registerRawInputDevices()
                 synchronized(lockClipCursor) {
@@ -67,7 +68,7 @@ object NativeRawInputProvider : RawInputProvider {
         x: Double,
         y: Double,
     ) {
-        if (RawInput.options.enabled && RawInput.provider !== this) return
+        if (!RawInput.options.enabled || RawInput.provider !== this) return
 
         RawInput.x += x
         RawInput.y += y

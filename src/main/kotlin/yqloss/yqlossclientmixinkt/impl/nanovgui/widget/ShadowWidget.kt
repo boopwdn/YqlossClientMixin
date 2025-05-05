@@ -20,8 +20,8 @@ package yqloss.yqlossclientmixinkt.impl.nanovgui.widget
 
 import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
+import yqloss.yqlossclientmixinkt.util.extension.float
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.float
 import yqloss.yqlossclientmixinkt.util.math.lerp
 
 data class ShadowWidget(

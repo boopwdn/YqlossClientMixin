@@ -29,10 +29,14 @@ import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.module.option.blockState
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.*
-import yqloss.yqlossclientmixinkt.util.math.*
-import yqloss.yqlossclientmixinkt.util.scope.longreturn
-import yqloss.yqlossclientmixinkt.util.scope.longrun
-import yqloss.yqlossclientmixinkt.util.scope.noexcept
+import yqloss.yqlossclientmixinkt.util.extension.int
+import yqloss.yqlossclientmixinkt.util.math.Fraction
+import yqloss.yqlossclientmixinkt.util.math.Vec3I
+import yqloss.yqlossclientmixinkt.util.math.frac
+import yqloss.yqlossclientmixinkt.util.math.over
+import yqloss.yqlossclientmixinkt.util.scope.longReturn
+import yqloss.yqlossclientmixinkt.util.scope.longRun
+import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import kotlin.math.max
 import kotlin.math.min
 
@@ -120,7 +124,7 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
 
     private fun ensureAvailable() {
         if (!isAvailable) {
-            longreturn {}
+            longReturn {}
         }
     }
 
@@ -160,7 +164,7 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
             }
 
             register<YCMinecraftEvent.Tick.Pre> {
-                longrun {
+                longRun {
                     isAvailable = false
                     miningSpeed = 0
 
@@ -172,7 +176,7 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
                     }
 
                     MC.thePlayer.sendQueue.playerInfoMap.firstOrNull {
-                        noexcept(logger::catching) {
+                        noExcept(logger::catching) {
                             val rawName = MC.ingameGUI.tabList.getPlayerName(it)
                             if ("Mining Speed" in rawName) {
                                 miningSpeed =
@@ -195,7 +199,7 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
             }
 
             register<MiningPredictionEvent.Mining> { event ->
-                longrun {
+                longRun {
                     ensureEnabled()
                     ensureAvailable()
 
@@ -221,7 +225,7 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
             }
 
             register<MiningPredictionEvent.RenderBlockDamage> { event ->
-                longrun {
+                longRun {
                     ensureEnabled()
                     ensureAvailable()
 
@@ -242,7 +246,7 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
             }
 
             register<YCRenderEvent.Block.ProcessBlockState> { event ->
-                longrun {
+                longRun {
                     ensureEnabled()
                     ensureAvailable()
 

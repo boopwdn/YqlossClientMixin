@@ -32,11 +32,11 @@ import yqloss.yqlossclientmixinkt.impl.option.module.MiningPredictionOptionsImpl
 import yqloss.yqlossclientmixinkt.module.ensure
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPrediction
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPredictionEvent
+import yqloss.yqlossclientmixinkt.util.extension.double
 import yqloss.yqlossclientmixinkt.util.math.Fraction
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.double
 import yqloss.yqlossclientmixinkt.util.partialTicks
-import yqloss.yqlossclientmixinkt.util.scope.longrun
+import yqloss.yqlossclientmixinkt.util.scope.longRun
 import kotlin.math.min
 
 object MiningPredictionHUD :
@@ -131,7 +131,7 @@ object MiningPredictionHUD :
         super.registerEvents(registry)
         registry.run {
             register<MiningPredictionEvent.BreakBlock> {
-                longrun {
+                longRun {
                     ensureHUDEnabled()
 
                     val box = size

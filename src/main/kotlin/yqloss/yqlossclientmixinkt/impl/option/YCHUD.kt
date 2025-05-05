@@ -22,9 +22,9 @@ import cc.polyfrost.oneconfig.hud.Hud
 import cc.polyfrost.oneconfig.libs.universal.UMatrixStack
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.YCEvent
+import yqloss.yqlossclientmixinkt.util.extension.double
+import yqloss.yqlossclientmixinkt.util.extension.float
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.double
-import yqloss.yqlossclientmixinkt.util.math.float
 
 class YCHUD(
     enabled: Boolean = false,

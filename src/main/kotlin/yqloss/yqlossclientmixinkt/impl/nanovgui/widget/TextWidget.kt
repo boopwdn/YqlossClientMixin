@@ -25,9 +25,9 @@ import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.loadFonts
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
 import yqloss.yqlossclientmixinkt.impl.util.alphaScale
+import yqloss.yqlossclientmixinkt.util.extension.double
+import yqloss.yqlossclientmixinkt.util.extension.float
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.double
-import yqloss.yqlossclientmixinkt.util.math.float
 import yqloss.yqlossclientmixinkt.util.math.lerp
 
 data class TextWidget(

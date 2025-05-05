@@ -27,12 +27,13 @@ import yqloss.yqlossclientmixinkt.impl.option.YCHUD
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.general.inBox
+import yqloss.yqlossclientmixinkt.util.extension.castTo
+import yqloss.yqlossclientmixinkt.util.scope.Scope
 
 abstract class YCModuleHUDBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
     module: TM,
     protected val hudGetter: YCModuleHUDBase<TO, TM>.() -> YCHUD,
-) : YCModuleGUIBase<TO, TM>(module.inBox.cast()) {
+) : YCModuleGUIBase<TO, TM>(module.castTo()) {
     protected open val hud get() = hudGetter()
     protected open val example get() = hud.isExample
     override val scaledWidth get() = width * hud.scale
@@ -68,5 +69,5 @@ abstract class YCModuleHUDBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
         }
     }
 
-    protected open fun ensureHUDEnabled(frame: Int = 0) = ensureEnabled(frame) { hud.isEnabled }
+    protected open fun ensureHUDEnabled(frame: Scope = Scope.LAST) = ensureEnabled(frame) { hud.isEnabled }
 }
