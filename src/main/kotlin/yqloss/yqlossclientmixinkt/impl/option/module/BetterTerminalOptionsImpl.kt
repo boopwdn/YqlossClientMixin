@@ -119,6 +119,12 @@ class BetterTerminalOptionsImpl :
     )
     var chestScaleOption = 0.25F
 
+    @Switch(
+        name = "Drag Click",
+        size = 2,
+    )
+    var dragClick = false
+
     @Extract
     var background =
         GUIBackground().apply {
