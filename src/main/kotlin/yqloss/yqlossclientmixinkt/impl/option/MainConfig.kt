@@ -20,7 +20,9 @@ package yqloss.yqlossclientmixinkt.impl.option
 
 import cc.polyfrost.oneconfig.config.annotations.Button
 import cc.polyfrost.oneconfig.config.annotations.Header
+import cc.polyfrost.oneconfig.config.annotations.Info
 import cc.polyfrost.oneconfig.config.annotations.Switch
+import cc.polyfrost.oneconfig.config.data.InfoType
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCHypixelLocation
 import yqloss.yqlossclientmixinkt.api.YCHypixelServerType
@@ -33,6 +35,14 @@ import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.printChat
 
 class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Client #")) {
+    @Transient
+    @Info(type = InfoType.INFO, text = "Ciallo\uFF5E(\u2220\u30FB\u03C9< )\u2312\u2606", size = 2)
+    val infoCiallo = false
+
+    @Transient
+    @Info(type = InfoType.INFO, text = "已为 OneConfig 添加中文支持", size = 2)
+    val infoChineseFont = false
+
     @Transient
     @Extract
     val disclaimer = DisclaimerAtOwnRisk()
