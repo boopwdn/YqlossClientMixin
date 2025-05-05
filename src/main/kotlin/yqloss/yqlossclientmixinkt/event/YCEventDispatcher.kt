@@ -18,17 +18,17 @@
 
 package yqloss.yqlossclientmixinkt.event
 
-import yqloss.yqlossclientmixinkt.util.general.inBox
+import yqloss.yqlossclientmixinkt.util.extension.castTo
 import kotlin.reflect.KClass
 
 interface YCEventDispatcher : (YCEvent) -> Unit {
     fun <T : YCEvent> getHandler(type: KClass<T>): YCEventHandler<T>
 
-    fun <T : YCEvent> getHandler(event: T) = getHandler(event::class.inBox.cast<KClass<T>>())
+    fun <T : YCEvent> getHandler(event: T) = getHandler(event::class.castTo<KClass<T>>())
 
     fun <T : YCEvent> getHandlerOnly(type: KClass<T>): YCEventHandler<T>
 
-    fun <T : YCEvent> getHandlerOnly(event: T) = getHandlerOnly(event::class.inBox.cast<KClass<T>>())
+    fun <T : YCEvent> getHandlerOnly(event: T) = getHandlerOnly(event::class.castTo<KClass<T>>())
 
     override fun invoke(event: YCEvent) {
         getHandler(event)(event)

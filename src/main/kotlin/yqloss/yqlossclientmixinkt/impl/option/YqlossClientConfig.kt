@@ -26,7 +26,8 @@ import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
 import yqloss.yqlossclientmixinkt.impl.YCMixin
 import yqloss.yqlossclientmixinkt.impl.option.module.*
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.general.inBox
+import yqloss.yqlossclientmixinkt.util.accessor.outs.cast
+import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
 import yqloss.yqlossclientmixinkt.ycLogger
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSuperclasses

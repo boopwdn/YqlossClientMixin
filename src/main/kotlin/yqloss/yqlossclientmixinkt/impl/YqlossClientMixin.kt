@@ -46,7 +46,8 @@ import yqloss.yqlossclientmixinkt.module.windowproperties.WindowProperties
 import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
 import yqloss.yqlossclientmixinkt.nativeapi.loadWindowsX64NativeAPI
 import yqloss.yqlossclientmixinkt.theYC
-import yqloss.yqlossclientmixinkt.util.property.latelet
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.lateVal
 import kotlin.reflect.KClass
 
 const val MOD_ID = "@ID@"
@@ -59,7 +60,7 @@ val initYqlossClientMixin by lazy {
     YC_LOGGER.info("created YqlossClientMixin instance")
 }
 
-var theYCMixin: YqlossClientMixin by latelet()
+var theYCMixin: YqlossClientMixin by lateVal()
 
 val YCMixin by ::theYCMixin
 

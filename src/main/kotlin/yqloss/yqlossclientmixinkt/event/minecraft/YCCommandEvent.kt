@@ -21,14 +21,14 @@ package yqloss.yqlossclientmixinkt.event.minecraft
 import yqloss.yqlossclientmixinkt.event.YCCancelableEvent
 import yqloss.yqlossclientmixinkt.event.YCEvent
 import yqloss.yqlossclientmixinkt.util.LOG_COMMAND_ARGUMENT_PARSING
-import yqloss.yqlossclientmixinkt.util.scope.noexcept
+import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import yqloss.yqlossclientmixinkt.ycLogger
 
 private val logger = ycLogger("Command")
 
 sealed interface YCCommandEvent : YCEvent {
     fun processArguments(command: String): List<String> {
-        return noexcept {
+        return noExcept {
             val trim = command.trim()
             if (trim.isEmpty()) return emptyList()
             var pointer = 0

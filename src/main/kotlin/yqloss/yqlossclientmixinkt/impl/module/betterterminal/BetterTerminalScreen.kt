@@ -36,10 +36,10 @@ import yqloss.yqlossclientmixinkt.module.betterterminal.SlotType
 import yqloss.yqlossclientmixinkt.module.betterterminal.terminal.*
 import yqloss.yqlossclientmixinkt.module.ensure
 import yqloss.yqlossclientmixinkt.util.MC
+import yqloss.yqlossclientmixinkt.util.extension.double
+import yqloss.yqlossclientmixinkt.util.extension.sameNotNull
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.double
-import yqloss.yqlossclientmixinkt.util.sameNotNull
-import yqloss.yqlossclientmixinkt.util.scope.longrun
+import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, BetterTerminal>(BetterTerminal) {
     private val colorGetterMap =
@@ -237,7 +237,7 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
         super.registerEvents(registry)
         registry.run {
             register<YCInputEvent.Mouse.Click> { event ->
-                longrun {
+                longRun {
                     val data = module.data ?: return@register
                     ensure { event.screen }
                     ensureShow()

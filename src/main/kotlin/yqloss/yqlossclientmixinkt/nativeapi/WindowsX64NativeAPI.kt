@@ -22,9 +22,9 @@ package yqloss.yqlossclientmixinkt.nativeapi
 
 import yqloss.yqlossclientmixinkt.YqlossClient
 import yqloss.yqlossclientmixinkt.module.rawinput.NativeRawInputProvider
-import yqloss.yqlossclientmixinkt.util.math.double
-import yqloss.yqlossclientmixinkt.util.scope.nothrow
-import yqloss.yqlossclientmixinkt.util.scope.withscope
+import yqloss.yqlossclientmixinkt.util.extension.double
+import yqloss.yqlossclientmixinkt.util.scope.noThrow
+import yqloss.yqlossclientmixinkt.util.scope.usingScope
 import yqloss.yqlossclientmixinkt.ycLogger
 import java.io.File
 
@@ -68,15 +68,15 @@ fun handleWindowMessage(
 }
 
 fun loadWindowsX64NativeAPI() {
-    nothrow(ycLogger("Windows X64 Native API Loader")::catching) {
+    noThrow(ycLogger("Windows X64 Native API Loader")::catching) {
         val extractedFile = File("./yqlossclient-native/client.exe")
-        withscope {
+        usingScope {
             File("./yqlossclient-native").mkdirs()
             val resource =
                 YqlossClient::class.java
                     .getResourceAsStream("/assets/yqlossclientmixin/native/client.exe")!!
-                    .using()
-            val extracted = extractedFile.outputStream().using()
+                    .using
+            val extracted = extractedFile.outputStream().using
             resource.copyTo(extracted)
         }
         System.load(extractedFile.absolutePath)

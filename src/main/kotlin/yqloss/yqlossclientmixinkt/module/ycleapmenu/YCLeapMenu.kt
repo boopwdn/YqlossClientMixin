@@ -29,8 +29,9 @@ import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.property.trigger
-import yqloss.yqlossclientmixinkt.util.scope.longrun
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
+import yqloss.yqlossclientmixinkt.util.scope.longRun
 import yqloss.yqlossclientmixinkt.util.tickCounter
 import yqloss.yqlossclientmixinkt.util.trimStyle
 
@@ -165,7 +166,7 @@ object YCLeapMenu : YCModuleBase<YCLeapMenuOptions>(INFO_YC_LEAP_MENU) {
     override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<YCRenderEvent.Screen.Proxy> { event ->
-                longrun {
+                longRun {
                     Screen.proxiedScreen = null
 
                     ensureEnabled()

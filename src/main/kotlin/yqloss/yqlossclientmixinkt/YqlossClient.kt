@@ -25,7 +25,8 @@ import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
 import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.YCManagerEventRegistry
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.property.latelet
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.lateVal
 import java.io.File
 import java.net.URI
 import java.net.URL
@@ -35,7 +36,7 @@ fun ycLogger(name: String): Logger = LogManager.getLogger("YqlossClient $name")
 
 val YC_LOGGER: Logger = LogManager.getLogger("YqlossClient")
 
-var theYC: YqlossClient by latelet()
+var theYC: YqlossClient by lateVal()
 
 val YC by ::theYC
 

@@ -30,9 +30,13 @@ import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.module.betterterminal.terminal.*
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.*
-import yqloss.yqlossclientmixinkt.util.math.floorInt
-import yqloss.yqlossclientmixinkt.util.property.triggerOnceUnary
-import yqloss.yqlossclientmixinkt.util.scope.longrun
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.triggerOnceUnary
+import yqloss.yqlossclientmixinkt.util.extension.floorInt
+import yqloss.yqlossclientmixinkt.util.extension.type.equalTo
+import yqloss.yqlossclientmixinkt.util.extension.type.notEqualTo
+import yqloss.yqlossclientmixinkt.util.functional.plus
+import yqloss.yqlossclientmixinkt.util.scope.longRun
 import kotlin.random.Random
 
 val INFO_BETTER_TERMINAL = moduleInfo<BetterTerminalOptions>("better_terminal", "Better Terminal")
@@ -401,7 +405,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
     override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<YCRenderEvent.Screen.Proxy> { event ->
-                longrun {
+                longRun {
                     val data = data
                     Screen.proxiedScreen = null
                     this@BetterTerminal.data = null
@@ -418,7 +422,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
             }
 
             register<BetterTerminalEvent.DrawDefaultBackground> { event ->
-                longrun {
+                longRun {
                     ensureNotCanceled(event)
                     ensureEnabled()
                     event.canceled = event.screen === Screen.proxiedScreen
@@ -426,7 +430,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
             }
 
             register<BetterTerminalEvent.RenderTooltip> { event ->
-                longrun {
+                longRun {
                     ensureNotCanceled(event)
                     ensureEnabled()
                     event.canceled = event.screen === Screen.proxiedScreen

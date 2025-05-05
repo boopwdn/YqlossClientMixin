@@ -25,8 +25,8 @@ import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.nanovgui.widget.backgroundWidget
 import yqloss.yqlossclientmixinkt.impl.util.Colors
+import yqloss.yqlossclientmixinkt.util.extension.double
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.double
 
 class GUIBackground {
     @Switch(

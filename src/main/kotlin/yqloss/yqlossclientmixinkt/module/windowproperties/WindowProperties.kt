@@ -28,9 +28,10 @@ import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.general.inBox
-import yqloss.yqlossclientmixinkt.util.property.trigger
-import yqloss.yqlossclientmixinkt.util.scope.longrun
+import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
+import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 val INFO_WINDOW_PROPERTIES = moduleInfo<WindowPropertiesOptions>("window_properties", "Window Properties")
 
@@ -142,7 +143,7 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
             }
 
             register<WindowPropertiesEvent.Fullscreen> { event ->
-                longrun {
+                longRun {
                     ensureEnabled { fullscreenMode || options.windowedFullscreen }
 
                     event.canceled = true

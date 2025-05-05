@@ -26,10 +26,11 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.util.MC
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
 import yqloss.yqlossclientmixinkt.util.printChat
-import yqloss.yqlossclientmixinkt.util.property.trigger
-import yqloss.yqlossclientmixinkt.util.scope.longrun
-import yqloss.yqlossclientmixinkt.util.scope.noexcept
+import yqloss.yqlossclientmixinkt.util.scope.longRun
+import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import yqloss.yqlossclientmixinkt.util.updateWorldRender
 import java.io.File
 
@@ -71,7 +72,7 @@ object MapMarker : YCModuleBase<MapMarkerOptions>(INFO_MAP_MARKER) {
     override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<YCMinecraftEvent.Tick.Pre> {
-                longrun {
+                longRun {
                     reloadChunksOnSwitch
 
                     ensureEnabled()
@@ -87,7 +88,7 @@ object MapMarker : YCModuleBase<MapMarkerOptions>(INFO_MAP_MARKER) {
             }
 
             register<YCRenderEvent.Block.ProcessBlockState> { event ->
-                longrun {
+                longRun {
                     ensureEnabled()
 
                     modificationGroup?.listModifications()?.forEach { modification ->
@@ -99,11 +100,11 @@ object MapMarker : YCModuleBase<MapMarkerOptions>(INFO_MAP_MARKER) {
             }
 
             register<YCCommandEvent.Execute> { event ->
-                longrun {
+                longRun {
                     ensureNotCanceled(event)
                     ensureEnabled { !event.disableClientCommand }
 
-                    noexcept(::printChat) {
+                    noExcept(::printChat) {
                         when (event.args.getOrNull(0)) {
                             "/ycmmc", "/yqlossclientmapmarkercurrent" -> {
                                 event.canceled = true

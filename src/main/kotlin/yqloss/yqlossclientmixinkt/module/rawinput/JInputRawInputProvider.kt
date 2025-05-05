@@ -22,9 +22,9 @@ import net.java.games.input.Controller
 import net.java.games.input.ControllerEnvironment
 import net.java.games.input.Mouse
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.general.intervalAction
-import yqloss.yqlossclientmixinkt.util.scope.noexcept
-import yqloss.yqlossclientmixinkt.util.takeTrue
+import yqloss.yqlossclientmixinkt.util.extension.type.takeTrue
+import yqloss.yqlossclientmixinkt.util.functional.intervalAction
+import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import yqloss.yqlossclientmixinkt.ycLogger
 
 object JInputRawInputProvider : RawInputProvider {
@@ -36,9 +36,9 @@ object JInputRawInputProvider : RawInputProvider {
         intervalAction(1000000000L) {
             logger.info("trying to find a mouse")
 
-            noexcept(logger::catching) {
+            noExcept(logger::catching) {
                 for (controller in ControllerEnvironment.getDefaultEnvironment().controllers) {
-                    noexcept(logger::catching) {
+                    noExcept(logger::catching) {
                         if (controller.type === Controller.Type.MOUSE) {
                             val mouse = controller as Mouse
                             mouse.poll()

@@ -32,8 +32,8 @@ import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPredictionEvent
 import yqloss.yqlossclientmixinkt.module.tweaks.TweaksEvent
 import yqloss.yqlossclientmixinkt.module.windowproperties.WindowPropertiesEvent
 import yqloss.yqlossclientmixinkt.util.*
+import yqloss.yqlossclientmixinkt.util.extension.double
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.double
 
 object CallbackMinecraft {
     object YqlossClient {

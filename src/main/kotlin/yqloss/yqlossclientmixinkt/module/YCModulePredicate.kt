@@ -23,31 +23,32 @@ import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.YCCancelableEvent
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.scope.longreturn
+import yqloss.yqlossclientmixinkt.util.scope.Scope
+import yqloss.yqlossclientmixinkt.util.scope.longReturn
 import yqloss.yqlossclientmixinkt.util.trimStyle
 
 inline fun ensure(
-    frame: Int = 0,
+    frame: Scope = Scope.LAST,
     predicate: () -> Boolean,
 ) {
-    if (!predicate()) longreturn(frame) {}
+    if (!predicate()) longReturn(frame) {}
 }
 
-fun YCModule<*>.ensureEnabled(frame: Int = 0) = ensure(frame) { options.enabled }
+fun YCModule<*>.ensureEnabled(frame: Scope = Scope.LAST) = ensure(frame) { options.enabled }
 
 inline fun <T : YCModuleOptions> YCModule<T>.ensureEnabled(
-    frame: Int = 0,
+    frame: Scope = Scope.LAST,
     option: T.() -> Boolean,
 ) = ensure(frame) { options.enabled && option(options) }
 
 fun ensureNotCanceled(
     event: YCCancelableEvent,
-    frame: Int = 0,
+    frame: Scope = Scope.LAST,
 ) = ensure(frame) { !event.canceled }
 
-fun ensureInWorld(frame: Int = 0) = ensure(frame) { MC.theWorld !== null }
+fun ensureInWorld(frame: Scope = Scope.LAST) = ensure(frame) { MC.theWorld !== null }
 
-fun ensureSkyBlock(frame: Int = 0) {
+fun ensureSkyBlock(frame: Scope = Scope.LAST) {
     ensure(frame) {
         MC.theWorld !== null &&
             YC.api.hypixelLocation
@@ -58,7 +59,7 @@ fun ensureSkyBlock(frame: Int = 0) {
 
 fun ensureSkyBlockMode(
     mode: String,
-    frame: Int = 0,
+    frame: Scope = Scope.LAST,
 ) {
     ensure(frame) {
         MC.theWorld !== null &&
@@ -72,7 +73,7 @@ fun ensureSkyBlockMode(
 
 fun ensureSkyBlockModes(
     modes: Set<String>,
-    frame: Int = 0,
+    frame: Scope = Scope.LAST,
 ) {
     ensure(frame) {
         MC.theWorld !== null &&
@@ -87,7 +88,7 @@ fun ensureSkyBlockModes(
 fun ensureWindowTitle(
     chest: GuiChest,
     title: String,
-    frame: Int = 0,
+    frame: Scope = Scope.LAST,
 ) {
     ensure(frame) {
         YC.api
@@ -99,7 +100,7 @@ fun ensureWindowTitle(
 fun ensureWindowTitles(
     chest: GuiChest,
     titles: Collection<String>,
-    frame: Int = 0,
+    frame: Scope = Scope.LAST,
 ) {
     ensure(frame) {
         YC.api

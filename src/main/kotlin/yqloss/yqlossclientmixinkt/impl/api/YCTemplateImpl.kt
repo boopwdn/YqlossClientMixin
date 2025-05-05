@@ -20,7 +20,7 @@ package yqloss.yqlossclientmixinkt.impl.api
 
 import org.stringtemplate.v4.*
 import yqloss.yqlossclientmixinkt.api.YCTemplate
-import yqloss.yqlossclientmixinkt.util.scope.noexcept
+import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import java.util.*
 
 private val cache = WeakHashMap<String, ST>()
@@ -36,7 +36,7 @@ class YCTemplateImpl(
     private val template: String,
 ) : YCTemplate {
     private val st =
-        noexcept {
+        noExcept {
             ST(
                 cache.getOrPut(template) {
                     ST(group, template)
@@ -51,5 +51,5 @@ class YCTemplateImpl(
         st?.add(key, value)
     }
 
-    override fun format() = noexcept { st?.render() } ?: template
+    override fun format() = noExcept { st?.render() } ?: template
 }

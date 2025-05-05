@@ -20,8 +20,8 @@ package yqloss.yqlossclientmixinkt.impl.nanovgui
 
 import net.minecraft.client.gui.ScaledResolution
 import yqloss.yqlossclientmixinkt.util.MC
+import yqloss.yqlossclientmixinkt.util.extension.double
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.double
 
 data class Transformation(
     val offset: Vec2D = Vec2D(0.0, 0.0),

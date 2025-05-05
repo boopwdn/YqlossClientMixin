@@ -22,10 +22,10 @@ import yqloss.yqlossclientmixinkt.event.YCEvent
 import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
 import yqloss.yqlossclientmixinkt.event.YCEventHandler
 import yqloss.yqlossclientmixinkt.event.YCEventRegistry
-import yqloss.yqlossclientmixinkt.util.general.AnyComparator
-import yqloss.yqlossclientmixinkt.util.general.UniqueHash
-import yqloss.yqlossclientmixinkt.util.general.inBox
-import yqloss.yqlossclientmixinkt.util.prepend
+import yqloss.yqlossclientmixinkt.util.HashComparator
+import yqloss.yqlossclientmixinkt.util.UniqueHash
+import yqloss.yqlossclientmixinkt.util.extension.castTo
+import yqloss.yqlossclientmixinkt.util.extension.type.prepend
 import java.util.*
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
@@ -40,9 +40,10 @@ class EventManager :
     YCEventRegistry {
     private val lock = ReentrantReadWriteLock()
 
-    private val anyComparator = AnyComparator(UniqueHash())
+    private val hashComparator = HashComparator<YCEventHandler<*>>(UniqueHash())
 
-    private inner class RegistryEntry(
+    private class RegistryEntry(
+        val hashComparator: HashComparator<YCEventHandler<*>>,
         val priority: Int,
         val handler: YCEventHandler<*>,
     ) : Comparable<RegistryEntry> {
@@ -53,14 +54,14 @@ class EventManager :
                 priority
                     .compareTo(other.priority)
                     .takeIf { it != 0 }
-                    ?: anyComparator.compare(handler, other.handler)
+                    ?: hashComparator.compare(handler, other.handler)
             }
         }
 
         override fun equals(other: Any?): Boolean {
             return (other as? RegistryEntry)?.let {
-                return handler === other.handler
-            } ?: false
+                handler === other.handler
+            } == true
         }
 
         override fun hashCode() = handler.hashCode()
@@ -92,7 +93,9 @@ class EventManager :
         lock.write {
             clearCache(type)
             unregister(handler)
-            parentTypeHandlerMap.getOrPut(type, ::TreeSet).add(RegistryEntry(priority, handler))
+            parentTypeHandlerMap
+                .getOrPut(type, ::TreeSet)
+                .add(RegistryEntry(hashComparator, priority, handler))
         }
     }
 
@@ -104,7 +107,9 @@ class EventManager :
         lock.write {
             clearCache(type)
             unregisterOnly(handler)
-            onlyTypeHandlerMap.getOrPut(type, ::TreeSet).add(RegistryEntry(priority, handler))
+            onlyTypeHandlerMap
+                .getOrPut(type, ::TreeSet)
+                .add(RegistryEntry(hashComparator, priority, handler))
         }
     }
 
@@ -154,8 +159,7 @@ class EventManager :
                         onlyTypeHandlerMap[type]?.let(set::addAll)
                         EventHandlerHolder(set.toList().map { it.handler })
                     }
-                }.inBox
-                .cast()
+                }.castTo()
         }
     }
 
@@ -169,8 +173,7 @@ class EventManager :
                         onlyTypeHandlerMap[type]?.let(set::addAll)
                         EventHandlerHolder(set.toList().map { it.handler })
                     }
-                }.inBox
-                .cast()
+                }.castTo()
         }
     }
 }

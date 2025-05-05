@@ -38,15 +38,18 @@ import yqloss.yqlossclientmixinkt.impl.util.Colors
 import yqloss.yqlossclientmixinkt.module.ensure
 import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.general.Box
-import yqloss.yqlossclientmixinkt.util.general.inBox
-import yqloss.yqlossclientmixinkt.util.general.inRef
+import yqloss.yqlossclientmixinkt.util.accessor.outs.Box
+import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
+import yqloss.yqlossclientmixinkt.util.accessor.outs.value
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.inMut
+import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
+import yqloss.yqlossclientmixinkt.util.accessor.refs.value
+import yqloss.yqlossclientmixinkt.util.extension.sameNotNull
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.math.blendColor
 import yqloss.yqlossclientmixinkt.util.math.unitVec
-import yqloss.yqlossclientmixinkt.util.property.trigger
-import yqloss.yqlossclientmixinkt.util.sameNotNull
-import yqloss.yqlossclientmixinkt.util.scope.longrun
+import yqloss.yqlossclientmixinkt.util.scope.longRun
 import kotlin.math.PI
 import kotlin.math.sin
 import kotlin.math.tan
@@ -68,7 +71,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
 
     private var preferredButton: PreferredLeapButton? = null
 
-    private val hidden by trigger({ MC.currentScreen }) { false.inRef }
+    private val hidden by trigger({ MC.currentScreen }) { false.inMut }
 
     override fun ensureShow() {
         ensure { YCLeapMenu.Screen.proxiedScreen sameNotNull MC.currentScreen }
@@ -131,7 +134,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
         super.registerEvents(registry)
         registry.run {
             register<YCInputEvent.Mouse.Click> { event ->
-                longrun {
+                longRun {
                     ensure { event.screen }
                     ensureShow()
 
@@ -292,7 +295,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
             isLast: Boolean,
         ) {
             info ?: return
-            if (info.value === null) {
+            if (info.content === null) {
                 widgets.add(
                     TextWidget(
                         "No Target!",
@@ -307,7 +310,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
                 widgets.add(
                     RoundedPlayerAvatarWidget(
                         cache,
-                        info.value.profile,
+                        info.content.profile,
                         tr pos Vec2D(-12.0, -12.0),
                         tr size 24.0,
                         1.0,
@@ -317,7 +320,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
 
                 widgets.add(
                     TextWidget(
-                        info.value.theClass.displayName,
+                        info.content.theClass.displayName,
                         tr pos Vec2D(0.0, 16.0),
                         Colors.GRAY[3].rgb,
                         tr size 12.0,
@@ -328,7 +331,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
 
                 widgets.add(
                     TextWidget(
-                        info.value.profile.gameProfile.name,
+                        info.content.profile.gameProfile.name,
                         tr pos Vec2D(0.0, -16.0),
                         Colors.GRAY[3].rgb,
                         tr size 12.0,

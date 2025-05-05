@@ -24,7 +24,8 @@ import yqloss.yqlossclientmixinkt.event.YCEventRegistration
 import yqloss.yqlossclientmixinkt.event.YCEventRegistration.Entry
 import yqloss.yqlossclientmixinkt.event.registerEventEntries
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.property.trigger
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
 
 interface YCModule<T : YCModuleOptions> {
     val id: String

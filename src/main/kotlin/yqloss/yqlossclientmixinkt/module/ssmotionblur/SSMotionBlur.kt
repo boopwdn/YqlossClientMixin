@@ -29,10 +29,10 @@ import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
+import yqloss.yqlossclientmixinkt.util.extension.double
 import yqloss.yqlossclientmixinkt.util.glStateScope
-import yqloss.yqlossclientmixinkt.util.math.double
 import yqloss.yqlossclientmixinkt.util.mcRenderScope
-import yqloss.yqlossclientmixinkt.util.scope.longrun
+import yqloss.yqlossclientmixinkt.util.scope.longRun
 import java.nio.ByteBuffer
 import kotlin.math.max
 import kotlin.math.min
@@ -186,7 +186,7 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
             }
 
             register<SSMotionBlurEvent.Render> { event ->
-                longrun {
+                longRun {
                     ensureEnabled()
 
                     renderMotionBlur(event.screenWidth, event.screenHeight, event.scaledResolution)

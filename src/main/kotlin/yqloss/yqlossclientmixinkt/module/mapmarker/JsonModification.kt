@@ -25,9 +25,8 @@ import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.world.IBlockAccess
 import yqloss.yqlossclientmixinkt.util.*
-import yqloss.yqlossclientmixinkt.util.general.Cache3D
 import yqloss.yqlossclientmixinkt.util.math.*
-import yqloss.yqlossclientmixinkt.util.scope.noexcept
+import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import java.io.File
 
 class JsonModification(
@@ -228,7 +227,7 @@ class JsonModification(
 
         fun fromFile(file: File): JsonModification {
             var ranges = mutableListOf<Pair<Area3I, ReplaceRule>>()
-            noexcept(MapMarker.logger::catching) {
+            noExcept(MapMarker.logger::catching) {
                 Json
                     .decodeFromString<JsonData>(file.readText(charset = Charsets.UTF_8))
                     .also { data ->

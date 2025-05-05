@@ -25,7 +25,7 @@ import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.SKYBLOCK_MINING_TOOLS
-import yqloss.yqlossclientmixinkt.util.scope.longrun
+import yqloss.yqlossclientmixinkt.util.scope.longRun
 import yqloss.yqlossclientmixinkt.util.skyBlockUUID
 
 val INFO_TWEAKS = moduleInfo<TweaksOptions>("tweaks", "Tweaks")
@@ -34,10 +34,10 @@ object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
     override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
             register<TweaksEvent.SetAnglesPost> { event ->
-                longrun {
+                longRun {
                     ensureEnabled { enableInstantAim }
 
-                    if (event.entity !is EntityPlayerSP) return@longrun
+                    if (event.entity !is EntityPlayerSP) return@longRun
 
                     event.entity.prevRotationYawHead = event.entity.prevRotationYaw
                     event.entity.rotationYawHead = event.entity.rotationYaw
@@ -45,7 +45,7 @@ object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
             }
 
             register<TweaksEvent.RightClickBlockPre> { event ->
-                longrun {
+                longRun {
                     ensureNotCanceled(event)
                     ensureEnabled { disablePearlClickBlock }
                     ensureInWorld()
@@ -60,7 +60,7 @@ object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
             }
 
             register<TweaksEvent.IsHittingPositionCheck> { event ->
-                longrun {
+                longRun {
                     ensureNotCanceled(event)
                     ensureEnabled { disableSkyBlockToolsNBTUpdateResetDigging }
 

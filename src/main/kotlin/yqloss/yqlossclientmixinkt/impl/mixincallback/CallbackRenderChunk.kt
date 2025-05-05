@@ -29,11 +29,12 @@ import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.impl.CachedEventDispatcher
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.threadLocal
 import yqloss.yqlossclientmixinkt.util.asVec3I
-import yqloss.yqlossclientmixinkt.util.general.inBox
+import yqloss.yqlossclientmixinkt.util.extension.castTo
 import yqloss.yqlossclientmixinkt.util.math.Vec3I
 import yqloss.yqlossclientmixinkt.util.math.contains
-import yqloss.yqlossclientmixinkt.util.property.threadlocal
 import java.lang.ref.WeakReference
 
 object CallbackRenderChunk {
@@ -68,7 +69,7 @@ object CallbackRenderChunk {
                     cacheVersion[index] = version
                     cacheData[index] = function(vec)
                 }
-                return cacheData[index].inBox.cast()
+                return cacheData[index].castTo()
             }
         }
 
@@ -131,7 +132,7 @@ object CallbackRenderChunk {
             }
         }
 
-        var wrapperRef by threadlocal { WeakReference(Wrapper()) }
+        var wrapperRef by threadLocal { WeakReference(Wrapper()) }
 
         fun rebuildChunkPre(
             wrapper: Wrapper,

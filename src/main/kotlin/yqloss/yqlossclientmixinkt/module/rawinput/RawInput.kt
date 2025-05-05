@@ -23,7 +23,7 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.moduleInfo
-import yqloss.yqlossclientmixinkt.util.math.int
+import yqloss.yqlossclientmixinkt.util.extension.int
 
 val INFO_RAW_INPUT = moduleInfo<RawInputOptions>("raw_input", "Raw Input")
 
