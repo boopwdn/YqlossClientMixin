@@ -36,6 +36,7 @@ import yqloss.yqlossclientmixinkt.impl.module.ycleapmenu.YCLeapMenuScreen
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
+import yqloss.yqlossclientmixinkt.module.hotkeys.Hotkeys
 import yqloss.yqlossclientmixinkt.module.mapmarker.MapMarker
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPrediction
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
@@ -99,6 +100,7 @@ class YqlossClientMixin : YqlossClient {
         YCLeapMenu
         MapMarker
         WindowProperties
+        Hotkeys
 
         BetterTerminalScreen
         YCLeapMenuScreen
