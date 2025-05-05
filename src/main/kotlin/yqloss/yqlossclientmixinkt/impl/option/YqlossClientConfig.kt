@@ -70,6 +70,9 @@ object YqlossClientConfig : Config(Mod("# Yqloss Client $MOD_VERSION #", ModType
     @SubConfig
     var windowProperties = WindowPropertiesOptionsImpl()
 
+    @SubConfig
+    var hotkeys = HotkeysOptionsImpl()
+
     init {
         initialize()
 
@@ -79,7 +82,10 @@ object YqlossClientConfig : Config(Mod("# Yqloss Client $MOD_VERSION #", ModType
             .forEach { property ->
                 property(this).let { instance ->
                     logger.info("detected Options implementation $instance")
-                    (instance as Config).initialize()
+                    (instance as OptionsImpl).run {
+                        initialize()
+                        onInitializationPost()
+                    }
                     instance::class.allSuperclasses.plus(instance::class).forEach {
                         optionsImplMap[it] = { property(this) as YCModuleOptions }
                     }

@@ -64,3 +64,4 @@
 
 * fix(RawInput): fix incompatibility with mods that inject MouseHelper
 * fix(RawInput): fix mouse being locked with native enabled but the feature disabled
+* feat(Hotkeys): init (drop single item, drop item stack)

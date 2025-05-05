@@ -53,6 +53,8 @@ abstract class OptionsImpl(
         field.isAccessible = true
         return handleExtensionOption(this, { field[this] }, annotation, page, mod, "${field.name}.")
     }
+
+    open fun onInitializationPost() {}
 }
 
 private val internalAddOptionToPageMethod: Method by lazy {
