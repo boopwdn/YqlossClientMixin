@@ -1,18 +1,6 @@
 # Yqloss Client (Mixin)
 
-![Yqloss Client (Mixin)](https://socialify.git.ci/boopwdn/YqlossClientMixin/image?description=1&font=Raleway&forks=1&issues=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Fboopwdn%2FYqlossClientMixin%2Frefs%2Fheads%2Fmaster%2Ficon.svg&name=1&owner=1&pulls=1&stargazers=1&theme=Auto)
-
----
-
-<div>
-  <p align="center">
-    <a href="https://github.com/boopwdn/ExeClient/"><img src="https://raw.githubusercontent.com/boopwdn/ExeClient/refs/heads/main/pictures/banner.png" alt="ExeClient Banner" width="32%"></a>
-    <a href="https://github.com/boopwdn/YqlossClientMixin/"><img src="https://raw.githubusercontent.com/boopwdn/YqlossClientMixin/refs/heads/master/banner.png" alt="YqlossClientMixin Banner" width="32%"></a>
-    <a href="https://github.com/boopwdn/EnchAddons/"><img src="https://raw.githubusercontent.com/boopwdn/EnchAddons/refs/heads/main/banner.png" alt="EnchAddons Banner" width="32%"></a>
-  </p>
-</div>
-
----
+![Yqloss Client (Mixin)](https://socialify.git.ci/Necron-Dev/YqlossClientMixin/image?description=1&font=Raleway&forks=1&issues=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Fboopwdn%2FYqlossClientMixin%2Frefs%2Fheads%2Fmaster%2Ficon.svg&name=1&owner=1&pulls=1&stargazers=1&theme=Auto)
 
 Showcase Video: [https://www.bilibili.com/video/BV1Q4wfejEAB/](https://www.bilibili.com/video/BV1Q4wfejEAB/)
 
