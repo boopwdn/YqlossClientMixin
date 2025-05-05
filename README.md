@@ -50,6 +50,8 @@ This mod is based on [OneConfigExampleMod](https://github.com/Polyfrost/OneConfi
   Authors (https://github.com/JulietaUla/Montserrat.git) ([Project](https://github.com/JulietaUla/Montserrat)) ([OFL License](src/main/resources/assets/yqlossclientmixin/font/montserrat/OFL.txt))
 * Open Color (Default Color Scheme): Copyright (c) 2016
   heeyeun ([Project](https://github.com/yeun/open-color)) ([MIT License](LICENSE_OPEN_COLOR))
+* NotoSans SC Font: Copyright 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name
+  'Source' ([OFL License](src/main/resources/assets/yqlossclientmixin/font/notosans_sc/OFL.txt))
 
 At the same time, for better user experience and compatibility, I included the following libraries in
 the [libraries](libraries) folder:
