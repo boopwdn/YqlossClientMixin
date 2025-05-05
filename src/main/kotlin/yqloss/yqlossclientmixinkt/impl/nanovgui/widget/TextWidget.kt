@@ -22,8 +22,6 @@ import cc.polyfrost.oneconfig.renderer.font.Font
 import cc.polyfrost.oneconfig.renderer.font.Fonts
 import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
-import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.loadFonts
-import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
 import yqloss.yqlossclientmixinkt.impl.util.alphaScale
 import yqloss.yqlossclientmixinkt.util.extension.double
 import yqloss.yqlossclientmixinkt.util.extension.float
@@ -42,7 +40,6 @@ data class TextWidget(
 ) : Widget<TextWidget> {
     override fun draw(context: NanoVGUIContext) {
         context.run {
-            nvg.loadFonts(vg)
             val font = font()
             var width = helper.getTextWidth(vg, text, size.float, font).double
             var textToRender = text

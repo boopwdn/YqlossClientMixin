@@ -24,6 +24,8 @@ import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
+import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.loadFonts
+import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlurEvent
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.glStateScope
@@ -44,6 +46,7 @@ object CallbackEntityRenderer {
                     glStateScope {
                         val helper = NanoVGHelper.INSTANCE
                         helper.setupAndDraw { vg ->
+                            nvg.loadFonts(vg)
                             val context = NanoVGUIContext(helper, vg)
                             helper.setAlpha(vg, 1.0F)
                             widgets.forEach { it.draw(context) }
@@ -61,6 +64,7 @@ object CallbackEntityRenderer {
                     glStateScope {
                         val helper = NanoVGHelper.INSTANCE
                         helper.setupAndDraw { vg ->
+                            nvg.loadFonts(vg)
                             val context = NanoVGUIContext(helper, vg)
                             helper.setAlpha(vg, 1.0F)
                             widgets.forEach { it.draw(context) }

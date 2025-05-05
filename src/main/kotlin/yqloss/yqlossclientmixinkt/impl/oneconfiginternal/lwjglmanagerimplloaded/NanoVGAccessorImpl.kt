@@ -65,6 +65,14 @@ object NanoVGAccessorImpl : NanoVGAccessor {
         }
     }
 
+    override fun addFallbackFont(
+        vg: Long,
+        fontFace: String,
+        fallbackFontFace: String,
+    ) {
+        nvgAddFallbackFont(vg, fontFace, fallbackFontFace)
+    }
+
     override fun deleteImages(
         vg: Long,
         images: Set<Int>,

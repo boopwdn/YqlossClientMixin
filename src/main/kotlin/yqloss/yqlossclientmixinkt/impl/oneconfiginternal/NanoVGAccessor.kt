@@ -19,6 +19,7 @@
 package yqloss.yqlossclientmixinkt.impl.oneconfiginternal
 
 import cc.polyfrost.oneconfig.renderer.font.Font
+import cc.polyfrost.oneconfig.renderer.font.Fonts
 import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
 import yqloss.yqlossclientmixinkt.util.accessor.refs.lateVal
 import yqloss.yqlossclientmixinkt.util.accessor.value
@@ -29,12 +30,28 @@ private var fontLoaded = false
 
 val fontMedium = lateVal<Font>()
 val fontSemiBold = lateVal<Font>()
+var fontChineseRegular: Font by lateVal()
+var fontChineseMedium: Font by lateVal()
+var fontChineseSemiBold: Font by lateVal()
+var fontChineseBold: Font by lateVal()
 
 fun NanoVGAccessor.loadFonts(vg: Long) {
     if (!fontLoaded) {
         fontLoaded = true
         fontMedium.value = loadFont(vg, "montserrat/medium.ttf")
         fontSemiBold.value = loadFont(vg, "montserrat/semibold.ttf")
+        fontChineseRegular = loadFont(vg, "notosans_sc/regular.ttf")
+        fontChineseMedium = loadFont(vg, "notosans_sc/medium.ttf")
+        fontChineseSemiBold = loadFont(vg, "notosans_sc/semibold.ttf")
+        fontChineseBold = loadFont(vg, "notosans_sc/bold.ttf")
+        addFallbackFont(vg, fontMedium.value.name, fontChineseMedium.name)
+        addFallbackFont(vg, fontSemiBold.value.name, fontChineseSemiBold.name)
+        addFallbackFont(vg, Fonts.REGULAR.name, fontChineseRegular.name)
+        addFallbackFont(vg, Fonts.MEDIUM.name, fontChineseMedium.name)
+        addFallbackFont(vg, Fonts.SEMIBOLD.name, fontChineseSemiBold.name)
+        addFallbackFont(vg, Fonts.BOLD.name, fontChineseBold.name)
+        addFallbackFont(vg, Fonts.MINECRAFT_REGULAR.name, fontChineseRegular.name)
+        addFallbackFont(vg, Fonts.MINECRAFT_BOLD.name, fontChineseBold.name)
     }
 }
 
@@ -82,6 +99,12 @@ interface NanoVGAccessor {
         vg: Long,
         name: String,
     ): Font
+
+    fun addFallbackFont(
+        vg: Long,
+        fontFace: String,
+        fallbackFontFace: String,
+    )
 
     fun deleteImages(
         vg: Long,
