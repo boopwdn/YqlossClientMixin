@@ -30,21 +30,21 @@ import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 abstract class YCModuleGUIBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
-    protected val module: TM,
+    val module: TM,
 ) : YCModuleBase<TO>(module.castTo()) {
-    protected abstract val width: Double
-    protected abstract val height: Double
-    protected open val fadeOut = 0L
+    abstract val width: Double
+    abstract val height: Double
+    open val fadeOut = 0L
 
-    protected abstract fun ensureShow()
+    abstract fun ensureShow()
 
-    protected abstract fun draw(
+    abstract fun draw(
         widgets: MutableList<Widget<*>>,
         box: Vec2D,
         tr: Transformation,
     )
 
-    protected open fun doesShow(): Boolean {
+    open fun doesShow(): Boolean {
         var show = false
         longRun {
             ensureShow()
@@ -53,18 +53,18 @@ abstract class YCModuleGUIBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
         return show
     }
 
-    protected open fun reset() {}
+    open fun reset() {}
 
-    protected open val scaledWidth get() = width
-    protected open val scaledHeight get() = height
-    protected open val size get() = Vec2D(width, height)
-    protected abstract val transformation: Transformation
-    protected open var widgets = mutableListOf<Widget<*>>()
-    protected open val animation = WindowAnimation()
+    open val scaledWidth get() = width
+    open val scaledHeight get() = height
+    open val size get() = Vec2D(width, height)
+    abstract val transformation: Transformation
+    open var widgets = mutableListOf<Widget<*>>()
+    open val animation = WindowAnimation()
 
-    protected open fun getFadeOutOrigin(tr: Transformation) = tr pos size / 2.0
+    open fun getFadeOutOrigin(tr: Transformation) = tr pos size / 2.0
 
-    protected open fun redraw(
+    open fun redraw(
         box: Vec2D,
         tr: Transformation,
     ) {
@@ -72,7 +72,7 @@ abstract class YCModuleGUIBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
         draw(widgets, box, tr)
     }
 
-    protected open fun onRender(eventWidgets: MutableList<Widget<*>>) {
+    open fun onRender(eventWidgets: MutableList<Widget<*>>) {
         val show = doesShow()
         val box = size
         val tr = transformation

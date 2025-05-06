@@ -33,6 +33,7 @@ import yqloss.yqlossclientmixinkt.impl.nanovgui.widget.RoundedRectWidget
 import yqloss.yqlossclientmixinkt.impl.nanovgui.widget.TextWidget
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.NanoVGImageCache
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.fontMedium
+import yqloss.yqlossclientmixinkt.impl.option.handle
 import yqloss.yqlossclientmixinkt.impl.option.module.YCLeapMenuOptionsImpl
 import yqloss.yqlossclientmixinkt.impl.util.Colors
 import yqloss.yqlossclientmixinkt.module.ensure
@@ -128,6 +129,12 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
         }
 
         preferredButton.render(widgets, tr + OFFSET_PREFERRED)
+
+        options.keyBinds.forEach { it.handle() }
+    }
+
+    fun clickButton(index: Int) {
+        classButtons?.get(index)?.onMouseDown(0)
     }
 
     override fun registerEvents(registry: YCEventRegistry) {
