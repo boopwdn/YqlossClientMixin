@@ -73,3 +73,9 @@ would merge in the issues before you actually do that. (Feel free to fork as lon
 
 To code this mod, I learned many new things for the first time, such as Kotlin, Mixin, Gradle, Git, GUI design and so
 on. Maybe it's not good, but I'm trying my best. Hope you enjoy.
+
+## Links
+
+[EnchAddons](https://github.com/Necron-Dev/EnchAddons) by EnchStudio
+
+[HypixelHelper](https://github.com/SuperShadiao/hypixelhelper) by SuperShadiao
