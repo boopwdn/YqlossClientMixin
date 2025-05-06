@@ -19,7 +19,10 @@
 package yqloss.yqlossclientmixinkt.impl.option.module
 
 import cc.polyfrost.oneconfig.config.annotations.Header
+import cc.polyfrost.oneconfig.config.annotations.KeyBind
 import cc.polyfrost.oneconfig.config.annotations.Switch
+import cc.polyfrost.oneconfig.config.core.OneKeyBind
+import yqloss.yqlossclientmixinkt.impl.module.ycleapmenu.YCLeapMenuScreen
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
@@ -60,6 +63,49 @@ class YCLeapMenuOptionsImpl :
         size = 1,
     )
     var smoothGUI = true
+
+    @Transient
+    @Header(
+        text = "Hotkeys",
+        size = 2,
+    )
+    val headerHotkeys = false
+
+    @KeyBind(name = "Index 0 (Typically Archer)")
+    var keyBindIndex0 = OneKeyBind()
+
+    @KeyBind(name = "Index 1 (Typically Berserk)")
+    var keyBindIndex1 = OneKeyBind()
+
+    @KeyBind(name = "Index 2 (Typically Mage)")
+    var keyBindIndex2 = OneKeyBind()
+
+    @KeyBind(name = "Index 3 (Typically Healer)")
+    var keyBindIndex3 = OneKeyBind()
+
+    @KeyBind(name = "Index 4 (Typically Tank)")
+    var keyBindIndex4 = OneKeyBind()
+
+    val keyBinds: List<OneKeyBind>
+        get() {
+            return listOf(
+                keyBindIndex0,
+                keyBindIndex1,
+                keyBindIndex2,
+                keyBindIndex3,
+                keyBindIndex4,
+            )
+        }
+
+    override fun onInitializationPost() {
+        keyBinds.forEachIndexed { i, keyBind ->
+            keyBind.setRunnable {
+                if (YCLeapMenuScreen.doesShow()) {
+                    YCLeapMenuScreen.clickButton(i)
+                }
+            }
+        }
+    }
 
     @Transient
     @Header(
