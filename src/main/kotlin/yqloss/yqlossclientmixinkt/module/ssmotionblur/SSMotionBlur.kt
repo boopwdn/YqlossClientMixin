@@ -29,26 +29,28 @@ import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
+import yqloss.yqlossclientmixinkt.util.accessor.refs.Mut
+import yqloss.yqlossclientmixinkt.util.accessor.refs.nullMut
+import yqloss.yqlossclientmixinkt.util.accessor.refs.value
+import yqloss.yqlossclientmixinkt.util.accessor.swap
 import yqloss.yqlossclientmixinkt.util.extension.double
 import yqloss.yqlossclientmixinkt.util.glStateScope
 import yqloss.yqlossclientmixinkt.util.mcRenderScope
 import yqloss.yqlossclientmixinkt.util.scope.longRun
 import java.nio.ByteBuffer
 import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.pow
 
 val INFO_SS_MOTION_BLUR = moduleInfo<SSMotionBlurOptions>("ss_motion_blur", "SS Motion Blur")
-
-private const val FRAME_TIME_256 = 1000000000.0 / 256.0
 
 object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
     private var lastWidth = -1
     private var lastHeight = -1
     private var widthFactor = 1.0
     private var heightFactor = 1.0
-    private var textureId: Int? = null
     private var lastNanos = System.nanoTime()
+    private var textureLast1 = nullMut<Int>()
+    private var textureLast2 = nullMut<Int>()
+    private var textureAccumulation = nullMut<Int>()
 
     private fun setupTexture(
         texture: Int,
@@ -86,54 +88,49 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
     }
 
     private fun allocate(
+        texture: Mut<Int?>,
         allocateTexture: Boolean,
         width: Int,
         height: Int,
     ) {
-        textureId?.let { texture ->
-            GlStateManager.deleteTexture(texture)
-            logger.info("deleted texture $texture")
-            textureId = null
+        texture.value?.let { textureId ->
+            GlStateManager.deleteTexture(textureId)
+            logger.info("deleted texture $textureId")
+            texture.value = null
         }
 
         lastWidth = width
         lastHeight = height
 
         if (allocateTexture) {
-            val texture = GlStateManager.generateTexture()
-            textureId = texture
-            setupTexture(texture, width, height)
+            val textureId = GlStateManager.generateTexture()
+            texture.value = textureId
+            setupTexture(textureId, width, height)
         }
     }
 
     private fun takeScreenShot(
+        texture: Mut<Int?>,
         width: Int,
         height: Int,
     ) {
         if (!options.enabled) return
 
-        if (textureId === null || lastWidth != width || lastHeight != height) {
-            allocate(true, width, height)
+        if (texture.value === null || lastWidth != width || lastHeight != height) {
+            allocate(texture, true, width, height)
         }
 
-        textureId?.let { texture ->
-            glBindTexture(GL_TEXTURE_2D, texture)
+        texture.value?.let { textureId ->
+            glBindTexture(GL_TEXTURE_2D, textureId)
             glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height)
         }
     }
 
-    private fun getAlpha(): Double {
-        var alpha = options.strength
-
-        if (options.balanced) {
-            val currentNanos = System.nanoTime()
-            val diffNanos = currentNanos - lastNanos
-            lastNanos = currentNanos
-
-            alpha = alpha.pow(diffNanos / FRAME_TIME_256)
-        }
-
-        return max(0.0, min(1.0, alpha))
+    private fun getAlphas(): AlphaFunction.Alphas {
+        val currentNanos = System.nanoTime()
+        val diffNanos = currentNanos - lastNanos
+        lastNanos = currentNanos
+        return options.alphaFunction.calculate(diffNanos.double, options.strength)
     }
 
     private fun renderMotionBlur(
@@ -144,20 +141,37 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
         MC.entityRenderer.setupOverlayRendering()
 
         glStateScope {
-            if (textureId === null || lastWidth != screenWidth || lastHeight != screenHeight) {
-                allocate(true, screenWidth, screenHeight)
+            if (
+                textureLast1.value === null ||
+                textureLast2.value === null ||
+                textureAccumulation.value == null ||
+                lastWidth != screenWidth ||
+                lastHeight != screenHeight
+            ) {
+                allocate(textureLast1, true, screenWidth, screenHeight)
+                allocate(textureLast2, true, screenWidth, screenHeight)
+                allocate(textureAccumulation, true, screenWidth, screenHeight)
             }
 
-            textureId?.let { texture ->
-                glEnable(GL_TEXTURE_2D)
-                glBindTexture(GL_TEXTURE_2D, texture)
-                glEnable(GL_BLEND)
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-                glDisable(GL_DEPTH_TEST)
-                glDisable(GL_ALPHA_TEST)
-                glDisable(GL_CULL_FACE)
-                glDisable(GL_LIGHTING)
-                glColor4d(1.0, 1.0, 1.0, getAlpha())
+            glEnable(GL_TEXTURE_2D)
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+            glDisable(GL_DEPTH_TEST)
+            glDisable(GL_ALPHA_TEST)
+            glDisable(GL_CULL_FACE)
+            glDisable(GL_LIGHTING)
+
+            takeScreenShot(textureLast2, screenWidth, screenHeight)
+
+            fun render(
+                textureId: Int?,
+                alpha: Double?,
+            ) {
+                textureId ?: return
+                alpha ?: return
+
+                glBindTexture(GL_TEXTURE_2D, textureId)
+                glColor4d(1.0, 1.0, 1.0, alpha)
 
                 val scaledWidth = scaledResolution.scaledWidth_double
                 val scaledHeight = scaledResolution.scaledHeight_double
@@ -170,7 +184,14 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
                 }
             }
 
-            takeScreenShot(screenWidth, screenHeight)
+            val alphas = getAlphas()
+
+            render(textureLast1.value, alphas.lastFrame)
+            render(textureAccumulation.value, alphas.accumulation)
+
+            textureLast1 swap textureLast2
+
+            takeScreenShot(textureAccumulation, screenWidth, screenHeight)
         }
     }
 
@@ -180,7 +201,9 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
                 MC.theWorld ?: run {
                     lastNanos = System.nanoTime()
                     glStateScope {
-                        allocate(false, -1, -1)
+                        allocate(textureLast1, false, -1, -1)
+                        allocate(textureLast2, false, -1, -1)
+                        allocate(textureAccumulation, false, -1, -1)
                     }
                 }
             }
