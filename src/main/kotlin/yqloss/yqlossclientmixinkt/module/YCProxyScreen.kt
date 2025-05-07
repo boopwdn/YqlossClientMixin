@@ -31,6 +31,8 @@ abstract class YCProxyScreen<T : GuiScreen> : GuiScreen() {
 
     private var screenVersion: Any = Unit
 
+    var onHandleInput: (() -> Unit)? = null
+
     private val setupScreen by trigger(::screenVersion) {
         val sr = ScaledResolution(MC)
         mc = MC
@@ -67,5 +69,9 @@ abstract class YCProxyScreen<T : GuiScreen> : GuiScreen() {
         } else {
             super.keyTyped(typedChar, keyCode)
         }
+    }
+
+    override fun handleInput() {
+        onHandleInput.also { onHandleInput = null }?.invoke()
     }
 }

@@ -57,6 +57,10 @@ object CallbackMinecraft {
             YC.eventDispatcher(YCMinecraftEvent.Tick.Pre)
         }
 
+        fun runTickPost() {
+            YC.eventDispatcher(YCMinecraftEvent.Tick.Post)
+        }
+
         fun loadWorldPre(world: WorldClient?) {
             YC.eventDispatcher(YCMinecraftEvent.LoadWorld.Pre(world))
         }

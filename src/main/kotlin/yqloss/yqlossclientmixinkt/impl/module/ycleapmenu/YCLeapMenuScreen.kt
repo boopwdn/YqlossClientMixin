@@ -20,6 +20,7 @@ package yqloss.yqlossclientmixinkt.impl.module.ycleapmenu
 
 import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCInputEvent
+import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.module.YCModuleScreenBase
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
@@ -129,8 +130,6 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
         }
 
         preferredButton.render(widgets, tr + OFFSET_PREFERRED)
-
-        options.keyBinds.forEach { it.handle() }
     }
 
     fun clickButton(index: Int) {
@@ -162,6 +161,10 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
                         }
                     }
                 }
+            }
+
+            register<YCMinecraftEvent.Loop.Pre> { event ->
+                options.keyBinds.forEach { it.handle() }
             }
         }
     }
