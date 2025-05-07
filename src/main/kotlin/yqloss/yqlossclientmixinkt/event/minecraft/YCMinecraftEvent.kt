@@ -32,6 +32,8 @@ sealed interface YCMinecraftEvent : YCEvent {
 
     sealed interface Tick : YCMinecraftEvent {
         data object Pre : Tick
+
+        data object Post : Tick
     }
 
     sealed interface LoadWorld : YCMinecraftEvent {

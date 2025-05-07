@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack
 import org.lwjgl.opengl.GL11.glScaled
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.YCEventRegistry
+import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.*
@@ -138,8 +139,6 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
         }
 
     var data: TerminalData? = null
-
-    private var onHandleInput: (() -> Unit)? = null
 
     fun reloadTerminal() {
         data = null
@@ -311,7 +310,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
                     ++data.clickDelay
                 } else if (!data.isQueueEmpty) {
                     val click = data.nextOperation
-                    onHandleInput += {
+                    Screen.onHandleInput += {
                         clickSlot(click.slotID, click.button)
                     }
                     // if the click is wrong in some terminals, window id and state do not change
@@ -436,6 +435,10 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
                     event.canceled = event.screen === Screen.proxiedScreen
                 }
             }
+
+            register<YCMinecraftEvent.Tick.Post> {
+                Screen.onHandleInput = null
+            }
         }
     }
 
@@ -458,7 +461,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
             proxiedScreen = null
             BetterTerminal.data = null
             updateChest(MC.currentScreen as? GuiChest ?: return, data)
-            onHandleInput.also { onHandleInput = null }?.invoke()
+            super.handleInput()
         }
     }
 }

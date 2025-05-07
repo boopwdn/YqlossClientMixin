@@ -27,10 +27,12 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.*
+import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
 import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
+import yqloss.yqlossclientmixinkt.util.functional.plus
 import yqloss.yqlossclientmixinkt.util.scope.longRun
 import yqloss.yqlossclientmixinkt.util.tickCounter
 import yqloss.yqlossclientmixinkt.util.trimStyle
@@ -42,6 +44,8 @@ private val REGEX_TAB_NAME = Regex("([A-Za-z0-9_]{1,16})\\s*\\((Archer|Berserk|M
 private val REGEX_NAME = Regex("[A-Za-z0-9_]{1,16}")
 
 object YCLeapMenu : YCModuleBase<YCLeapMenuOptions>(INFO_YC_LEAP_MENU) {
+    private var onHandleInput: (() -> Unit)? = null
+
     data class PlayerInfo(
         val profile: NetworkPlayerInfo,
         val theClass: CatacombsClass,
@@ -137,29 +141,41 @@ object YCLeapMenu : YCModuleBase<YCLeapMenuOptions>(INFO_YC_LEAP_MENU) {
     }
 
     fun leapTo(target: String) {
-        val chest = MC.currentScreen as? GuiChest ?: return
-        val inventory = YC.api.get_GuiChest_lowerChestInventory(chest)
-        (9..17).firstOrNull {
-            var name = inventory.getStackInSlot(it)?.displayName?.trimStyle ?: ""
-            if (' ' in name) {
-                name = name.split(' ').run { get(size - 1) }
-            }
-            if (it < inventory.sizeInventory && target == name) {
-                MC.playerController.windowClick(
-                    chest.inventorySlots.windowId,
-                    it,
-                    2,
-                    3,
-                    MC.thePlayer,
-                )
-                options.onClickLeap(logger) {
-                    this["name"] = name
-                    this["class"] = playerClassMap[name] ?: CatacombsClass.UNKNOWN
+        if (MC.currentScreen !is GuiChest) return
+        Screen.onHandleInput += handler@{
+            longRun {
+                ensureEnabled()
+                ensureInWorld()
+                if (!options.forceEnabled) {
+                    ensureSkyBlockMode("dungeon")
                 }
-                true
-            } else {
-                false
+                val chest = MC.currentScreen as? GuiChest ?: return@handler
+                ensureWindowTitles(chest, setOf("Spirit Leap", "Teleport to Player"))
+                val inventory = YC.api.get_GuiChest_lowerChestInventory(chest)
+                (9..17).firstOrNull {
+                    var name = inventory.getStackInSlot(it)?.displayName?.trimStyle ?: ""
+                    if (' ' in name) {
+                        name = name.split(' ').run { get(size - 1) }
+                    }
+                    if (it < inventory.sizeInventory && target == name) {
+                        MC.playerController.windowClick(
+                            chest.inventorySlots.windowId,
+                            it,
+                            2,
+                            3,
+                            MC.thePlayer,
+                        )
+                        options.onClickLeap(logger) {
+                            this["name"] = name
+                            this["class"] = playerClassMap[name] ?: CatacombsClass.UNKNOWN
+                        }
+                        true
+                    } else {
+                        false
+                    }
+                }
             }
+            Unit
         }
     }
 
@@ -191,6 +207,10 @@ object YCLeapMenu : YCModuleBase<YCLeapMenuOptions>(INFO_YC_LEAP_MENU) {
                 playerNetworkMap.clear()
                 playerClassMap.clear()
                 playerDeadMap.clear()
+            }
+
+            register<YCMinecraftEvent.Tick.Post> {
+                BetterTerminal.Screen.onHandleInput = null
             }
         }
     }

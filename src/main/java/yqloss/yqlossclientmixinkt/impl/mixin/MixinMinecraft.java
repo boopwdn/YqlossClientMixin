@@ -53,6 +53,11 @@ public abstract class MixinMinecraft {
         CallbackMinecraft.YqlossClient.INSTANCE.runTickPre();
     }
 
+    @Inject(method = "runTick", at = @At("RETURN"))
+    private void yc$runTickPost(CallbackInfo ci) {
+        CallbackMinecraft.YqlossClient.INSTANCE.runTickPost();
+    }
+
     @Inject(method = "loadWorld(Lnet/minecraft/client/multiplayer/WorldClient;Ljava/lang/String;)V", at = @At("HEAD"))
     private void yc$loadWorldPre(WorldClient worldClientIn, String loadingMessage, CallbackInfo ci) {
         CallbackMinecraft.YqlossClient.INSTANCE.loadWorldPre(worldClientIn);
