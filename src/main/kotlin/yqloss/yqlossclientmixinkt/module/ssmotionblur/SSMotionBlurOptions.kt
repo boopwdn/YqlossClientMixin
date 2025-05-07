@@ -22,5 +22,5 @@ import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 
 interface SSMotionBlurOptions : YCModuleOptions {
     val strength: Double
-    val balanced: Boolean
+    val alphaFunction: AlphaFunction
 }

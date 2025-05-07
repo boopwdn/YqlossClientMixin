@@ -18,13 +18,14 @@
 
 package yqloss.yqlossclientmixinkt.impl.option.module
 
+import cc.polyfrost.oneconfig.config.annotations.Dropdown
 import cc.polyfrost.oneconfig.config.annotations.Header
 import cc.polyfrost.oneconfig.config.annotations.Slider
-import cc.polyfrost.oneconfig.config.annotations.Switch
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerLegit
+import yqloss.yqlossclientmixinkt.module.ssmotionblur.AlphaFunction
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.INFO_SS_MOTION_BLUR
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlurOptions
 
@@ -54,13 +55,16 @@ class SSMotionBlurOptionsImpl :
     )
     var strengthOption = 50.0F
 
-    @Switch(
-        name = "FPS Balanced",
-        description = "Make the blur on whatever FPS look as if it's 256 FPS.",
-        size = 2,
+    @Dropdown(
+        name = "Alpha Function",
+        options = [
+            "Instant",
+            "Instant (Balanced)",
+            "Linear (Balanced)",
+        ],
     )
-    var balancedOption = true
+    var alphaFunctionOption = 2
 
     override val strength get() = strengthOption / 100.0
-    override val balanced by ::balancedOption
+    override val alphaFunction get() = AlphaFunction.entries[alphaFunctionOption]
 }
