@@ -50,3 +50,10 @@ inline operator fun <X, T> Ref<T>.provideDelegate(
     thisRef: X,
     prop: KProperty<*>,
 ): ReadWriteProperty<X, T> = RefProperty(this)
+
+inline infix fun <T> Ref<T>.swap(ref: Ref<T>) {
+    val v1 = get()
+    val v2 = ref.get()
+    set(v2)
+    ref.set(v1)
+}
