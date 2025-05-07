@@ -28,7 +28,7 @@ import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
 import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
-import yqloss.yqlossclientmixinkt.util.printChat
+import yqloss.yqlossclientmixinkt.util.printError
 import yqloss.yqlossclientmixinkt.util.scope.longRun
 import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import yqloss.yqlossclientmixinkt.util.updateWorldRender
@@ -104,7 +104,7 @@ object MapMarker : YCModuleBase<MapMarkerOptions>(INFO_MAP_MARKER) {
                     ensureNotCanceled(event)
                     ensureEnabled { !event.disableClientCommand }
 
-                    noExcept(::printChat) {
+                    noExcept(::printError) {
                         when (event.args.getOrNull(0)) {
                             "/ycmmc", "/yqlossclientmapmarkercurrent" -> {
                                 event.canceled = true
