@@ -41,6 +41,7 @@ import yqloss.yqlossclientmixinkt.module.mapmarker.MapMarker
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPrediction
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
+import yqloss.yqlossclientmixinkt.module.repository.Repository
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlur
 import yqloss.yqlossclientmixinkt.module.tweaks.Tweaks
 import yqloss.yqlossclientmixinkt.module.windowproperties.WindowProperties
@@ -91,6 +92,7 @@ class YqlossClientMixin : YqlossClient {
 
         loadWindowsX64NativeAPI()
 
+        Repository
         RawInput
         SSMotionBlur
         Tweaks

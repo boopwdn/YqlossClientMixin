@@ -35,10 +35,11 @@ import java.lang.reflect.Method
 
 abstract class OptionsImpl(
     info: YCModuleInfo<*>,
+    defaultEnabled: Boolean = false,
 ) : SubConfig(info.name, info.configFile),
     YCModuleOptions {
     init {
-        super.enabled = false
+        super.enabled = defaultEnabled
     }
 
     override val enabled get() = YqlossClientConfig.enabled && super.enabled

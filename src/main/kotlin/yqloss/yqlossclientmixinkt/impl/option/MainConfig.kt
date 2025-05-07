@@ -34,7 +34,7 @@ import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.printChat
 
-class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Client #")) {
+class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Client #"), true) {
     @Transient
     @Info(type = InfoType.INFO, text = "Ciallo\uFF5E(\u2220\u30FB\u03C9< )\u2312\u2606", size = 2)
     val infoCiallo = false
