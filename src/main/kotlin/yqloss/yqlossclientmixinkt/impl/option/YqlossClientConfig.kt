@@ -44,6 +44,9 @@ object YqlossClientConfig : Config(Mod("# Yqloss Client $MOD_VERSION #", ModType
     var main = MainConfig()
 
     @SubConfig
+    var repository = RepositoryOptionsImpl()
+
+    @SubConfig
     var rawInput = RawInputOptionsImpl()
 
     @SubConfig
