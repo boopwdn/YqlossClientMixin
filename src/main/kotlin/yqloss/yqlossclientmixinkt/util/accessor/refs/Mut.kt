@@ -48,3 +48,5 @@ inline fun <R> Mut<*>.cast() = content as R
 inline val <T> T.inMut get() = Mut(this)
 
 inline val <T> Out<T>.reMut get() = Mut(value)
+
+inline fun <T> nullMut(): Mut<T?> = null.inMut
