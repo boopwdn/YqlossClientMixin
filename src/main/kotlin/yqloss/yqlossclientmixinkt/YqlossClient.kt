@@ -18,6 +18,7 @@
 
 package yqloss.yqlossclientmixinkt
 
+import kotlinx.serialization.json.Json
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import yqloss.yqlossclientmixinkt.api.YCAPI
@@ -52,6 +53,12 @@ val CLASS_ROOT: URL by lazy {
                 it
             }.toURL()
         }
+    }
+}
+
+val YCJson by lazy {
+    Json {
+        ignoreUnknownKeys = true
     }
 }
 

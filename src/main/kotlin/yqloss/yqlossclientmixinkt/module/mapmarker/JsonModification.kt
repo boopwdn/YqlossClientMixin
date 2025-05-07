@@ -20,10 +20,10 @@ package yqloss.yqlossclientmixinkt.module.mapmarker
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.world.IBlockAccess
+import yqloss.yqlossclientmixinkt.YCJson
 import yqloss.yqlossclientmixinkt.util.*
 import yqloss.yqlossclientmixinkt.util.math.*
 import yqloss.yqlossclientmixinkt.util.scope.noExcept
@@ -228,7 +228,7 @@ class JsonModification(
         fun fromFile(file: File): JsonModification {
             var ranges = mutableListOf<Pair<Area3I, ReplaceRule>>()
             noExcept(MapMarker.logger::catching) {
-                Json
+                YCJson
                     .decodeFromString<JsonData>(file.readText(charset = Charsets.UTF_8))
                     .also { data ->
                         ranges = data.rules.map { it.range to it.rule }.toMutableList()
@@ -237,7 +237,7 @@ class JsonModification(
             return JsonModification(ranges) { ranges ->
                 file.parentFile.mkdirs()
                 file.writeText(
-                    Json.encodeToString(JsonData(ranges.map { RuleData(it.first, it.second) })),
+                    YCJson.encodeToString(JsonData(ranges.map { RuleData(it.first, it.second) })),
                     charset = Charsets.UTF_8,
                 )
             }

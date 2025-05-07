@@ -107,6 +107,13 @@ inline fun printChat(message: String = "") {
 
 inline fun printChat(throwable: Throwable) = printChat(throwable.stackTraceMessage)
 
+inline fun printError(message: String = "") {
+    printChat("\u00A7cYqloss Client (Mixin) has encountered some error. Please report the following message to the author!")
+    printChat("\u00A7c$message")
+}
+
+inline fun printError(throwable: Throwable) = printError(throwable.stackTraceMessage)
+
 class CustomSound(
     private val argSoundLocation: ResourceLocation,
     private val argVolume: Double = 1.0,
