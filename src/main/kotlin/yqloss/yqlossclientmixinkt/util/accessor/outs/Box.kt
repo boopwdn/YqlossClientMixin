@@ -40,3 +40,7 @@ inline fun <R> Box<*>.cast() = content as R
 inline val <T> T.inBox get() = Box(this)
 
 inline val <T> Out<T>.reBox get() = Box(value)
+
+val nullBox: Box<Nothing?> = null.inBox
+
+inline fun <T> nullBox(): Box<T?> = nullBox
