@@ -8,15 +8,20 @@ Note that this mod is not registered as a Forge mod, nor do it use Forge events 
 
 ## Feature List
 
-* Better Terminal (queue clicks)
+* Better Terminal (queue clicks; drag click)
 * Corpse Finder (mineshaft)
 * Map Marker (purely visual block replacement)
 * Mining Prediction (shows when you should aim at the next block)
 * Raw Input (JInput / Native Win32 implementations)
 * SS Motion Blur (based on screenshot instead of shader; can be used with Fast Render; little performance impact)
-* YC Leap Menu (5-grid ring-shaped menu; differs from most leap menus)
-* Tweaks (features that modify vanilla slightly)
+* YC Leap Menu (5-grid ring-shaped menu; differs from most leap menus; leap hotkeys)
 * Window Properties (borderless window; windowed fullscreen; custom window title)
+* Hotkeys (separate keys for drop single item / item stack)
+* Tweaks (features that modify vanilla slightly)
+    * Enable Instant Aim (fix aiming being delayed for 1 tick)
+    * Disable Pearl Click-On-Block Packet (commonly called Cancel Interact; makes you able to throw pearls while aiming
+      at a block on most SkyBlock islands)
+    * Disable NBT Update Reset Digging on SkyBlock Mining Islands (a feature backport from new versions of Minecraft)
 
 ## Dependency
 
