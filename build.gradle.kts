@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2025 Yqloss
+ *
+ * This file is part of Yqloss Client (Mixin).
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 (GPLv2)
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
+ */
+
 @file:Suppress("UnstableApiUsage", "PropertyName")
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
@@ -81,8 +99,9 @@ dependencies {
     compileOnly("org.spongepowered:mixin:0.7.11-SNAPSHOT")
     shade("cc.polyfrost:oneconfig-wrapper-launchwrapper:1.0.0-beta17")
     implementation("net.hypixel:mod-api:1.0.1")
-    implementation("org.antlr:ST4:4.3.4")
     shade("org.antlr:ST4:4.3.4")
+    shade("com.squareup.okhttp3:okhttp:4.12.0")
+    shade("com.squareup.okhttp3:okhttp-coroutines:5.0.0-alpha.14")
     compileOnly("org.lwjgl:lwjgl:3.3.1")
     compileOnly("org.lwjgl:lwjgl-nanovg:3.3.1")
     compileOnly(files("${project.rootDir}/libraries/oneconfig-internal.jar"))
