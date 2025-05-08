@@ -23,3 +23,7 @@ package yqloss.yqlossclientmixinkt.util.extension
 inline val <T> T.invertNull get() = if (this === null) Unit else null
 
 inline infix fun <T1, T2> T1.sameNotNull(other: T2) = this !== null && this === other
+
+inline val <T> T?.isNull get() = this === null
+
+inline val <T> T?.notNull get() = this !== null
