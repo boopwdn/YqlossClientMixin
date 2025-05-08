@@ -18,22 +18,23 @@
 
 package yqloss.yqlossclientmixinkt.module.repository
 
-import okhttp3.OkHttpClient
 import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
+import yqloss.yqlossclientmixinkt.network.Resource
+import yqloss.yqlossclientmixinkt.network.requestAll
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.lazyVarOf
 import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 val INFO_REPOSITORY = moduleInfo<RepositoryOptions>("repository", "Repository")
 
 object Repository : YCModuleBase<RepositoryOptions>(INFO_REPOSITORY) {
-    val httpClient = OkHttpClient()
-
-    var version = Version()
-    var capes = Capes()
+    var version by lazyVarOf { Version() }
+    var capes by lazyVarOf { Capes() }
 
     fun reloadVersion() {
         version = Version()
@@ -43,7 +44,7 @@ object Repository : YCModuleBase<RepositoryOptions>(INFO_REPOSITORY) {
         capes = Capes()
     }
 
-    val repositoryData: List<RepositoryData<*>>
+    val repositoryData: List<Resource>
         get() {
             return listOfNotNull(
                 version.takeIf { options.versionEnabled },
@@ -57,13 +58,18 @@ object Repository : YCModuleBase<RepositoryOptions>(INFO_REPOSITORY) {
                 longRun {
                     ensureEnabled()
 
-                    repositoryData.forEach {
-                        if (it.requireNewRequest) {
-                            it.request()
-                        }
-                    }
+                    repositoryData.requestAll()
 
                     version.onTickPre()
+                    capes.onTickPre()
+                }
+            }
+
+            register<RepositoryEvent.LoadCape> { event ->
+                longRun {
+                    ensureEnabled()
+
+                    event.mutableLocation = capes.onLoadCape(event.uuid)
                 }
             }
         }

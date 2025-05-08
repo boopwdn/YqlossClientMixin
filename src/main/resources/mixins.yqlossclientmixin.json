@@ -10,6 +10,7 @@
     "client": [
         "AccessorGuiChest",
         "AccessorGuiScreen",
+        "MixinAbstractClientPlayer",
         "MixinEntityPlayerSP",
         "MixinEntityRenderer",
         "MixinGuiScreen",

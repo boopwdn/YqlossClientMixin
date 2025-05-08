@@ -16,18 +16,23 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.module.repository
+package yqloss.yqlossclientmixinkt.network
 
 import yqloss.yqlossclientmixinkt.util.accessor.Out
+import yqloss.yqlossclientmixinkt.util.accessor.outs.Box
 import yqloss.yqlossclientmixinkt.util.accessor.value
+import yqloss.yqlossclientmixinkt.util.extension.notNull
 
-interface RepositoryData<T> {
-    val requesting: Boolean
-    val data: Out<T>?
+interface TypedResource<T> :
+    Resource,
+    Out<T> {
+    val data: Box<T>?
 
-    val content get() = data!!.value
-    val available get() = data !== null
-    val requireNewRequest get() = !requesting && data === null
+    override val available get() = data.notNull
 
-    fun request()
+    override fun get() = content
+
+    var onTypedAvailable: ((T) -> Unit)?
 }
+
+val <T> TypedResource<T>.content get() = data!!.value

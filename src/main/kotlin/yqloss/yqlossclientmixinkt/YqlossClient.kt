@@ -19,6 +19,7 @@
 package yqloss.yqlossclientmixinkt
 
 import kotlinx.serialization.json.Json
+import okhttp3.OkHttpClient
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import yqloss.yqlossclientmixinkt.api.YCAPI
@@ -60,6 +61,10 @@ val YCJson by lazy {
     Json {
         ignoreUnknownKeys = true
     }
+}
+
+val YCHttp by lazy {
+    OkHttpClient()
 }
 
 interface YqlossClient {

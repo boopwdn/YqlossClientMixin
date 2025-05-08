@@ -16,9 +16,15 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.util
+package yqloss.yqlossclientmixinkt.module.repository
 
-const val LONG_RETURN_STACKTRACE = false
-const val LOG_COMMAND_ARGUMENT_PARSING = false
-const val LOG_NETWORK_ACTIVITY = true
-const val CAPE_SWITCH_MAX_DEPTH = 16
+import net.minecraft.util.ResourceLocation
+import yqloss.yqlossclientmixinkt.event.YCEvent
+import java.util.*
+
+interface RepositoryEvent : YCEvent {
+    data class LoadCape(
+        val uuid: UUID,
+        var mutableLocation: ResourceLocation? = null,
+    ) : RepositoryEvent
+}
