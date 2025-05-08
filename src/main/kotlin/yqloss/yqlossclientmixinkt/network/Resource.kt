@@ -16,9 +16,26 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.util
+package yqloss.yqlossclientmixinkt.network
 
-const val LONG_RETURN_STACKTRACE = false
-const val LOG_COMMAND_ARGUMENT_PARSING = false
-const val LOG_NETWORK_ACTIVITY = true
-const val CAPE_SWITCH_MAX_DEPTH = 16
+import yqloss.yqlossclientmixinkt.ycLogger
+
+val networkLogger = ycLogger("Network")
+
+interface Resource {
+    val requesting: Boolean
+
+    val available: Boolean
+
+    fun request()
+
+    var onAvailable: (() -> Unit)?
+}
+
+val Resource.requireNewRequest get() = !requesting && !available
+
+fun Iterable<Resource>.requestAll() {
+    forEach {
+        if (it.requireNewRequest) it.request()
+    }
+}

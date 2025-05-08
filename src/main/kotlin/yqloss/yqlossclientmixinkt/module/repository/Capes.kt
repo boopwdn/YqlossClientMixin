@@ -19,16 +19,56 @@
 package yqloss.yqlossclientmixinkt.module.repository
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.MapSerializer
-import kotlinx.serialization.builtins.serializer
+import net.minecraft.util.ResourceLocation
+import yqloss.yqlossclientmixinkt.network.*
+import yqloss.yqlossclientmixinkt.util.extension.type.ifTake
+import yqloss.yqlossclientmixinkt.util.extension.type.undashedLowerString
+import yqloss.yqlossclientmixinkt.util.relativeURL
+import java.awt.image.BufferedImage
+import java.util.*
+
+const val URL_CAPES = "http://ycm.yqloss.net/capes.json"
 
 typealias CapesData = Map<String, Capes.Cape>
 
-class Capes : HttpData<CapesData>("http://ycm.yqloss.net/capes.json") {
-    override val serializer = MapSerializer(String.serializer(), Cape.serializer())
-
+class Capes : TypedResource<CapesData> by JsonResource(URL_CAPES) {
     @Serializable
     data class Cape(
         val metadata: String,
     )
+
+    private val capeCache = mutableMapOf<UUID, CapeMeta>()
+    private val imageCache = mutableMapOf<String, ImageResource>()
+
+    fun addToImageCache(urls: Iterable<String>) {
+        synchronized(imageCache) {
+            urls.forEach {
+                if (it !in imageCache) {
+                    imageCache[it] = ImageResource(it)
+                }
+            }
+        }
+    }
+
+    fun getImageCache(url: String): BufferedImage? {
+        synchronized(imageCache) {
+            return imageCache[url]?.data?.content
+        }
+    }
+
+    fun onTickPre() {
+        capeCache.values.requestAll()
+        synchronized(imageCache) {
+            imageCache.values.requestAll()
+        }
+    }
+
+    fun onLoadCape(uuid: UUID): ResourceLocation? {
+        if (!Repository.options.showModCapes || !available) return null
+        capeCache[uuid]?.let { return it.available.ifTake { it.texture } }
+        val uuidString = uuid.undashedLowerString
+        val rel = (content[uuidString] ?: return null).metadata
+        capeCache[uuid] = CapeMeta(relativeURL(URL_CAPES, rel), this)
+        return null
+    }
 }
