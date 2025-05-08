@@ -62,6 +62,12 @@
 
 ## 0.10.0 ()
 
+* fix: OneConfig and YC GUI Chinese font
 * fix(RawInput): fix incompatibility with mods that inject MouseHelper
 * fix(RawInput): fix mouse being locked with native enabled but the feature disabled
+* fix(MapMarker): ignore unknown keys
 * feat(Hotkeys): init (drop single item, drop item stack)
+* feat(BetterTerminal): drag click
+* feat(YCLeapMenu): leap hotkeys
+* feat(SSMotionBlur): add linear balanced mode
+* feat(Repository): init (update checker, custom capes)
