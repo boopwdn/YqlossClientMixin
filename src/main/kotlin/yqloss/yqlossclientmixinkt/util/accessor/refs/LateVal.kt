@@ -20,7 +20,6 @@
 
 package yqloss.yqlossclientmixinkt.util.accessor.refs
 
-import kotlinx.serialization.Serializable
 import yqloss.yqlossclientmixinkt.util.accessor.Out
 import yqloss.yqlossclientmixinkt.util.accessor.Ref
 import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
@@ -31,7 +30,6 @@ private val throwCallInitializerAfterInitialization: (Any?) -> Nothing = {
     throw IllegalStateException("call initializer after initialization")
 }
 
-@Serializable
 data class LateVal<T>(
     private var initializer: (T) -> Out<T>,
     private var wrapped: Out<T>? = null,

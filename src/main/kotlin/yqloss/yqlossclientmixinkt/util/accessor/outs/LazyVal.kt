@@ -18,32 +18,30 @@
 
 @file:Suppress("NOTHING_TO_INLINE")
 
-package yqloss.yqlossclientmixinkt.util.accessor.refs
+package yqloss.yqlossclientmixinkt.util.accessor.outs
 
-import yqloss.yqlossclientmixinkt.util.accessor.Ref
+import yqloss.yqlossclientmixinkt.util.accessor.Out
 import yqloss.yqlossclientmixinkt.util.accessor.value
 
-private val throwCallInitializerAfterInitialization: (Any?) -> Nothing = {
+private val throwCallInitializerAfterInitialization: () -> Nothing = {
     throw IllegalStateException("call initializer after initialization")
 }
 
-data class LateVar<T>(
-    private var initializer: (T) -> Ref<T>,
-    private var wrapped: Ref<T>? = null,
-) : Ref<T> {
+data class LazyVal<out T>(
+    private var initializer: () -> Out<T>,
+    private var wrapped: Out<T>? = null,
+) : Out<T> {
     override fun get(): T {
-        return (wrapped ?: throw IllegalStateException("get value before initialization")).value
-    }
-
-    override fun set(value: T) {
-        val wrapped = wrapped
+        var wrapped = wrapped
         if (wrapped === null) {
-            this.wrapped = initializer(value)
+            wrapped = initializer()
             initializer = throwCallInitializerAfterInitialization
-        } else {
-            wrapped.set(value)
+            this.wrapped = wrapped
         }
+        return wrapped.value
     }
 }
 
-inline fun <T> lateVar(noinline initializer: (T) -> Ref<T> = { it.inMut }) = LateVar(initializer)
+inline fun <T> lazyVal(noinline initializer: () -> Out<T>) = LazyVal(initializer)
+
+inline fun <T> lazyValOf(noinline initializer: () -> T) = LazyVal({ initializer().inBox })
