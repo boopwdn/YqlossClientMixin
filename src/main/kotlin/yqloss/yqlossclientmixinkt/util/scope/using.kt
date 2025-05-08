@@ -68,10 +68,10 @@ data class ResourceClosureException(
     val failures: List<Pair<Any?, Exception>>,
 ) : Exception()
 
-inline fun <R> usingScope(function: UsingScopeContext.() -> R) {
+inline fun <R> usingScope(function: UsingScopeContext.() -> R): R {
     val resourceList = ArrayDeque<AutoCloseable>()
     try {
-        UsingScopeContext(resourceList).function()
+        return UsingScopeContext(resourceList).function()
     } finally {
         val exceptionList = mutableListOf<Pair<Any?, Exception>>()
         resourceList.asReversed().forEach { resource ->
