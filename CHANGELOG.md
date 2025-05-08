@@ -60,7 +60,7 @@
 * fix(BetterTerminal): fix clicks being delayed 1-2 more ticks than expected
 * fix(BetterTerminal): fix terminal being reset in rubix and panes when misclick
 
-## 0.10.0 ()
+## 0.10.0 (UTC+8 2025/05/09 07:00)
 
 * fix: OneConfig and YC GUI Chinese font
 * fix(RawInput): fix incompatibility with mods that inject MouseHelper
