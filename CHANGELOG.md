@@ -71,3 +71,5 @@
 * feat(YCLeapMenu): leap hotkeys
 * feat(SSMotionBlur): add linear balanced mode
 * feat(Repository): init (update checker, custom capes)
+
+## 0.11.0 ()
