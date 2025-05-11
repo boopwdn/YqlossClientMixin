@@ -76,6 +76,9 @@ object YqlossClientConfig : Config(Mod("# Yqloss Client $MOD_VERSION #", ModType
     @SubConfig
     var hotkeys = HotkeysOptionsImpl()
 
+    @SubConfig
+    var cursor = CursorOptionsImpl()
+
     init {
         initialize()
 

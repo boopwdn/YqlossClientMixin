@@ -23,15 +23,15 @@ import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
+import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.extension.castTo
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 
-abstract class YCModuleScreenBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
+abstract class YCModuleScreenBase<TO, TM : YCModule<in TO>>(
     module: TM,
-) : YCModuleGUIBase<TO, TM>(module.castTo()) {
+) : YCModuleGUIBase<TO, TM>(module) where TO : YCModuleOptions, TO : OptionsImpl {
     open val scaleOverride: Double? = null
 
     override val transformation: Transformation

@@ -23,17 +23,17 @@ import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
+import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.YCHUD
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.extension.castTo
 import yqloss.yqlossclientmixinkt.util.scope.Scope
 
-abstract class YCModuleHUDBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
+abstract class YCModuleHUDBase<TO, TM : YCModule<in TO>>(
     module: TM,
     protected val hudGetter: YCModuleHUDBase<TO, TM>.() -> YCHUD,
-) : YCModuleGUIBase<TO, TM>(module.castTo()) {
+) : YCModuleGUIBase<TO, TM>(module) where TO : YCModuleOptions, TO : OptionsImpl {
     protected open val hud get() = hudGetter()
     protected open val example get() = hud.isExample
     override val scaledWidth get() = width * hud.scale
