@@ -2,7 +2,9 @@
 
 ![Yqloss Client (Mixin)](https://socialify.git.ci/Necron-Dev/YqlossClientMixin/image?description=1&font=Raleway&forks=1&issues=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Fboopwdn%2FYqlossClientMixin%2Frefs%2Fheads%2Fmaster%2Ficon.svg&name=1&owner=1&pulls=1&stargazers=1&theme=Auto)
 
-Showcase Video: [https://www.bilibili.com/video/BV1Q4wfejEAB/](https://www.bilibili.com/video/BV1Q4wfejEAB/)
+Permanent Release Link: https://get.yqloss.net
+
+Showcase Video: https://www.bilibili.com/video/BV1Q4wfejEAB
 
 Note that this mod is not registered as a Forge mod, nor do it use Forge events or API. It's all based on Mixin.
 
