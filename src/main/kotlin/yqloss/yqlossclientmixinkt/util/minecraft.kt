@@ -28,13 +28,11 @@ import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.WorldRenderer
 import net.minecraft.client.renderer.vertex.VertexFormat
 import net.minecraft.entity.Entity
+import net.minecraft.event.ClickEvent
 import net.minecraft.item.Item
 import net.minecraft.scoreboard.ScoreObjective
 import net.minecraft.scoreboard.ScorePlayerTeam
-import net.minecraft.util.BlockPos
-import net.minecraft.util.ChatComponentText
-import net.minecraft.util.ResourceLocation
-import net.minecraft.util.Vec3i
+import net.minecraft.util.*
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.module.option.YCColor
 import yqloss.yqlossclientmixinkt.util.SideBar.Entry
@@ -102,6 +100,24 @@ inline fun printChat(message: String = "") {
     mcUtilLogger.info("[PRINT CHAT] $message")
     MC.theWorld?.let {
         MC.ingameGUI.chatGUI.printChatMessage(ChatComponentText(message))
+    }
+}
+
+inline fun printURL(url: String = "") {
+    mcUtilLogger.info("[PRINT CHAT] [URL] $url")
+    MC.theWorld?.let {
+        MC.ingameGUI.chatGUI.printChatMessage(
+            ChatComponentText("\u00A7e\u00A7n$url").apply {
+                chatStyle =
+                    ChatStyle().apply {
+                        chatClickEvent =
+                            ClickEvent(
+                                ClickEvent.Action.OPEN_URL,
+                                url,
+                            )
+                    }
+            },
+        )
     }
 }
 

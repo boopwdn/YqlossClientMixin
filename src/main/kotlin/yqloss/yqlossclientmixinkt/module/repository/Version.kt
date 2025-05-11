@@ -25,6 +25,7 @@ import yqloss.yqlossclientmixinkt.network.content
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.printChat
 import yqloss.yqlossclientmixinkt.util.printError
+import yqloss.yqlossclientmixinkt.util.printURL
 
 const val URL_VERSION = "http://ycm.yqloss.net/version.json"
 
@@ -37,8 +38,9 @@ class Version : TypedResource<VersionData> by JsonResource(URL_VERSION) {
         } else if (YC.modVersion != content[YC.modID]) {
             printChat("\u00A7aThere is a new update available for Yqloss Client (Mixin)!")
             printChat("\u00A7aVersion \u00A7e${YC.modVersion} \u00A7a-> \u00A7e${content[YC.modID]}")
-            printChat("\u00A7aUpdate the mod on Github: \u00A7e\u00A7nhttps://github.com/Necron-Dev/YqlossClientMixin")
-            printChat("\u00A7aUpdate the mod on Modrinth: \u00A7e\u00A7nhttps://modrinth.com/mod/yqlossclientmixin")
+            printChat("\u00A7aUpdate the mod on one of the following websites:")
+            printURL("https://get.yqloss.net")
+            printURL("https://github.com/Necron-Dev/YqlossClientMixin")
         }
     }
 
