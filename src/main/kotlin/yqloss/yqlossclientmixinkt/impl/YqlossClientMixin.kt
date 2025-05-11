@@ -31,11 +31,13 @@ import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.api.YCAPIImpl
 import yqloss.yqlossclientmixinkt.impl.hypixel.loadHypixelModAPI
 import yqloss.yqlossclientmixinkt.impl.module.betterterminal.BetterTerminalScreen
+import yqloss.yqlossclientmixinkt.impl.module.cursor.CursorOverlay
 import yqloss.yqlossclientmixinkt.impl.module.miningprediction.MiningPredictionHUD
 import yqloss.yqlossclientmixinkt.impl.module.ycleapmenu.YCLeapMenuScreen
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
+import yqloss.yqlossclientmixinkt.module.cursor.Cursor
 import yqloss.yqlossclientmixinkt.module.hotkeys.Hotkeys
 import yqloss.yqlossclientmixinkt.module.mapmarker.MapMarker
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPrediction
@@ -103,9 +105,11 @@ class YqlossClientMixin : YqlossClient {
         MapMarker
         WindowProperties
         Hotkeys
+        Cursor
 
         BetterTerminalScreen
         YCLeapMenuScreen
+        CursorOverlay
 
         MiningPredictionHUD
 
