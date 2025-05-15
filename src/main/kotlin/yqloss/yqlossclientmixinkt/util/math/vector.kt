@@ -25,6 +25,7 @@ import yqloss.yqlossclientmixinkt.util.extension.ceilInt
 import yqloss.yqlossclientmixinkt.util.extension.double
 import yqloss.yqlossclientmixinkt.util.extension.floorInt
 import yqloss.yqlossclientmixinkt.util.extension.int
+import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
@@ -184,6 +185,8 @@ inline val Vec2D.asVec2I get() = Vec2I(x.int, y.int)
 inline val Vec2D.asFloorVec2I get() = Vec2I(x.floorInt, y.floorInt)
 
 inline val Vec2D.asCeilVec2I get() = Vec2I(x.ceilInt, y.ceilInt)
+
+inline val Vec2D.angle get() = atan2(y, x)
 
 inline fun unitVec(radian: Double) = Vec2D(cos(radian), sin(radian))
 

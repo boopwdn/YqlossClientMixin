@@ -18,17 +18,12 @@
 
 package yqloss.yqlossclientmixinkt.impl.mixincallback
 
-import cc.polyfrost.oneconfig.renderer.NanoVGHelper
 import net.minecraft.client.gui.ScaledResolution
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
-import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
-import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.loadFonts
-import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlurEvent
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.glStateScope
 import yqloss.yqlossclientmixinkt.util.partialTicks
 
 object CallbackEntityRenderer {
@@ -42,17 +37,7 @@ object CallbackEntityRenderer {
             GUIEvent.HUD
                 .Post()
                 .also(YC.eventDispatcher)
-                .apply {
-                    glStateScope {
-                        val helper = NanoVGHelper.INSTANCE
-                        helper.setupAndDraw { vg ->
-                            nvg.loadFonts(vg)
-                            val context = NanoVGUIContext(helper, vg)
-                            helper.setAlpha(vg, 1.0F)
-                            widgets.forEach { it.draw(context) }
-                        }
-                    }
-                }
+                .render()
         }
 
         fun updateCameraAndRenderProxyScreenAtCondition() {
@@ -60,17 +45,7 @@ object CallbackEntityRenderer {
             GUIEvent.Screen
                 .Post()
                 .also(YC.eventDispatcher)
-                .apply {
-                    glStateScope {
-                        val helper = NanoVGHelper.INSTANCE
-                        helper.setupAndDraw { vg ->
-                            nvg.loadFonts(vg)
-                            val context = NanoVGUIContext(helper, vg)
-                            helper.setAlpha(vg, 1.0F)
-                            widgets.forEach { it.draw(context) }
-                        }
-                    }
-                }
+                .render()
         }
     }
 

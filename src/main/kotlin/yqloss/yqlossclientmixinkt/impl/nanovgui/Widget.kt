@@ -29,4 +29,8 @@ interface Widget<T : Widget<T>> {
         scale: Double,
         origin: Vec2D,
     ): T
+
+    fun preDraw() {}
+
+    fun postDraw() {}
 }

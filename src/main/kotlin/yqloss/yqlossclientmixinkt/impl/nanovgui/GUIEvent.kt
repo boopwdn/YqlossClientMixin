@@ -18,10 +18,28 @@
 
 package yqloss.yqlossclientmixinkt.impl.nanovgui
 
+import cc.polyfrost.oneconfig.renderer.NanoVGHelper
 import yqloss.yqlossclientmixinkt.event.YCEvent
+import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.loadFonts
+import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
+import yqloss.yqlossclientmixinkt.util.glStateScope
 
 sealed interface GUIEvent : YCEvent {
     val widgets: MutableList<Widget<*>>
+
+    fun render() {
+        glStateScope {
+            widgets.forEach { it.preDraw() }
+            val helper = NanoVGHelper.INSTANCE
+            helper.setupAndDraw { vg ->
+                nvg.loadFonts(vg)
+                val context = NanoVGUIContext(helper, vg)
+                helper.setAlpha(vg, 1.0F)
+                widgets.forEach { it.draw(context) }
+            }
+            widgets.forEach { it.postDraw() }
+        }
+    }
 
     sealed interface HUD : GUIEvent {
         data class Post(
