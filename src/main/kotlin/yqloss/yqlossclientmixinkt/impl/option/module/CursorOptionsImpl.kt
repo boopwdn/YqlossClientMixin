@@ -19,6 +19,7 @@
 package yqloss.yqlossclientmixinkt.impl.option.module
 
 import cc.polyfrost.oneconfig.config.annotations.Header
+import cc.polyfrost.oneconfig.config.core.OneColor
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
@@ -43,4 +44,13 @@ class CursorOptionsImpl :
         size = 2,
     )
     val headerModule = false
+
+    val radius get() = 2.0
+    val bloom get() = 4.0
+    val duration get() = 0.0
+    val fade get() = 1.0
+    val color get() = OneColor(0x7FFFFFFF)
+    val radiusSamples get() = 4
+    val timeSamples get() = 20
+    val optimization get() = 2.0
 }

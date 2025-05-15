@@ -18,18 +18,23 @@
 
 package yqloss.yqlossclientmixinkt.impl.oneconfiginternal.lwjglmanagerimplloaded
 
+import cc.polyfrost.oneconfig.libs.universal.UGraphics
+import cc.polyfrost.oneconfig.platform.Platform
 import cc.polyfrost.oneconfig.renderer.font.Font
 import org.lwjgl.nanovg.NVGColor
 import org.lwjgl.nanovg.NVGPaint
 import org.lwjgl.nanovg.NanoVG.*
+import org.lwjgl.nanovg.NanoVGGL2
 import org.lwjgl.nanovg.NanoVGGL3.NVG_IMAGE_NODELETE
 import org.lwjgl.nanovg.NanoVGGL3.nvglCreateImageFromHandle
+import org.lwjgl.opengl.GL11
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.NanoVGAccessor
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.NanoVGImageCacheEntry
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
 import yqloss.yqlossclientmixinkt.util.extension.float
 import yqloss.yqlossclientmixinkt.util.math.convertARGBToDoubleArray
 import yqloss.yqlossclientmixinkt.util.scope.usingScope
+import yqloss.yqlossclientmixinkt.util.windowSize
 import java.nio.ByteBuffer
 import java.util.*
 import kotlin.math.*
@@ -44,6 +49,8 @@ private fun NVGColor.fill(argb: Int): NVGColor {
 }
 
 object NanoVGAccessorImpl : NanoVGAccessor {
+    private val vgNoAA by lazy { NanoVGGL2.nvgCreate(0) }
+
     init {
         nvg = this
     }
@@ -228,199 +235,83 @@ object NanoVGAccessorImpl : NanoVGAccessor {
         }
     }
 
-    private fun calculateAngles(
-        x: Double,
-        y: Double,
-        angle1: Double,
-        angle2: Double,
-        unswapped: Boolean = false,
-    ): Pair<Double, Double> {
-        var a1 = angle1 + PI / 2.0
-        var a2 = angle2 - PI / 2.0
-        val pi2 = PI * 2.0
-        val ccw = ((a2 - a1) % pi2 + pi2) % pi2 >= PI
-        if (ccw) {
-            run {
-                val tmp = a1
-                a1 = a2
-                a2 = tmp
-            }
-            a1 += PI
-            a2 += PI
-        }
-        a2 = a1 + ((a2 - a1) % pi2 + pi2) % pi2
-        return if (ccw && unswapped) a2 to a1 else a1 to a2
-    }
-
-    private fun isCCW(
-        angle1: Double,
-        angle2: Double,
-    ): Boolean {
-        val a1 = angle1 + PI / 2.0
-        val a2 = angle2 - PI / 2.0
-        val pi2 = PI * 2.0
-        return ((a2 - a1) % pi2 + pi2) % pi2 >= PI
-    }
-
-    override fun drawTrailLine(
+    override fun drawLines(
         vg: Long,
-        x1: Double,
-        y1: Double,
-        x2: Double,
-        y2: Double,
-        angle1: Double,
-        angle2: Double,
-        radiusInner: Double,
-        radiusOuter: Double,
+        points: Iterator<Pair<Double, Double>>,
+        radius: Double,
         color: Int,
+        alpha: Double,
     ) {
+        if (!points.hasNext()) return
         usingScope {
-            val angle = atan2(y2 - y1, x2 - x1)
-            val paint2 =
-                nvgLinearGradient(
-                    vg,
-                    (x1 + radiusInner * sin(angle)).float,
-                    (y1 - radiusInner * cos(angle)).float,
-                    (x1 + radiusOuter * sin(angle)).float,
-                    (y1 - radiusOuter * cos(angle)).float,
-                    NVGColor.calloc().using.fill(color),
-                    NVGColor.calloc().using.fill(0),
-                    NVGPaint.calloc().using,
-                )
-            val paint1 =
-                nvgLinearGradient(
-                    vg,
-                    (x1 - radiusInner * sin(angle)).float,
-                    (y1 + radiusInner * cos(angle)).float,
-                    (x1 - radiusOuter * sin(angle)).float,
-                    (y1 + radiusOuter * cos(angle)).float,
-                    NVGColor.calloc().using.fill(color),
-                    NVGColor.calloc().using.fill(0),
-                    NVGPaint.calloc().using,
-                )
-            val (a1u, a2u) = calculateAngles(x1, y1, angle1, angle, true)
-            val (b1u, b2u) = calculateAngles(x2, y2, angle + PI, angle2, true)
-            val ap1x = x1 + radiusOuter * cos(a2u)
-            val ap1y = y1 + radiusOuter * sin(a2u)
-            val ar = radiusOuter / cos((a1u - a2u) / 2.0)
-            val aa = (a1u + a2u) / 2.0
-            val ap2x = x1 - ar * cos(aa)
-            val ap2y = y1 - ar * sin(aa)
-            val bp1x = x2 + radiusOuter * cos(b1u)
-            val bp1y = y2 + radiusOuter * sin(b1u)
-            val br = radiusOuter / cos((b1u - b2u) / 2.0)
-            val ba = (b1u + b2u) / 2.0
-            val bp2x = x2 - br * cos(ba)
-            val bp2y = y2 - br * sin(ba)
-            val a1x: Double
-            val a1y: Double
-            val a2x: Double
-            val a2y: Double
-            val b1x: Double
-            val b1y: Double
-            val b2x: Double
-            val b2y: Double
-            if (isCCW(angle1, angle)) {
-                a1x = ap1x
-                a1y = ap1y
-                a2x = ap2x
-                a2y = ap2y
-            } else {
-                a1x = ap2x
-                a1y = ap2y
-                a2x = ap1x
-                a2y = ap1y
-            }
-            if (isCCW(angle + PI, angle2)) {
-                b1x = bp1x
-                b1y = bp1y
-                b2x = bp2x
-                b2y = bp2y
-            } else {
-                b1x = bp2x
-                b1y = bp2y
-                b2x = bp1x
-                b2y = bp1y
-            }
-            if (doubleArrayOf(a1x, a1y, b1x, b1y).all { it.isFinite() }) {
+            val nvgColor =
+                NVGColor
+                    .calloc()
+                    .using
+                    .fill(color)
+                    .a(1F)
+            nvgSave(vg)
+            nvgGlobalAlpha(vg, alpha.float)
+            var point = points.next()
+            if (points.hasNext()) {
                 nvgBeginPath(vg)
-                nvgMoveTo(vg, x1.float, y1.float)
-                nvgLineTo(vg, a1x.float, a1y.float)
-                nvgLineTo(vg, b1x.float, b1y.float)
-                nvgLineTo(vg, x2.float, y2.float)
-                nvgClosePath(vg)
-                nvgFillPaint(vg, paint1)
+                points.forEach {
+                    val a = atan2(it.second - point.second, it.first - point.first)
+                    nvgMoveTo(
+                        vg,
+                        (point.first - radius * sin(a)).float,
+                        (point.second + radius * cos(a)).float,
+                    )
+                    nvgArc(
+                        vg,
+                        point.first.float,
+                        point.second.float,
+                        radius.float,
+                        (a + PI * 0.5).float,
+                        (a + PI * 1.5).float,
+                        NVG_CW,
+                    )
+                    nvgArc(
+                        vg,
+                        it.first.float,
+                        it.second.float,
+                        radius.float,
+                        (a - PI * 0.5).float,
+                        (a + PI * 0.5).float,
+                        NVG_CW,
+                    )
+                    nvgLineTo(
+                        vg,
+                        (point.first - radius * sin(a)).float,
+                        (point.second + radius * cos(a)).float,
+                    )
+                    point = it
+                }
+                nvgFillColor(vg, nvgColor)
+                nvgFill(vg)
+            } else {
+                nvgBeginPath(vg)
+                nvgCircle(vg, point.first.float, point.second.float, radius.float)
+                nvgFillColor(vg, nvgColor)
                 nvgFill(vg)
             }
-            if (doubleArrayOf(a2x, a2y, b2x, b2y).all { it.isFinite() }) {
-                nvgBeginPath(vg)
-                nvgMoveTo(vg, x1.float, y1.float)
-                nvgLineTo(vg, a2x.float, a2y.float)
-                nvgLineTo(vg, b2x.float, b2y.float)
-                nvgLineTo(vg, x2.float, y2.float)
-                nvgClosePath(vg)
-                nvgFillPaint(vg, paint2)
-                nvgFill(vg)
-            }
+            nvgRestore(vg)
         }
     }
 
-    override fun drawTrailCorner(
-        vg: Long,
-        x: Double,
-        y: Double,
-        angle1: Double,
-        angle2: Double,
-        radiusInner: Double,
-        radiusOuter: Double,
-        color: Int,
-    ) {
-        usingScope {
-            val paint =
-                nvgRadialGradient(
-                    vg,
-                    x.float,
-                    y.float,
-                    radiusInner.float,
-                    radiusOuter.float,
-                    NVGColor.calloc().using.fill(color),
-                    NVGColor.calloc().using.fill(0),
-                    NVGPaint.calloc().using,
-                )
-            nvgBeginPath(vg)
-            val (a1, a2) = calculateAngles(x, y, angle1, angle2)
-            nvgArc(vg, x.float, y.float, radiusOuter.float, a1.float, a2.float, NVG_CW)
-            nvgLineTo(vg, x.float, y.float)
-            nvgClosePath(vg)
-            nvgFillPaint(vg, paint)
-            nvgFill(vg)
-        }
-    }
-
-    override fun drawTrailCircle(
-        vg: Long,
-        x: Double,
-        y: Double,
-        radiusInner: Double,
-        radiusOuter: Double,
-        color: Int,
-    ) {
-        usingScope {
-            val paint =
-                nvgRadialGradient(
-                    vg,
-                    x.float,
-                    y.float,
-                    radiusInner.float,
-                    radiusOuter.float,
-                    NVGColor.calloc().using.fill(color),
-                    NVGColor.calloc().using.fill(0),
-                    NVGPaint.calloc().using,
-                )
-            nvgBeginPath(vg)
-            nvgCircle(vg, x.float, y.float, radiusOuter.float)
-            nvgFillPaint(vg, paint)
-            nvgFill(vg)
-        }
+    override fun runInNoAAContext(function: (Long) -> Unit) {
+        Platform.getGLPlatform().enableStencil()
+        GL11.glPushAttrib(1048575)
+        UGraphics.disableAlpha()
+        nvgBeginFrame(
+            vgNoAA,
+            windowSize.x.float,
+            windowSize.y.float,
+            1F,
+        )
+        function(vgNoAA)
+        nvgEndFrame(vgNoAA)
+        UGraphics.enableAlpha()
+        GL11.glPopAttrib()
     }
 }

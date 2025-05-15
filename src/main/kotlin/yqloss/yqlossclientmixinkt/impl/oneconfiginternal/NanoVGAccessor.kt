@@ -138,36 +138,13 @@ interface NanoVGAccessor {
         radius: Double,
     )
 
-    fun drawTrailLine(
+    fun drawLines(
         vg: Long,
-        x1: Double,
-        y1: Double,
-        x2: Double,
-        y2: Double,
-        angle1: Double,
-        angle2: Double,
-        radiusInner: Double,
-        radiusOuter: Double,
+        points: Iterator<Pair<Double, Double>>,
+        radius: Double,
         color: Int,
+        alpha: Double,
     )
 
-    fun drawTrailCorner(
-        vg: Long,
-        x: Double,
-        y: Double,
-        angle1: Double,
-        angle2: Double,
-        radiusInner: Double,
-        radiusOuter: Double,
-        color: Int,
-    )
-
-    fun drawTrailCircle(
-        vg: Long,
-        x: Double,
-        y: Double,
-        radiusInner: Double,
-        radiusOuter: Double,
-        color: Int,
-    )
+    fun runInNoAAContext(function: (Long) -> Unit)
 }

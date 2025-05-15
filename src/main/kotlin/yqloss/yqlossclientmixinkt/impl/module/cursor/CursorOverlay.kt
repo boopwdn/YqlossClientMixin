@@ -22,10 +22,10 @@ import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.module.YCModuleImplBase
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
-import yqloss.yqlossclientmixinkt.impl.nanovgui.widget.CursorTrailWidget
 import yqloss.yqlossclientmixinkt.impl.option.module.CursorOptionsImpl
 import yqloss.yqlossclientmixinkt.module.cursor.Cursor
 import yqloss.yqlossclientmixinkt.module.ensureEnabled
+import yqloss.yqlossclientmixinkt.util.extension.long
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.mousePosition
 import yqloss.yqlossclientmixinkt.util.scope.longRun
@@ -33,14 +33,24 @@ import yqloss.yqlossclientmixinkt.util.scope.longRun
 object CursorOverlay : YCModuleImplBase<CursorOptionsImpl, Cursor>(Cursor) {
     data class SamplePoint(
         val position: Vec2D,
-        var alpha: Double,
+        val time: Long,
+        val rendered: Boolean,
     )
 
     private val samplePoints = ArrayDeque<SamplePoint>()
 
-    private var lastUpdateNanos = System.nanoTime()
+    private val renderedPoints = ArrayDeque<SamplePoint>()
 
-    private val trailTime = 5e9
+    private fun ArrayDeque<SamplePoint>.removeDead(time: Long) {
+        val alive = ((options.duration + options.fade) * 1e9).long
+        while (isNotEmpty()) {
+            if (time - last().time >= alive) {
+                removeLast()
+            } else {
+                break
+            }
+        }
+    }
 
     override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
@@ -48,49 +58,61 @@ object CursorOverlay : YCModuleImplBase<CursorOptionsImpl, Cursor>(Cursor) {
                 longRun {
                     ensureEnabled()
 
-//                    samplePoints.clear()
-//                    samplePoints.addLast(SamplePoint(Vec2D(200.0, 200.0), 1.0))
-//                    samplePoints.addLast(SamplePoint(Vec2D(500.0, 500.0), 1.0))
-//                    samplePoints.addLast(SamplePoint(mousePosition, 1.0))
-//
-//                    event.widgets += CursorTrailWidget(samplePoints)
-//
-//                    return@longRun
-                    val radiusInner = 0.0 // TODO
-                    val radiusOuter = 20.0 // TODO
-                    val color = -1 // TODO
-
                     val mouse = mousePosition
                     val time = System.nanoTime()
-                    val diff = time - lastUpdateNanos
-                    val alphaDiff = diff / trailTime
 
-                    samplePoints.forEach { it.alpha -= alphaDiff }
-                    samplePoints.removeAll { it.alpha <= 0 }
+                    samplePoints.removeDead(time)
+                    renderedPoints.removeDead(time)
 
-                    lastUpdateNanos = time
-
-                    run {
-                        if (samplePoints.isNotEmpty()) {
-                            val lastPoint = samplePoints.last()
-                            if ((mouse - lastPoint.position).length < radiusOuter) {
-                                lastPoint.alpha = 1.0
-                                return@run
+                    if (renderedPoints.isEmpty()) {
+                        val sample = SamplePoint(mouse, time, true)
+                        samplePoints += sample
+                        renderedPoints += sample
+                    } else {
+                        val firstRendered = renderedPoints.first()
+                        val direction = firstRendered.position - mouse
+                        val unit = direction / direction.length
+                        var renderLastPoint = false
+                        samplePoints.firstOrNull {
+                            if (it === firstRendered) {
+                                true
+                            } else {
+                                val diff = it.position - mouse
+                                val length = diff.length
+                                val dot = diff * unit
+                                val distanceSquared = length * length - dot * dot
+                                if (dot < 0 || distanceSquared > options.optimization) {
+                                    renderLastPoint = true
+                                    true
+                                } else {
+                                    false
+                                }
                             }
                         }
-
-                        samplePoints.addLast(SamplePoint(mouse, 1.0))
+                        if (renderLastPoint) {
+                            samplePoints[0] = samplePoints[0].copy(rendered = true)
+                            renderedPoints.addFirst(samplePoints[0])
+                        }
+                        if (mouse != samplePoints.firstOrNull()?.position) {
+                            samplePoints.addFirst(SamplePoint(mouse, time, false))
+                        } else {
+                            samplePoints[0] = samplePoints[0].copy(time = time)
+                        }
                     }
 
                     if (samplePoints.isEmpty()) return@longRun
 
                     event.widgets +=
                         CursorTrailWidget(
-                            samplePoints,
-                            mouse,
-                            radiusInner,
-                            radiusOuter,
-                            color,
+                            samplePoints.filterIndexed { i, it -> i == 0 || it.rendered },
+                            options.radius,
+                            options.bloom,
+                            options.duration,
+                            options.fade,
+                            options.color.rgb,
+                            options.color.alpha / 255.0,
+                            options.timeSamples,
+                            options.radiusSamples,
                         )
                 }
             }
