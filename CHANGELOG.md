@@ -73,3 +73,5 @@
 * feat(Repository): init (update checker, custom capes)
 
 ## 0.11.0 ()
+
+* feat(Cursor): init (cursor trail)
