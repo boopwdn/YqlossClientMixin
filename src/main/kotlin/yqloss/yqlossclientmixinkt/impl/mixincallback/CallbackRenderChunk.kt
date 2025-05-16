@@ -22,6 +22,7 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.BlockRendererDispatcher
 import net.minecraft.client.renderer.WorldRenderer
+import net.minecraft.init.Blocks
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockPos
 import net.minecraft.world.IBlockAccess
@@ -35,6 +36,7 @@ import yqloss.yqlossclientmixinkt.util.asVec3I
 import yqloss.yqlossclientmixinkt.util.extension.castTo
 import yqloss.yqlossclientmixinkt.util.math.Vec3I
 import yqloss.yqlossclientmixinkt.util.math.contains
+import yqloss.yqlossclientmixinkt.util.printError
 import java.lang.ref.WeakReference
 
 object CallbackRenderChunk {
@@ -91,13 +93,18 @@ object CallbackRenderChunk {
             }
 
             override fun getBlockState(pos: BlockPos): IBlockState {
+                val state =
+                    blockAccess.getBlockState(pos) ?: run {
+                        printError("${this::class} getBlockState null at $pos")
+                        Blocks.air.defaultState
+                    }
                 return cacheBlockState
                     .getOrSet(pos.asVec3I) {
                         YCRenderEvent.Block
-                            .ProcessBlockState(blockAccess, pos.asVec3I)
+                            .ProcessBlockState(blockAccess, pos.asVec3I, state)
                             .also(cachedDispatcher)
                             .mutableBlockState
-                    } ?: blockAccess.getBlockState(pos)
+                    } ?: state
             }
 
             override fun isAirBlock(pos: BlockPos) = getBlockState(pos).block.material === Material.air
