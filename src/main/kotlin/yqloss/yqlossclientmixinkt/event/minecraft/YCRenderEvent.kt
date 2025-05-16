@@ -48,7 +48,7 @@ sealed interface YCRenderEvent : YCEvent {
         data class ProcessBlockState(
             val blockAccess: IBlockAccess,
             val blockPos: Vec3I,
-            val blockState: IBlockState = blockAccess.getBlockState(blockPos.asBlockPos),
+            val blockState: IBlockState,
             var mutableBlockState: IBlockState = blockState,
         ) : Block
 
