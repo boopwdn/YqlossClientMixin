@@ -48,6 +48,10 @@ fun ensureNotCanceled(
 
 fun ensureInWorld(frame: Scope = Scope.LAST) = ensure(frame) { MC.theWorld !== null }
 
+fun ensureInGUI(frame: Scope = Scope.LAST) = ensure(frame) { MC.currentScreen !== null }
+
+fun ensureNotInGUI(frame: Scope = Scope.LAST) = ensure(frame) { MC.currentScreen === null }
+
 fun ensureSkyBlock(frame: Scope = Scope.LAST) {
     ensure(frame) {
         MC.theWorld !== null &&

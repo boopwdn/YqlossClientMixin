@@ -22,13 +22,12 @@ import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
 import yqloss.yqlossclientmixinkt.impl.util.alphaScale
-import yqloss.yqlossclientmixinkt.util.extension.double
 import yqloss.yqlossclientmixinkt.util.extension.long
 import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.math.lerp
 
-data class CursorTrailWidget(
-    private val samplePoints: List<CursorOverlay.SamplePoint>,
+data class ContinuousTrailWidget(
+    private val samplePoints: List<ContinuousTrail.SamplePoint>,
     private val radius: Double,
     private val bloom: Double,
     private val duration: Double,
@@ -37,7 +36,8 @@ data class CursorTrailWidget(
     private val alpha: Double,
     private val timeSamples: Int,
     private val radiusSamples: Int,
-) : Widget<CursorTrailWidget> {
+    private val mousePositionGetter: (Long, Long) -> Vec2D,
+) : Widget<ContinuousTrailWidget> {
     override fun draw(context: NanoVGUIContext) {
     }
 
@@ -55,19 +55,12 @@ data class CursorTrailWidget(
                     val trailT = ((duration + (timeSamples - t - 1) * fade / timeSamples) * 1e9).long
                     val trail =
                         iterator {
-                            var last = samplePoints[0]
                             samplePoints.firstOrNull {
                                 if (time - it.time <= trailT) {
-                                    last = it
                                     yield(it.position.x to it.position.y)
                                     false
                                 } else {
-                                    val position =
-                                        lerp(
-                                            last.position,
-                                            it.position,
-                                            (time - last.time - trailT).double / (it.time - last.time),
-                                        )
+                                    val position = mousePositionGetter(time, trailT)
                                     yield(position.x to position.y)
                                     true
                                 }
