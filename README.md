@@ -19,6 +19,7 @@ Note that this mod is not registered as a Forge mod, nor do it use Forge events 
 * YC Leap Menu (5-grid ring-shaped menu; differs from most leap menus; leap hotkeys)
 * Window Properties (borderless window; windowed fullscreen; custom window title)
 * Hotkeys (separate keys for drop single item / item stack)
+* Cursor (cursor trail)
 * Tweaks (features that modify vanilla slightly)
     * Enable Instant Aim (fix aiming being delayed for 1 tick)
     * Disable Pearl Click-On-Block Packet (commonly called Cancel Interact; makes you able to throw pearls while aiming
