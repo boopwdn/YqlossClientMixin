@@ -126,20 +126,33 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
         MC.updateDisplay()
     }
 
+    private val onEnabledChange by trigger(Unit, false, { options.enabled }) {
+        fullscreenMode = false
+        onWindowTitleOptionChange
+        onBorderlessStateChange
+        onFullscreenStateChange
+    }
+
     override fun registerEvents(registry: YCEventRegistry) {
         registry.apply {
             register<YCMinecraftEvent.Loop.Pre> {
-                if (!windowedFullscreen && fullscreenMode) {
-                    fullscreenMode = false
+                longRun {
+                    onEnabledChange
+
+                    ensureEnabled()
+
+                    if (!windowedFullscreen && fullscreenMode) {
+                        fullscreenMode = false
+                    }
+                    onWindowTitleOptionChange
+                    onWindowTitleChange
+                    val title = Display.getTitle()
+                    if (options.enabled && options.enableCustomTitle && title != options.customTitle) {
+                        Display.setTitle(options.customTitle)
+                    }
+                    onBorderlessStateChange
+                    onFullscreenStateChange
                 }
-                onWindowTitleOptionChange
-                onWindowTitleChange
-                val title = Display.getTitle()
-                if (options.enabled && options.enableCustomTitle && title != options.customTitle) {
-                    Display.setTitle(options.customTitle)
-                }
-                onBorderlessStateChange
-                onFullscreenStateChange
             }
 
             register<WindowPropertiesEvent.Fullscreen> { event ->

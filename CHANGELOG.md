@@ -74,4 +74,5 @@
 
 ## 0.11.0 ()
 
+* fix(WindowProperties): fix taking effect even if the module is not enabled
 * feat(Cursor): init (cursor trail)

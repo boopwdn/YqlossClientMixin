@@ -30,9 +30,8 @@ data class Trigger<out T, TV>(
     private val function: (TV) -> T,
     private val versionGetter: () -> TV,
     private var holder: Box<T>?,
+    private var version: Box<TV>? = null,
 ) : Out<T> {
-    private var version: Box<TV>? = null
-
     override fun get(): T {
         val currentVersion = versionGetter().inBox
         val holder = holder
@@ -53,10 +52,11 @@ fun <T, TV> trigger(
 ) = Trigger(function, versionGetter, null)
 
 fun <T, TV> trigger(
-    initial: T,
+    initialValue: TV,
+    initialVersion: TV,
     versionGetter: () -> TV,
     function: (TV) -> T,
-) = Trigger(function, versionGetter, initial.inBox)
+) = Trigger(function, versionGetter, initialValue.inBox, initialVersion.inBox)
 
 fun <T, TV> triggerOnce(
     versionGetter: () -> TV,
