@@ -72,7 +72,7 @@
 * feat(SSMotionBlur): add linear balanced mode
 * feat(Repository): init (update checker, custom capes)
 
-## 0.11.0 ()
+## 0.11.0 (UTC+8 2025/05/16 20:30)
 
 * refactor: improve the performance of IBlockAccess wrapping
 * fix: add nullability check for vanilla IBlockState.getBlockState
