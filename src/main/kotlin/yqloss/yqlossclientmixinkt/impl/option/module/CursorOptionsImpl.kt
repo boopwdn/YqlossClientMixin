@@ -18,7 +18,10 @@
 
 package yqloss.yqlossclientmixinkt.impl.option.module
 
+import cc.polyfrost.oneconfig.config.annotations.Color
 import cc.polyfrost.oneconfig.config.annotations.Header
+import cc.polyfrost.oneconfig.config.annotations.Number
+import cc.polyfrost.oneconfig.config.annotations.Switch
 import cc.polyfrost.oneconfig.config.core.OneColor
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
@@ -45,12 +48,91 @@ class CursorOptionsImpl :
     )
     val headerModule = false
 
-    val radius get() = 2.0
-    val bloom get() = 4.0
-    val duration get() = 0.0
-    val fade get() = 1.0
-    val color get() = OneColor(0x7FFFFFFF)
-    val radiusSamples get() = 4
-    val timeSamples get() = 20
-    val optimization get() = 2.0
+    @Transient
+    @Header(
+        text = "Continuous Trail",
+        size = 2,
+    )
+    val headerContinuous = false
+
+    class Continuous {
+        @Switch(
+            name = "Enabled",
+            size = 1,
+        )
+        val enabled = false
+
+        @Color(
+            name = "Color",
+            size = 1,
+        )
+        val color = OneColor(-1)
+
+        @Number(
+            name = "Radius",
+            min = 0F,
+            max = Float.MAX_VALUE,
+            size = 1,
+        )
+        val radius = 1F
+
+        @Number(
+            name = "Bloom",
+            min = 0F,
+            max = Float.MAX_VALUE,
+            size = 1,
+        )
+        val bloom = 3F
+
+        @Number(
+            name = "Duration",
+            min = 0F,
+            max = Float.MAX_VALUE,
+            size = 1,
+        )
+        val duration = 0F
+
+        @Number(
+            name = "Fade",
+            min = 0F,
+            max = Float.MAX_VALUE,
+            size = 1,
+        )
+        val fade = 0.1F
+
+        @Number(
+            name = "Radius Samples",
+            min = 0F,
+            max = Float.MAX_VALUE,
+            size = 1,
+        )
+        val radiusSamples = 3
+
+        @Number(
+            name = "Time Samples",
+            min = 0F,
+            max = Float.MAX_VALUE,
+            size = 1,
+        )
+        val timeSamples = 20
+
+        @Number(
+            name = "Optimization",
+            min = 0F,
+            max = Float.MAX_VALUE,
+            size = 1,
+        )
+        val optimization = 1F
+
+        @Number(
+            name = "Keep Samples Duration",
+            min = 0F,
+            max = Float.MAX_VALUE,
+            size = 1,
+        )
+        val keepSamples = 0.1F
+    }
+
+    @Extract
+    var continuousOptions = Continuous()
 }

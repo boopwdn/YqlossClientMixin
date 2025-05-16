@@ -25,95 +25,30 @@ import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.option.module.CursorOptionsImpl
 import yqloss.yqlossclientmixinkt.module.cursor.Cursor
 import yqloss.yqlossclientmixinkt.module.ensureEnabled
-import yqloss.yqlossclientmixinkt.util.extension.long
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
+import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.mousePosition
 import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 object CursorOverlay : YCModuleImplBase<CursorOptionsImpl, Cursor>(Cursor) {
-    data class SamplePoint(
-        val position: Vec2D,
-        val time: Long,
-        val rendered: Boolean,
-    )
-
-    private val samplePoints = ArrayDeque<SamplePoint>()
-
-    private val renderedPoints = ArrayDeque<SamplePoint>()
-
-    private fun ArrayDeque<SamplePoint>.removeDead(time: Long) {
-        val alive = ((options.duration + options.fade) * 1e9).long
-        while (isNotEmpty()) {
-            if (time - last().time >= alive) {
-                removeLast()
-            } else {
-                break
-            }
-        }
-    }
+    private var lastTime = 0L
 
     override fun registerEvents(registry: YCEventRegistry) {
         registry.run {
-            register<GUIEvent.Screen>(Int.MAX_VALUE - 1000) { event ->
+            register<GUIEvent.Screen.Post>(Int.MAX_VALUE - 1000) { event ->
                 longRun {
                     ensureEnabled()
+
+                    if (MC.currentScreen === null) {
+                        ContinuousTrail.clear()
+                        return@longRun
+                    }
 
                     val mouse = mousePosition
                     val time = System.nanoTime()
 
-                    samplePoints.removeDead(time)
-                    renderedPoints.removeDead(time)
+                    ContinuousTrail.render(event, mouse, time, lastTime, options.continuousOptions)
 
-                    if (renderedPoints.isEmpty()) {
-                        val sample = SamplePoint(mouse, time, true)
-                        samplePoints += sample
-                        renderedPoints += sample
-                    } else {
-                        val firstRendered = renderedPoints.first()
-                        val direction = firstRendered.position - mouse
-                        val unit = direction / direction.length
-                        var renderLastPoint = false
-                        samplePoints.firstOrNull {
-                            if (it === firstRendered) {
-                                true
-                            } else {
-                                val diff = it.position - mouse
-                                val length = diff.length
-                                val dot = diff * unit
-                                val distanceSquared = length * length - dot * dot
-                                if (dot < 0 || distanceSquared > options.optimization) {
-                                    renderLastPoint = true
-                                    true
-                                } else {
-                                    false
-                                }
-                            }
-                        }
-                        if (renderLastPoint) {
-                            samplePoints[0] = samplePoints[0].copy(rendered = true)
-                            renderedPoints.addFirst(samplePoints[0])
-                        }
-                        if (mouse != samplePoints.firstOrNull()?.position) {
-                            samplePoints.addFirst(SamplePoint(mouse, time, false))
-                        } else {
-                            samplePoints[0] = samplePoints[0].copy(time = time)
-                        }
-                    }
-
-                    if (samplePoints.isEmpty()) return@longRun
-
-                    event.widgets +=
-                        CursorTrailWidget(
-                            samplePoints.filterIndexed { i, it -> i == 0 || it.rendered },
-                            options.radius,
-                            options.bloom,
-                            options.duration,
-                            options.fade,
-                            options.color.rgb,
-                            options.color.alpha / 255.0,
-                            options.timeSamples,
-                            options.radiusSamples,
-                        )
+                    lastTime = time
                 }
             }
         }
