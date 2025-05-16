@@ -20,10 +20,13 @@ package yqloss.yqlossclientmixinkt.module.mapmarker
 
 import net.minecraft.block.state.IBlockState
 import net.minecraft.world.IBlockAccess
+import yqloss.yqlossclientmixinkt.util.math.Area3I
 import yqloss.yqlossclientmixinkt.util.math.Vec3I
 
 interface Modification : (Vec3I, IBlockState, IBlockAccess) -> IBlockState? {
     fun onTick() {}
 
     fun onCommand(args: List<String>)
+
+    fun containsSubChunk(chunk: Area3I): Boolean
 }

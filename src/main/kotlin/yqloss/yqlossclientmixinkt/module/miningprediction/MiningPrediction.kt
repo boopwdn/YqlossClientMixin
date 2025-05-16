@@ -30,10 +30,8 @@ import yqloss.yqlossclientmixinkt.module.option.blockState
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.*
 import yqloss.yqlossclientmixinkt.util.extension.int
-import yqloss.yqlossclientmixinkt.util.math.Fraction
-import yqloss.yqlossclientmixinkt.util.math.Vec3I
-import yqloss.yqlossclientmixinkt.util.math.frac
-import yqloss.yqlossclientmixinkt.util.math.over
+import yqloss.yqlossclientmixinkt.util.functional.plus
+import yqloss.yqlossclientmixinkt.util.math.*
 import yqloss.yqlossclientmixinkt.util.scope.longReturn
 import yqloss.yqlossclientmixinkt.util.scope.longRun
 import yqloss.yqlossclientmixinkt.util.scope.noExcept
@@ -245,14 +243,19 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
                 }
             }
 
-            register<YCRenderEvent.Block.ProcessBlockState> { event ->
+            register<YCRenderEvent.Block.ProcessAreaBlockState> { event ->
                 longRun {
                     ensureEnabled()
                     ensureAvailable()
 
-                    destroyedBlocks[event.blockPos]?.let { info ->
-                        if (getOre(info.blockPos) === info.block) {
-                            event.mutableBlockState = options.destroyedBlock.blockState
+                    if (destroyedBlocks.keys.any { it in event.area }) {
+                        event.mutableProcessor += { args ->
+                            destroyedBlocks[args.position]?.let { info ->
+                                if (getOre(info.blockPos) === info.block) {
+                                    args.mutableBlockState = options.destroyedBlock.blockState
+                                }
+                            }
+                            Unit
                         }
                     }
                 }

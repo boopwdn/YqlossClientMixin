@@ -28,6 +28,7 @@ import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
 import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
+import yqloss.yqlossclientmixinkt.util.functional.plus
 import yqloss.yqlossclientmixinkt.util.printError
 import yqloss.yqlossclientmixinkt.util.scope.longRun
 import yqloss.yqlossclientmixinkt.util.scope.noExcept
@@ -87,14 +88,20 @@ object MapMarker : YCModuleBase<MapMarkerOptions>(INFO_MAP_MARKER) {
                 }
             }
 
-            register<YCRenderEvent.Block.ProcessBlockState> { event ->
+            register<YCRenderEvent.Block.ProcessAreaBlockState> { event ->
                 longRun {
                     ensureEnabled()
 
-                    modificationGroup?.listModifications()?.forEach { modification ->
-                        event.mutableBlockState =
-                            modification.invoke(event.blockPos, event.blockState, event.blockAccess)
-                                ?: event.mutableBlockState
+                    val modifications = modificationGroup?.listModifications() ?: return@longRun
+
+                    modifications.forEach { modification ->
+                        if (modification.containsSubChunk(event.area)) {
+                            event.mutableProcessor += { args ->
+                                args.mutableBlockState =
+                                    modification.invoke(args.position, args.blockState, event.blockAccess)
+                                        ?: args.mutableBlockState
+                            }
+                        }
                     }
                 }
             }

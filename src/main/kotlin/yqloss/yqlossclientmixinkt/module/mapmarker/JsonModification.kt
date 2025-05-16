@@ -66,11 +66,20 @@ class JsonModification(
 
     private val blockCache = Cache3D<MutableList<(Vec3I, BlockWithMeta) -> BlockWithMeta>>()
     private val areaCache = mutableListOf<(Vec3I, BlockWithMeta) -> BlockWithMeta>()
+    private val subChunkCache = mutableSetOf<Vec3I>()
+    private val subChunkRangeCache = mutableSetOf<Area3I>()
     private var area =
         Vec3I(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE) to Vec3I(Int.MIN_VALUE, Int.MIN_VALUE, Int.MIN_VALUE)
 
     init {
         buildCache()
+    }
+
+    private val Vec3I.subChunk get() = Vec3I(x shr 4, y shr 4, z shr 4)
+
+    override fun containsSubChunk(chunk: Area3I): Boolean {
+        val chunkPos = chunk.first.subChunk
+        return subChunkRangeCache.any { chunkPos in it } || chunkPos in subChunkCache
     }
 
     private fun buildCache() {
@@ -88,7 +97,14 @@ class JsonModification(
             } else {
                 range.first.iterable3I.forEach {
                     blockCache.getOrSet(it) { mutableListOf() }.add { _, blockInfo -> transformer(blockInfo) }
+                    subChunkCache += it.subChunk
                 }
+            }
+            val subChunkRange = range.first.first.subChunk to range.first.second.subChunk + Vec3I(1, 1, 1)
+            if (subChunkRange.volume3I >= 256) {
+                subChunkRangeCache += subChunkRange
+            } else {
+                subChunkRange.iterable3I.forEach { subChunkCache += it }
             }
         }
 
