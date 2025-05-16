@@ -74,6 +74,7 @@
 
 ## 0.11.0 ()
 
+* refactor: improve the performance of IBlockAccess wrapping
 * fix: add nullability check for vanilla IBlockState.getBlockState
 * fix(WindowProperties): fix taking effect even if the module is not enabled
 * feat(Cursor): init (cursor trail)

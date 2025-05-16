@@ -27,9 +27,11 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockPos
 import net.minecraft.world.IBlockAccess
 import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.event.impl.CachedEventDispatcher
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
+import yqloss.yqlossclientmixinkt.util.accessor.outs.Box
+import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
+import yqloss.yqlossclientmixinkt.util.accessor.outs.value
 import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
 import yqloss.yqlossclientmixinkt.util.accessor.refs.threadLocal
 import yqloss.yqlossclientmixinkt.util.asVec3I
@@ -76,18 +78,21 @@ object CallbackRenderChunk {
         }
 
         class YCBlockAccess(
-            private val blockAccess: IBlockAccess,
-            origin: Vec3I,
+            val blockAccess: IBlockAccess,
+            val origin: Vec3I,
+            var blockStateProcessor: Box<((YCRenderEvent.Block.ProcessAreaBlockState.Parameters) -> Unit)?>? = null,
+            var tileEntityProcessor: Box<((YCRenderEvent.Block.ProcessAreaTileEntity.Parameters) -> Unit)?>? = null,
         ) : IBlockAccess by blockAccess {
-            private val cachedDispatcher = CachedEventDispatcher(YC.eventDispatcher)
             val cacheTileEntity = Cache<TileEntity?>(origin)
             val cacheBlockState = Cache<IBlockState?>(origin)
 
             override fun getTileEntity(pos: BlockPos): TileEntity? {
                 return cacheTileEntity.getOrSet(pos.asVec3I) {
-                    YCRenderEvent.Block
-                        .ProcessTileEntity(blockAccess, pos.asVec3I)
-                        .also(cachedDispatcher)
+                    YCRenderEvent.Block.ProcessAreaTileEntity
+                        .Parameters(
+                            pos.asVec3I,
+                            blockAccess.getTileEntity(pos),
+                        ).also { tileEntityProcessor?.value?.invoke(it) }
                         .mutableTileEntity
                 }
             }
@@ -100,9 +105,11 @@ object CallbackRenderChunk {
                     }
                 return cacheBlockState
                     .getOrSet(pos.asVec3I) {
-                        YCRenderEvent.Block
-                            .ProcessBlockState(blockAccess, pos.asVec3I, state)
-                            .also(cachedDispatcher)
+                        YCRenderEvent.Block.ProcessAreaBlockState
+                            .Parameters(
+                                pos.asVec3I,
+                                state,
+                            ).also { blockStateProcessor?.value?.invoke(it) }
                             .mutableBlockState
                     } ?: state
             }
@@ -150,6 +157,23 @@ object CallbackRenderChunk {
             wrapper.origin = position.asVec3I
         }
 
+        private fun YCBlockAccess.collectProcessors() {
+            blockStateProcessor ?: run {
+                blockStateProcessor =
+                    YCRenderEvent.Block
+                        .ProcessAreaBlockState(blockAccess, origin to origin + Vec3I(16, 16, 16))
+                        .also(YC.eventDispatcher)
+                        .mutableProcessor.inBox
+            }
+            tileEntityProcessor ?: run {
+                tileEntityProcessor =
+                    YCRenderEvent.Block
+                        .ProcessAreaTileEntity(blockAccess, origin to origin + Vec3I(16, 16, 16))
+                        .also(YC.eventDispatcher)
+                        .mutableProcessor.inBox
+            }
+        }
+
         fun rebuildChunkGetBlockState(
             wrapper: Wrapper,
             blockAccess: IBlockAccess,
@@ -161,6 +185,7 @@ object CallbackRenderChunk {
             return wrapper
                 .wrap(blockAccess)
                 .apply {
+                    collectProcessors()
                     cacheBlockState.setCurrentZ(blockPos.z)
                 }.getBlockState(blockPos)
         }
@@ -176,6 +201,7 @@ object CallbackRenderChunk {
             return wrapper
                 .wrap(blockAccess)
                 .apply {
+                    collectProcessors()
                     cacheTileEntity.setCurrentZ(blockPos.z)
                 }.getTileEntity(blockPos)
         }

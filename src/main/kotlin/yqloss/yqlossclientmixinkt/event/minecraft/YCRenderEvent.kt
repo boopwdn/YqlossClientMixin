@@ -23,7 +23,7 @@ import net.minecraft.client.gui.GuiScreen
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.IBlockAccess
 import yqloss.yqlossclientmixinkt.event.YCEvent
-import yqloss.yqlossclientmixinkt.util.asBlockPos
+import yqloss.yqlossclientmixinkt.util.math.Area3I
 import yqloss.yqlossclientmixinkt.util.math.Vec3I
 
 sealed interface YCRenderEvent : YCEvent {
@@ -45,20 +45,30 @@ sealed interface YCRenderEvent : YCEvent {
     sealed interface Block : YCRenderEvent {
         // you must not modify an air block
         // be careful when modifying a block to a tile entity or vice versa
-        data class ProcessBlockState(
+        data class ProcessAreaBlockState(
             val blockAccess: IBlockAccess,
-            val blockPos: Vec3I,
-            val blockState: IBlockState,
-            var mutableBlockState: IBlockState = blockState,
-        ) : Block
+            val area: Area3I,
+            var mutableProcessor: ((Parameters) -> Unit)? = null,
+        ) : Block {
+            data class Parameters(
+                val position: Vec3I,
+                val blockState: IBlockState,
+                var mutableBlockState: IBlockState = blockState,
+            )
+        }
 
         // you must not modify an air block
         // be careful when modifying a block to a tile entity or vice versa
-        data class ProcessTileEntity(
+        data class ProcessAreaTileEntity(
             val blockAccess: IBlockAccess,
-            val blockPos: Vec3I,
-            val tileEntity: TileEntity? = blockAccess.getTileEntity(blockPos.asBlockPos),
-            var mutableTileEntity: TileEntity? = tileEntity,
-        ) : Block
+            val area: Area3I,
+            var mutableProcessor: ((Parameters) -> Unit)? = null,
+        ) : Block {
+            data class Parameters(
+                val position: Vec3I,
+                val tileEntity: TileEntity?,
+                var mutableTileEntity: TileEntity? = tileEntity,
+            )
+        }
     }
 }
