@@ -82,3 +82,4 @@
 ## 0.11.1 ()
 
 * fix: set most GL states after rendering GUI
+* fix(MiningPrediction): use server tick

@@ -24,7 +24,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.hypixel.YCHypixelEvent
 import yqloss.yqlossclientmixinkt.event.hypixel.hypixelServerTickCounter
+import yqloss.yqlossclientmixinkt.event.hypixel.hypixelServerTickDuration
+import yqloss.yqlossclientmixinkt.event.hypixel.hypixelServerTickUpdateTime
 import yqloss.yqlossclientmixinkt.event.minecraft.YCPacketEvent
+import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
+import yqloss.yqlossclientmixinkt.util.printChat
 
 object CallbackNetHandlerPlayClient {
     object YqlossClient {
@@ -62,9 +66,29 @@ object CallbackNetHandlerPlayClient {
             }
         }
 
+        private val serverTickQueue = ArrayDeque<Long>()
+
         fun handleConfirmTransactionPre() {
             YC.api.hypixelLocation ?: return
+            val time = System.nanoTime()
             ++hypixelServerTickCounter
+            serverTickQueue += time
+            hypixelServerTickUpdateTime = time
+            val samples = YqlossClientConfig.main.hypixelPartialTickSamples
+            while (serverTickQueue.size > YqlossClientConfig.main.hypixelPartialTickSamples) {
+                serverTickQueue.removeFirst()
+            }
+            if (serverTickQueue.size == samples && samples >= 2) {
+                hypixelServerTickDuration = (serverTickQueue.last() - serverTickQueue.first()) / (samples - 1)
+                if (YqlossClientConfig.main.verboseHypixelServerTickDuration) {
+                    printChat("Hypixel Server Tick Duration: $hypixelServerTickDuration")
+                }
+            } else {
+                hypixelServerTickDuration = 50_000_000
+                if (YqlossClientConfig.main.verboseHypixelServerTickDuration) {
+                    printChat("Hypixel Server Tick Duration: (50000000)")
+                }
+            }
             YC.eventDispatcher(YCHypixelEvent.ServerTick)
         }
     }

@@ -36,4 +36,5 @@ interface MiningPredictionOptions : YCModuleOptions {
     val enableDwarvenMetalMiningSpeedOverride: Boolean
     val dwarvenMetalMiningSpeedOverride: Int
     val forceEnabled: Boolean
+    val useClientTick: Boolean
 }

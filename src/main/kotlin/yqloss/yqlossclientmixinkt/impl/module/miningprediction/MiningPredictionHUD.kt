@@ -21,6 +21,7 @@ package yqloss.yqlossclientmixinkt.impl.module.miningprediction
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.format
 import yqloss.yqlossclientmixinkt.event.YCEventRegistry
+import yqloss.yqlossclientmixinkt.event.hypixel.hypixelPartialServerTicks
 import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.module.YCModuleHUDBase
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
@@ -66,7 +67,8 @@ object MiningPredictionHUD :
             if (example) {
                 0.5
             } else {
-                min(1.0, module.breakingProgress.double + partialTicks * module.getProgressPerTick().double)
+                val partial = if (options.useClientTickOption) partialTicks else hypixelPartialServerTicks
+                min(1.0, module.breakingProgress.double + partial * module.getProgressPerTick().double)
             }
 
         val textLeft =

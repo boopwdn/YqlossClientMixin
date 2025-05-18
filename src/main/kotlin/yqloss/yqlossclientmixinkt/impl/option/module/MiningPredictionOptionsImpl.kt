@@ -292,6 +292,12 @@ class MiningPredictionOptionsImpl :
     )
     var forceExample = false
 
+    @Switch(
+        name = "Use Client Tick",
+        size = 1,
+    )
+    var useClientTickOption = false
+
     @Transient
     @Extract
     val printDebugInfo =
@@ -317,4 +323,5 @@ class MiningPredictionOptionsImpl :
     override val enableDwarvenMetalMiningSpeedOverride by ::enableDwarvenMetalMiningSpeedOverrideOption
     override val dwarvenMetalMiningSpeedOverride by ::dwarvenMetalMiningSpeedOverrideOption
     override val forceEnabled by ::forceEnabledOption
+    override val useClientTick by ::useClientTickOption
 }

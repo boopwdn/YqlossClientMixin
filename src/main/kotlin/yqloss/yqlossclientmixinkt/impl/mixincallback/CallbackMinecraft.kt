@@ -42,6 +42,7 @@ object CallbackMinecraft {
         }
 
         fun runGameLoopPre() {
+            ++frameCounter
             mousePosition =
                 Vec2D(
                     Mouse.getX().double,
