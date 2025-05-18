@@ -23,10 +23,12 @@ package yqloss.yqlossclientmixinkt.nativeapi
 import yqloss.yqlossclientmixinkt.YqlossClient
 import yqloss.yqlossclientmixinkt.module.rawinput.NativeRawInputProvider
 import yqloss.yqlossclientmixinkt.util.extension.double
+import yqloss.yqlossclientmixinkt.util.extension.type.undashedLowerString
 import yqloss.yqlossclientmixinkt.util.scope.noThrow
 import yqloss.yqlossclientmixinkt.util.scope.usingScope
 import yqloss.yqlossclientmixinkt.ycLogger
 import java.io.File
+import java.util.*
 
 external fun registerRawInputDevices()
 
@@ -68,10 +70,19 @@ fun handleWindowMessage(
 }
 
 fun loadWindowsX64NativeAPI() {
-    noThrow(ycLogger("Windows X64 Native API Loader")::catching) {
-        val extractedFile = File("./yqlossclient-native/client.exe")
+    val nativeFolder = File("./yqlossclient-native")
+    val logger = ycLogger("Windows X64 Native API Loader")
+    noThrow(logger::catching) {
+        nativeFolder.mkdirs()
+        nativeFolder.listFiles().forEach {
+            if (it.name.startsWith("client-")) {
+                noThrow {
+                    it.delete()
+                }
+            }
+        }
+        val extractedFile = File(nativeFolder, "client-${UUID.randomUUID().undashedLowerString}.exe")
         usingScope {
-            File("./yqlossclient-native").mkdirs()
             val resource =
                 YqlossClient::class.java
                     .getResourceAsStream("/assets/yqlossclientmixin/native/client.exe")!!
