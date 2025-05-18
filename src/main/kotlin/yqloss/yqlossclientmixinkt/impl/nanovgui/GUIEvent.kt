@@ -19,6 +19,9 @@
 package yqloss.yqlossclientmixinkt.impl.nanovgui
 
 import cc.polyfrost.oneconfig.renderer.NanoVGHelper
+import net.minecraft.client.renderer.GlStateManager
+import org.lwjgl.opengl.GL11.*
+import org.lwjgl.opengl.GL14.glBlendFuncSeparate
 import yqloss.yqlossclientmixinkt.event.YCEvent
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.loadFonts
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
@@ -39,6 +42,22 @@ sealed interface GUIEvent : YCEvent {
             }
             widgets.forEach { it.postDraw() }
         }
+        GlStateManager.enableTexture2D()
+        glEnable(GL_TEXTURE_2D)
+        GlStateManager.enableBlend()
+        glEnable(GL_BLEND)
+        GlStateManager.tryBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO)
+        glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO)
+        GlStateManager.disableAlpha()
+        glDisable(GL_ALPHA_TEST)
+        GlStateManager.depthMask(true)
+        glDepthMask(true)
+        GlStateManager.enableDepth()
+        glEnable(GL_DEPTH_TEST)
+        GlStateManager.depthFunc(GL_LEQUAL)
+        glDepthFunc(GL_LEQUAL)
+        GlStateManager.disableLighting()
+        glDisable(GL_LIGHTING)
     }
 
     sealed interface HUD : GUIEvent {

@@ -35,20 +35,24 @@ inline fun <R> glMatrixScope(function: () -> R) {
 
 inline fun <R> glAttribScope(function: () -> R) {
     glPushAttrib(GL_ALL_ATTRIB_BITS)
+    glPushClientAttrib(GL_ALL_CLIENT_ATTRIB_BITS)
     try {
         function()
     } finally {
+        glPopClientAttrib()
         glPopAttrib()
     }
 }
 
 inline fun <R> glStateScope(function: () -> R) {
     glPushAttrib(GL_ALL_ATTRIB_BITS)
+    glPushClientAttrib(GL_ALL_CLIENT_ATTRIB_BITS)
     glPushMatrix()
     try {
         function()
     } finally {
         glPopMatrix()
+        glPopClientAttrib()
         glPopAttrib()
     }
 }
