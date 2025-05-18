@@ -79,7 +79,7 @@
 * fix(WindowProperties): fix taking effect even if the module is not enabled
 * feat(Cursor): init (cursor trail)
 
-## 0.11.1 ()
+## 0.11.1 (UTC+8 2025/05/18 11:00)
 
 * fix: set most GL states after rendering GUI
 * fix(MiningPrediction): use server tick
