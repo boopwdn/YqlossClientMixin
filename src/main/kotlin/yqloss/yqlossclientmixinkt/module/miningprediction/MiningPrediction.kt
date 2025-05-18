@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.DestroyBlockProgress
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCTemplate
 import yqloss.yqlossclientmixinkt.event.YCEventRegistry
+import yqloss.yqlossclientmixinkt.event.hypixel.YCHypixelEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.event.register
@@ -191,7 +192,18 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
 
                     isAvailable = true
 
-                    check(true)
+                    check(options.useClientTick)
+                    removeOutdatedBlocks()
+                }
+            }
+
+            register<YCHypixelEvent.ServerTick> {
+                longRun {
+                    ensureEnabled { !options.useClientTick }
+                    ensureInWorld()
+                    ensure { isAvailable }
+
+                    check(!options.useClientTick)
                     removeOutdatedBlocks()
                 }
             }

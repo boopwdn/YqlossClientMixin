@@ -18,10 +18,8 @@
 
 package yqloss.yqlossclientmixinkt.impl.option
 
-import cc.polyfrost.oneconfig.config.annotations.Button
-import cc.polyfrost.oneconfig.config.annotations.Header
-import cc.polyfrost.oneconfig.config.annotations.Info
-import cc.polyfrost.oneconfig.config.annotations.Switch
+import cc.polyfrost.oneconfig.config.annotations.*
+import cc.polyfrost.oneconfig.config.annotations.Number
 import cc.polyfrost.oneconfig.config.data.InfoType
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCHypixelLocation
@@ -66,6 +64,14 @@ class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Cli
     )
     var disableBlockAccess = false
 
+    @Number(
+        name = "Hypixel Partial Server Tick Samples",
+        min = 1F,
+        max = Float.MAX_VALUE,
+        size = 1,
+    )
+    var hypixelPartialTickSamples = 10
+
     @Transient
     @Header(
         text = "Debug Flags",
@@ -78,6 +84,12 @@ class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Cli
         size = 1,
     )
     var verboseHypixelModAPI = false
+
+    @Switch(
+        name = "Verbose Hypixel Server Tick Duration",
+        size = 1,
+    )
+    var verboseHypixelServerTickDuration = false
 
     @Transient
     @Header(

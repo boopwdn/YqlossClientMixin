@@ -47,6 +47,8 @@ val MC: Minecraft by lazy { Minecraft.getMinecraft() }
 
 var tickCounter = 0L
 
+var frameCounter = 0L
+
 var partialTicks = 0.0
 
 var mousePosition = Vec2D(0.0, 0.0)

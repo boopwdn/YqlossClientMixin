@@ -19,8 +19,20 @@
 package yqloss.yqlossclientmixinkt.event.hypixel
 
 import yqloss.yqlossclientmixinkt.event.YCEvent
+import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
+import yqloss.yqlossclientmixinkt.util.extension.double
+import yqloss.yqlossclientmixinkt.util.frameCounter
 
 var hypixelServerTickCounter = 0L
+
+var hypixelServerTickUpdateTime = 0L
+
+var hypixelServerTickDuration = 50_000_000L
+
+val hypixelPartialServerTicks by trigger(::frameCounter) {
+    ((System.nanoTime() - hypixelServerTickUpdateTime).double / hypixelServerTickDuration).coerceIn(0.0..1.0)
+}
 
 sealed interface YCHypixelEvent : YCEvent {
     data object ServerTick : YCHypixelEvent
