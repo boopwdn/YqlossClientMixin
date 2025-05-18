@@ -78,3 +78,7 @@
 * fix: add nullability check for vanilla IBlockState.getBlockState
 * fix(WindowProperties): fix taking effect even if the module is not enabled
 * feat(Cursor): init (cursor trail)
+
+## 0.11.1 ()
+
+* fix: set most GL states after rendering GUI
