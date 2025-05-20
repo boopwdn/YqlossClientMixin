@@ -84,3 +84,5 @@
 * fix: set most GL states after rendering GUI
 * fix(MiningPrediction): use server tick
 * fix(RawInput): generate a separate dll for every Minecraft instance
+
+## 0.11.2 ()
