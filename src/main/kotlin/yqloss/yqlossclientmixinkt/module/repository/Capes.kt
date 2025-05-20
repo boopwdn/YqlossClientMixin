@@ -31,20 +31,20 @@ const val URL_CAPES = "http://ycm.yqloss.net/capes.json"
 
 typealias CapesData = Map<String, Capes.Cape>
 
-class Capes : TypedResource<CapesData> by JsonResource(URL_CAPES) {
+class Capes : TypedResource<CapesData> by CooldownTypedResource(JsonResource(URL_CAPES), Repository.options.capeCooldown) {
     @Serializable
     data class Cape(
         val metadata: String,
     )
 
     private val capeCache = mutableMapOf<UUID, CapeMeta>()
-    private val imageCache = mutableMapOf<String, ImageResource>()
+    private val imageCache = mutableMapOf<String, TypedResource<BufferedImage>>()
 
     fun addToImageCache(urls: Iterable<String>) {
         synchronized(imageCache) {
             urls.forEach {
                 if (it !in imageCache) {
-                    imageCache[it] = ImageResource(it)
+                    imageCache[it] = CooldownTypedResource(ImageResource(it), Repository.options.capeTextureCooldown)
                 }
             }
         }

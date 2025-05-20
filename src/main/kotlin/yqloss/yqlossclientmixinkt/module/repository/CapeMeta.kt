@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.texture.AbstractTexture
 import net.minecraft.client.renderer.texture.TextureUtil
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation
+import yqloss.yqlossclientmixinkt.network.CooldownTypedResource
 import yqloss.yqlossclientmixinkt.network.JsonResource
 import yqloss.yqlossclientmixinkt.network.TypedResource
 import yqloss.yqlossclientmixinkt.network.content
@@ -42,7 +43,7 @@ import kotlin.random.Random
 class CapeMeta(
     private val url: String,
     private val capes: Capes,
-) : TypedResource<CapeMeta.Data> by JsonResource(url) {
+) : TypedResource<CapeMeta.Data> by CooldownTypedResource(JsonResource(url), Repository.options.capeMetadataCooldown) {
     @Serializable
     data class Texture(
         val path: String,

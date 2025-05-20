@@ -16,10 +16,18 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.util
+package yqloss.yqlossclientmixinkt.network
 
-const val LONG_RETURN_STACKTRACE = false
-const val LOG_COMMAND_ARGUMENT_PARSING = false
-const val LOG_NETWORK_ACTIVITY = true
-const val CAPE_SWITCH_MAX_DEPTH = 16
-const val NETWORK_ALWAYS_FAIL_REQUEST = false
+open class CooldownTypedResource<T>(
+    private val parent: TypedResource<T>,
+    cooldown: Double,
+) : CooldownResource(parent, cooldown),
+    TypedResource<T> by parent {
+    override val available by parent::available
+
+    override val requesting get() = super.requesting
+
+    override var onAvailable by parent::onAvailable
+
+    override fun request() = super.request()
+}

@@ -19,6 +19,7 @@
 package yqloss.yqlossclientmixinkt.network
 
 import kotlinx.coroutines.*
+import yqloss.yqlossclientmixinkt.util.NETWORK_ALWAYS_FAIL_REQUEST
 
 open class SuspendResource(
     private val function: suspend () -> Unit,
@@ -36,6 +37,9 @@ open class SuspendResource(
         }
         CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
             try {
+                if (NETWORK_ALWAYS_FAIL_REQUEST) {
+                    throw Exception("NETWORK_ALWAYS_FAIL_REQUEST")
+                }
                 function()
                 onAvailable?.invoke()
                 available = true

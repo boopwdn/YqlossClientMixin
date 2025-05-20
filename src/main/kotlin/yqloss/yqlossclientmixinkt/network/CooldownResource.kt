@@ -16,10 +16,26 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.util
+package yqloss.yqlossclientmixinkt.network
 
-const val LONG_RETURN_STACKTRACE = false
-const val LOG_COMMAND_ARGUMENT_PARSING = false
-const val LOG_NETWORK_ACTIVITY = true
-const val CAPE_SWITCH_MAX_DEPTH = 16
-const val NETWORK_ALWAYS_FAIL_REQUEST = false
+open class CooldownResource(
+    private val parent: Resource,
+    private val cooldown: Double,
+) : Resource by parent {
+    private var lastRequest: Long? = null
+
+    override val requesting: Boolean
+        get() {
+            return parent.requesting ||
+                !available &&
+                lastRequest?.let {
+                    val time = System.currentTimeMillis()
+                    time - it < cooldown * 1000.0
+                } == true
+        }
+
+    override fun request() {
+        lastRequest = System.currentTimeMillis()
+        parent.request()
+    }
+}

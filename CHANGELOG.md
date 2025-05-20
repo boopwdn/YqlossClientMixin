@@ -86,3 +86,5 @@
 * fix(RawInput): generate a separate dll for every Minecraft instance
 
 ## 0.11.2 ()
+
+* feat(Repository): request cooldown

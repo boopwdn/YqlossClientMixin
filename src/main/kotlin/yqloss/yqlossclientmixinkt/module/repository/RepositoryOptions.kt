@@ -22,7 +22,11 @@ import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 
 interface RepositoryOptions : YCModuleOptions {
     val versionEnabled: Boolean
+    val versionCooldown: Double
     val notifyNewVersion: Boolean
     val capeEnabled: Boolean
+    val capeCooldown: Double
+    val capeMetadataCooldown: Double
+    val capeTextureCooldown: Double
     val showModCapes: Boolean
 }
