@@ -20,6 +20,7 @@ package yqloss.yqlossclientmixinkt.impl.option.module
 
 import cc.polyfrost.oneconfig.config.annotations.Button
 import cc.polyfrost.oneconfig.config.annotations.Header
+import cc.polyfrost.oneconfig.config.annotations.Number
 import cc.polyfrost.oneconfig.config.annotations.Switch
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
@@ -28,6 +29,7 @@ import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerLegit
 import yqloss.yqlossclientmixinkt.module.repository.INFO_REPOSITORY
 import yqloss.yqlossclientmixinkt.module.repository.Repository
 import yqloss.yqlossclientmixinkt.module.repository.RepositoryOptions
+import yqloss.yqlossclientmixinkt.util.extension.double
 
 class RepositoryOptionsImpl :
     OptionsImpl(INFO_REPOSITORY, true),
@@ -72,6 +74,14 @@ class RepositoryOptionsImpl :
             Repository.reloadVersion()
         }
 
+    @Number(
+        name = "Request Cooldown",
+        min = 0F,
+        max = Float.MAX_VALUE,
+        size = 1,
+    )
+    var versionCooldownOption = 60F
+
     @Switch(
         name = "Notify New Version",
         size = 1,
@@ -103,6 +113,30 @@ class RepositoryOptionsImpl :
             Repository.reloadCapes()
         }
 
+    @Number(
+        name = "Request Cooldown",
+        min = 0F,
+        max = Float.MAX_VALUE,
+        size = 1,
+    )
+    var capeCooldownOption = 60F
+
+    @Number(
+        name = "Metadata Request Cooldown",
+        min = 0F,
+        max = Float.MAX_VALUE,
+        size = 1,
+    )
+    var capeMetadataCooldownOption = 60F
+
+    @Number(
+        name = "Texture Request Cooldown",
+        min = 0F,
+        max = Float.MAX_VALUE,
+        size = 1,
+    )
+    var capeTextureCooldownOption = 60F
+
     @Switch(
         name = "Show Mod Capes",
         size = 1,
@@ -110,7 +144,11 @@ class RepositoryOptionsImpl :
     var showModCapesOption = true
 
     override val versionEnabled by ::versionEnabledOption
+    override val versionCooldown get() = versionCooldownOption.double
     override val notifyNewVersion by ::notifyNewVersionOption
     override val capeEnabled by ::capeEnabledOption
+    override val capeCooldown get() = capeCooldownOption.double
+    override val capeMetadataCooldown get() = capeMetadataCooldownOption.double
+    override val capeTextureCooldown get() = capeTextureCooldownOption.double
     override val showModCapes by ::showModCapesOption
 }

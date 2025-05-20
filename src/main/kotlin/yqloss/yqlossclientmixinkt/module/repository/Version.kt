@@ -19,6 +19,7 @@
 package yqloss.yqlossclientmixinkt.module.repository
 
 import yqloss.yqlossclientmixinkt.YC
+import yqloss.yqlossclientmixinkt.network.CooldownTypedResource
 import yqloss.yqlossclientmixinkt.network.JsonResource
 import yqloss.yqlossclientmixinkt.network.TypedResource
 import yqloss.yqlossclientmixinkt.network.content
@@ -31,7 +32,7 @@ const val URL_VERSION = "http://ycm.yqloss.net/version.json"
 
 typealias VersionData = Map<String, String>
 
-class Version : TypedResource<VersionData> by JsonResource(URL_VERSION) {
+class Version : TypedResource<VersionData> by CooldownTypedResource(JsonResource(URL_VERSION), Repository.options.versionCooldown) {
     private val notifyNewVersion by lazy {
         if (YC.modID !in content) {
             printError("\u00A7cversion api: mod ID is not present in response")

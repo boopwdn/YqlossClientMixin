@@ -19,6 +19,7 @@
 package yqloss.yqlossclientmixinkt.network
 
 import kotlinx.coroutines.*
+import yqloss.yqlossclientmixinkt.util.NETWORK_ALWAYS_FAIL_REQUEST
 import yqloss.yqlossclientmixinkt.util.accessor.outs.Box
 import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
 
@@ -40,6 +41,9 @@ open class SuspendTypedResource<T>(
         }
         CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
             try {
+                if (NETWORK_ALWAYS_FAIL_REQUEST) {
+                    throw Exception("NETWORK_ALWAYS_FAIL_REQUEST")
+                }
                 data =
                     function()
                         .also {
